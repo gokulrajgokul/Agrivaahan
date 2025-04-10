@@ -1,0 +1,182 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Book Vehicle{% endblock title %}
+
+{% block body %}
+<form method="post" action="{% url 'order' %}">
+  {% csrf_token %}
+  <div class="container" id="yo">
+    <div class="my-4">
+      <h2 class="text-center my-4">Booking Details</h2>
+
+      <!-- Hidden vehicle ID -->
+      <input type="hidden" name="vehicle_id" value="{{ vehicle.id }}">
+
+      <div class="mb-3">
+        <label for="billname" class="form-label">Full Name :</label>
+        <input type="text" class="form-control" id="billname" name="billname" placeholder="Full Name" required>
+      </div>
+
+      <div class="row">
+        <div class="mb-3 col-md-6">
+          <label for="billemail" class="form-label">Email :</label>
+          <input type="email" class="form-control" id="billemail" name="billemail" placeholder="name@gmail.com" required>
+        </div>
+        <div class="mb-3 col-md-6">
+          <label for="billphone" class="form-label">Phone Number :</label>
+          <input type="tel" class="form-control" id="billphone" name="billphone" required>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="billaddress" class="form-label">Address</label>
+        <input type="text" class="form-control" id="billaddress" name="billaddress" placeholder="Address" required>
+      </div>
+
+      <div class="row">
+        <div class="mb-3 col-md-6">
+          <label for="billcity" class="form-label">City</label>
+          <input type="text" class="form-control" id="billcity" name="billcity" required>
+        </div>
+        <div class="mb-3 col-md-2">
+          <label for="inputZip" class="form-label">Pin Code</label>
+          <input type="text" class="form-control" id="inputZip">
+        </div>
+      </div>
+
+      <h2 class="text-center my-4">Vehicle Details</h2>
+
+      <div class="row">
+        <div class="mb-3 col-md-6">
+          <label for="dayss" class="form-label">No. of Days:</label>
+          <input type="number" class="form-control" id="dayss" name="dayss" min="1" max="30" required>
+        </div>
+        <div class="mb-3 col-md-6">
+          <label for="date" class="form-label">Pickup Date:</label>
+          <input type="date" class="form-control" id="date" name="date" required>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="location" class="form-label">Pickup Location:</label>
+        <input type="text" class="form-control" id="location" name="location" placeholder="Enter your location" required>
+      </div>
+
+
+      <div class="mb-3">
+        <label class="form-label">Vehicle Selected:</label>
+        <input type="text" class="form-control" value="{{ vehicle.Vehicle_name }}" readonly>
+      </div>
+       
+      <div class="mb-3">
+        <label class="form-label">Rent per Day:</label>
+        <input type="text" class="form-control" id="vehRent" value="{{ vehicle.price }}" readonly>
+      </div>
+
+      
+
+
+
+      <div class="my-4">
+        <h2 class="text-center">Total Bill</h2>
+        <ul class="list-group">
+          <li class="list-group-item d-flex justify-content-between align-items-center my-3" id="rentsec">
+            <p>Total Rent is : Rs <span></span></p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="text-center mb-4">
+    <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#exampleModalLong" onclick="calculate()">Display Bill</button>
+    <button class="btn btn-primary" type="submit">Confirm Booking</button>
+  </div>
+
+  <!-- Modal Receipt -->
+  <div class="modal fade" id="exampleModalLong" tabindex="-1" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" style="height:750px">
+      <div class="modal-content" style="background-color:rgb(226, 239, 251);">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalCenterTitle">Receipt :</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="printThis">
+          <h1 class="text-center" style="background: -webkit-linear-gradient(#77f7f1, #094240); -webkit-text-fill-color: transparent;">Thanks for Booking!</h1><br>
+          <p id="n1" class="p2 text-center" style="font-size: 25px; font-weight:bold; color:rgb(35, 12, 109)">Customer Name: <span></span></p>
+          <p class="text-center">
+            <span id="l1" class="p3" style="font-size: 25px; font-weight:bold; color:rgb(35, 12, 109)">Location: <span></span></span>
+          </p>
+          <p id="d2" class="p8 text-center" style="font-size: 25px; font-weight:bold; color:rgb(35, 12, 109)">No. of days for rent: <span></span></p>
+          <p id="d1" class="p2 text-center" style="font-size: 25px; font-weight:bold; color:rgb(35, 12, 109)">Pickup date: <span></span></p>
+          <p class="text-center" style="font-size: 23px;">
+            <span style="font-size:30px;font-weight:bold">Vehicle Details :- </span><br>
+            <span style="font-weight:bold" id="crs1">Vehicle: <span>{{vehicle.Vehicle_name}}</span></span><br>
+           
+          </p>
+          <p id="total" class="p1 text-center" style="font-size: 25px; font-weight:bold">Total Bill: Rs <span>N/A</span></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" id="btnPrint">Download Receipt</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+<script>
+  function calculate() {
+    var rent = parseInt(document.getElementById("vehRent").value);
+    var days = parseInt(document.getElementById("dayss").value);
+    var total = rent * days;
+
+    // Total Rent
+    document.querySelector("#rentsec span").textContent = total;
+
+    // Customer Name
+    var name = document.getElementById("billname").value;
+    document.querySelector("#n1 span").textContent = name;
+
+    // Pickup Location
+    var loc = document.getElementById("location").value;
+    document.querySelector("#l1 span").textContent = loc;
+
+    // Number of Days
+    document.querySelector("#d2 span").textContent = days;
+
+    // Pickup Date
+    var date = document.getElementById("date").value;
+    document.querySelector("#d1 span").textContent = date;
+
+    // Vehicle Name and Color (filled via template)
+// Vehicle Name
+document.querySelector("#crs1 span").textContent = document.querySelector("input[value='{{ vehicle.Vehicle_name }}']").value;
+
+ 
+
+    // Final Total
+    document.querySelector("#total span").textContent = total;
+  }
+
+  // Print button event
+  document.getElementById("btnPrint").onclick = function () {
+    printElement(document.getElementById("printThis"));
+  };
+
+  function printElement(elem) {
+    var domClone = elem.cloneNode(true);
+    var printSection = document.getElementById("printSection");
+
+    if (!printSection) {
+      printSection = document.createElement("div");
+      printSection.id = "printSection";
+      document.body.appendChild(printSection);
+    }
+
+    printSection.innerHTML = "";
+    printSection.appendChild(domClone);
+    window.print();
+  }
+</script>
+
+{% endblock %}

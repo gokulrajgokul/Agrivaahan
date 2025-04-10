@@ -1,0 +1,43 @@
+
+ .navbar{
+    background: linear-gradient(160deg, #28a745, #85e085); /* Dark Green to Light Green */
+    color: white;
+    
+ }
+ 
+ .nav-item .nav-link:hover{
+    color:black;
+    transform: scaleX(1);
+   
+ }
+
+h4{
+    color: rgb(255, 0, 4);
+}
+
+/* .vehicleInfo{
+    background-image: url('../images/Agribg.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    height:300px;
+   
+ 
+} 
+  */
+
+
+.marquee {
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+.marquee span {
+    display: inline-block;
+    animation: scroll 20s linear infinite;
+  }
+
+@keyframes scroll {
+    0%   { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+  }

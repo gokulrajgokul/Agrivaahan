@@ -1,0 +1,169 @@
+{% extends 'base.html' %}
+
+{% block title %}Vehicles{% endblock title %}
+
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+{% block body %}
+
+<main role="main" style="background-color: rgb(200, 200, 200)">
+
+    <section class="vehicleInfo text-center py-5 mb-0">
+        <div class="container-fluid">
+            <h1 class="display-4">Welcome {{ request.user }} !!</h1>
+            <div class="marquee     py-2  ">
+                <span>🌿 Welcome to AgriVaahan – Your Smart Farm Vehicle Partner 🚜     Get wide varieties of Vehicles and Machineries in affordable prices!!   Well maintained vehicles and machineries are Available</span>
+              </div>
+            <p class="lead mt-4">Get wide varieties of Vehicles and Machineries in affordable prices!!</p>
+            <p class="lead mt-3">Well maintained vehicles and machineries are Available</p>
+        </div>
+    </section>
+
+    <!-- Search Bar -->
+ 
+    <div class="row g-2 align-items-center m-4">
+        <!-- Search bar -->
+        <div class="col-md-6 col-sm-12">
+          <div class="input-group ms-2">
+            <input type="text" id="searchInput" class="form-control" placeholder="Search by vehicle name..." onkeyup="searchVehicles()">
+            <span class="input-group-text"><i class="bi bi-search"></i></span>
+          </div>
+        </div>
+      
+        <!-- Machineries dropdown -->
+        <div class="col-md-2 offset-md-2 col-sm-6">
+          <div class="dropdown w-100">
+            <button class="btn btn-success dropdown-toggle w-100" type="button" id="machineryDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+              Machineries
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="machineryDropdown">
+              <li><button class="dropdown-item" type="button">Tractor</button></li>
+              <li><button class="dropdown-item" type="button">Transplanter</button></li>
+              <li><button class="dropdown-item" type="button">Harvester</button></li>
+            </ul>
+          </div>
+        </div>
+      
+        <!-- Equipments dropdown -->
+        <div class="col-md-2 col-sm-6">
+          <div class="dropdown w-100">
+            <button class="btn btn-success dropdown-toggle w-100" type="button" id="equipmentDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+              Equipments
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="equipmentDropdown">
+              <li><button class="dropdown-item" type="button">Rotavator</button></li>
+              <li><button class="dropdown-item" type="button">Plow</button></li>
+              <li><button class="dropdown-item" type="button">Cultivator</button></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      
+      
+      
+
+
+
+
+
+ 
+
+    <div class="album py-5 bg-light">
+        <div class="container">
+            <div class="row" id="vehicleContainer">
+                {% for i in Vehicle %}
+                <div class="col-md-4 vehicle-card mb-4">
+                    <div class="card shadow-sm h-100">
+                        <img src="/media/{{ i.image }}" alt="Vehicle" class="card-img-top" height="275"
+                            style="object-fit: cover;">
+                        <div class="card-body d-flex flex-column">
+                            <h4 class="text-center vehicle-name">{{ i.Vehicle_name }}</h4>
+                            <p class="card-text">{{ i.Vehicle_desc }}</p>
+                            <p>Price per Day: {{ i.price }}</p>
+                            <p class="card-text text-muted">owner: {{ i.owner.username }}</p>
+                            <p class="card-text text-muted">mobile no: {{ i.owner.userprofile.phone }}</p>
+                            <div class="rating-stars" data-vehicle-id="{{ i.id }}">
+                                {% for star in "12345"|slice:":5" %}
+                                <i class="bi bi-star-fill star text-secondary" data-value="{{ forloop.counter }}"
+                                    style="cursor: pointer;"></i>
+                                {% endfor %}
+                                <span class="avg-rating">({{ i.rating|floatformat:1 }})</span>
+                            </div>
+
+
+                            <div class="mt-auto d-flex justify-content-center">
+                                <!-- <a class="btn btn-dark btn-sm" href="\bill">RENT</a> -->
+                                <a href="{% url 'bill' i.id %}" class="btn btn-primary">Rent</a>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</main>
+
+
+<script>
+    function searchVehicles() {
+        let input = document.getElementById('searchInput').value.toLowerCase();
+        let cards = document.querySelectorAll('.vehicle-card');
+
+        cards.forEach(card => {
+            let name = card.querySelector('.vehicle-name').textContent.toLowerCase();
+            if (name.includes(input)) {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    }
+
+
+
+    
+
+  
+
+    $(document).ready(function () {
+        $('.rating-stars .star').on('click', function () {
+            const stars = $(this).data('value');
+            const parent = $(this).closest('.rating-stars');
+            const vehicleId = parent.data('vehicle-id');
+
+            $.ajax({
+                url: "{% url 'submit_rating' %}",
+                type: "POST",
+                data: {
+                    stars: stars,
+                    vehicle_id: vehicleId,
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                success: function (response) {
+                    if (response.success) {
+                        // Update stars
+                        parent.find('.star').removeClass('text-warning').addClass('text-secondary');
+                        parent.find('.star').each(function () {
+                            if ($(this).data('value') <= stars) {
+                                $(this).removeClass('text-secondary').addClass('text-warning');
+                            }
+                        });
+                        // Update average rating
+                        parent.find('.avg-rating').text('(' + response.new_avg.toFixed(1) + ')');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.log('Rating error:', error);
+                    alert("Error submitting rating.");
+                }
+            });
+        });
+    });
+
+
+</script>
+
+{% endblock body %}

@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% load static %}
+<link rel="stylesheet" href="{% static 'style.css' %}">
+
+{% block body %}
+
+<section class="h-100">
+    
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col">
+                <div class="card shadow-lg border-0 rounded-3">
+                    <div class="row g-0">
+                        <div class="col-xl-6 d-none d-xl-block">
+                            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/img4.webp"
+                                alt="Sample photo" class="img-fluid rounded-start" />
+                        </div>
+                        <div class="col-xl-6">
+                            <div class="card-body p-md-5 text-black">
+                                <h3 class="mb-4 text-uppercase">Sign Up</h3>
+                                {% include 'messages.html' %}
+
+                                <form method="post" action="{% url 'register' %}">
+                                    {% csrf_token %}
+                                   
+                                    <div class="mb-3">
+                                        <label for="role" class="form-label">Register as:</label>
+                                        <select class="form-select" id="role" name="role" required>
+                                          <option value="">-- Select Role --</option>
+                                          <option value="farmer">Farmer</option>
+                                          <option value="owner">Vehicle Owner</option>
+                                        
+                                        </select>
+                                      </div>                   <div class="mb-3">
+                                        <label   class="form-label">UserName</label>
+                                        <input type="text" class="form-control" id="username" placeholder="Enter username" name="username" >
+                                    </div>
+                                    <div class="mb-3">
+                                        <labe  class="form-label">Phone Number</label>
+                                        <input type="number" class="form-control" id="number" placeholder="Eg: 9120001478" name="number"  >
+                                    </div>
+                                    <div class="mb-3">
+                                        <label   class="form-label">Email address</label>
+                                        <input type="email" class="form-control" id="email" placeholder="Enter email" name="email" >
+                                        <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label   class="form-label">Password</label>
+                                        <input type="password" class="form-control" id="password" placeholder="Password" name="password"  >
+                                    </div>
+                                    <div class="mb-3">
+                                        <label  class="form-label">Confirm Password</label>
+                                        <input type="password" class="form-control" id="password2" placeholder="Confirm Password" name="password2"  >
+                                    </div>
+                                    
+                                    <div class="d-flex justify-content-center pt-3">
+                                        <button type="submit" class="btn btn-warning mt-3  d-flex justify-content-center">Submit</button>
+                                    </div>
+                                </form>
+                                <div class="d-flex align-items-center justify-content-center pb-4">
+                                    <p class="mb-0 me-2">Already have an account?</p>
+                                    <a class="btn btn-outline-danger" href="/signin" role="button">login</a>
+                                  </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock body %}

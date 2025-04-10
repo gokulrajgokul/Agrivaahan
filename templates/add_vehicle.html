@@ -1,0 +1,40 @@
+ <!-- templates/add_vehicle.html -->
+{% extends 'base.html' %}
+ 
+{% block body %}
+ 
+<div class="container mt-5">
+    {% include 'messages.html' %}
+    <div class="card shadow-lg p-4">
+        <h2 class="text-center text-success mb-4">Add New Vehicle</h2>
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="mb-3">
+                <label for="Vehicle_name" class="form-label">Vehicle Name</label>
+                <input type="text" class="form-control" id="Vehicle_name" name="Vehicle_name" placeholder="E.g. Tractor, Harvester" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="Vehicle_desc" class="form-label">Vehicle Description</label>
+                <textarea class="form-control" id="Vehicle_desc" name="Vehicle_desc" rows="3" placeholder="Enter vehicle details" required></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label for="price" class="form-label">Price per day (₹)</label>
+                <input type="number" class="form-control" id="price" name="price" min="1" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="image" class="form-label">Upload Vehicle Image</label>
+                <input type="file" class="form-control" id="image" name="image" accept="image/*" required>
+            </div>
+
+            <div class="text-center">
+                <button type="submit" class="btn btn-success px-5">Add Vehicle</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
