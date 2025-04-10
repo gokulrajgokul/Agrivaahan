@@ -1,4 +1,10 @@
+body {
+  font-family: 'Open Sans', sans-serif;
+}
 
+h1, h2, h3, h4 {
+  font-family: 'Merriweather', serif;
+}
  .navbar{
     background: linear-gradient(160deg, #28a745, #85e085); /* Dark Green to Light Green */
     color: white;
@@ -12,7 +18,30 @@
  }
 
 h4{
-    color: rgb(255, 0, 4);
+    color: rgb(0, 255, 68);
+}
+label{
+   font-size: larger;
+}
+.vechileadd{
+   margin:0% 4%;
+  
+}
+button {
+  padding: 10px 20px;
+  
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: 'Open Sans', sans-serif; /* Optional */
+  font-size: 16px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+button:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 /* .vehicleInfo{

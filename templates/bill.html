@@ -3,7 +3,7 @@
 {% block title %}Book Vehicle{% endblock title %}
 
 {% block body %}
-<form method="post" action="{% url 'order' %}">
+<form method="post" action="{% url 'confirmbooking' %}">
   {% csrf_token %}
   <div class="container" id="yo">
     <div class="my-4">

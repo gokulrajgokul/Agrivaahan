@@ -340,3 +340,7 @@ def submit_rating(request):
             return JsonResponse({'success': False, 'error': str(e)})
 
     return JsonResponse({'success': False, 'error': 'Invalid request'})
+
+
+def confirmbooking(request):
+    return render(request, 'confirmbooking.html')
