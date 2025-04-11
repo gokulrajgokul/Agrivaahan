@@ -66,7 +66,7 @@ class Order(models.Model):
 class Contact(models.Model):
     message = models.AutoField(primary_key=True)
     name = models.CharField(max_length=150,default="")
-    email = models.CharField(max_length=150,default="")
+    email = models.EmailField(max_length=150,default="")   
     phone_number = models.CharField(max_length=15,default="")
     message = models.TextField(max_length=500,default="")
 
@@ -101,7 +101,10 @@ class UserProfile(models.Model):
 
 class Booking(models.Model):
     vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE)
-    farmer = models.ForeignKey(User, on_delete=models.CASCADE)
+    farmer = models.ForeignKey(User, on_delete=models.CASCADE)  # person who booked
     booking_date = models.DateField()
     duration = models.IntegerField()
-    total_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    total_amount = models.FloatField()
+
+    def __str__(self):
+        return f"{self.vehicle.Vehicle_name} booked by {self.farmer.username}"

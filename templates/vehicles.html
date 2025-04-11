@@ -13,10 +13,9 @@
         <div class="container-fluid">
             <h1 class="display-4">Welcome {{ request.user }} !!</h1>
             <div class="marquee     py-2  ">
-                <span>🌿 Welcome to AgriVaahan – Your Smart Farm Vehicle Partner 🚜     Get wide varieties of Vehicles and Machineries in affordable prices!!   Well maintained vehicles and machineries are Available</span>
+                <span><strong>🌿 Welcome to AgriVaahan – Your Smart Farm Vehicle Partner     🚜  Get wide varieties of Vehicles and Machineries in affordable prices!!     Well maintained vehicles and machineries are Available</strong></span>
               </div>
-            <p class="lead mt-4">Get wide varieties of Vehicles and Machineries in affordable prices!!</p>
-            <p class="lead mt-3">Well maintained vehicles and machineries are Available</p>
+          
         </div>
     </section>
 
@@ -107,63 +106,6 @@
 </main>
 
 
-<script>
-    function searchVehicles() {
-        let input = document.getElementById('searchInput').value.toLowerCase();
-        let cards = document.querySelectorAll('.vehicle-card');
 
-        cards.forEach(card => {
-            let name = card.querySelector('.vehicle-name').textContent.toLowerCase();
-            if (name.includes(input)) {
-                card.style.display = 'block';
-            } else {
-                card.style.display = 'none';
-            }
-        });
-    }
-
-
-
-    
-
-  
-
-    $(document).ready(function () {
-        $('.rating-stars .star').on('click', function () {
-            const stars = $(this).data('value');
-            const parent = $(this).closest('.rating-stars');
-            const vehicleId = parent.data('vehicle-id');
-
-            $.ajax({
-                url: "{% url 'submit_rating' %}",
-                type: "POST",
-                data: {
-                    stars: stars,
-                    vehicle_id: vehicleId,
-                    csrfmiddlewaretoken: '{{ csrf_token }}'
-                },
-                success: function (response) {
-                    if (response.success) {
-                        // Update stars
-                        parent.find('.star').removeClass('text-warning').addClass('text-secondary');
-                        parent.find('.star').each(function () {
-                            if ($(this).data('value') <= stars) {
-                                $(this).removeClass('text-secondary').addClass('text-warning');
-                            }
-                        });
-                        // Update average rating
-                        parent.find('.avg-rating').text('(' + response.new_avg.toFixed(1) + ')');
-                    }
-                },
-                error: function (xhr, status, error) {
-                    console.log('Rating error:', error);
-                    alert("Error submitting rating.");
-                }
-            });
-        });
-    });
-
-
-</script>
 
 {% endblock body %}

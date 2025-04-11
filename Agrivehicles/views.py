@@ -79,6 +79,14 @@ def register(request):
         if User.objects.filter(email=email).exists():
             messages.error(request, "Email already taken")
             return redirect('register')
+        
+        if len(number) != 10:
+            messages.error(request, "Invalid mobile Number")
+            return redirect('register')
+        if len(password) < 8:
+            messages.error(request, "password must contain atleast 8 characters")
+            return redirect('register')
+
 
         if password != password2:
             messages.error(request, "Passwords do not match")
@@ -120,8 +128,7 @@ def register(request):
 #         print("error")
 #         return render(request,'login.html')
 
-
-from .models import UserProfile  # make sure this import exists
+  # make sure this import exists
 
 def signin(request):
     if request.method == "POST":
@@ -179,19 +186,10 @@ def add_vehicle(request):
         return redirect('add_vehicle')  # or anywhere you want
 
     return render(request, 'add_vehicle.html')
-
 @login_required
 def owner_bookings(request):
-    # Fetch the logged-in user
     owner = request.user
-    
-    # Fetch all bookings for the vehicles owned by this user
     bookings = Booking.objects.filter(vehicle__owner=owner)
-    
-    # Add a debug print to check if bookings are being fetched
-    print("Owner:", owner)
-    print("Bookings:", bookings)
-
     return render(request, 'bookings.html', {'bookings': bookings})
 
 def vehicles(request):
@@ -211,60 +209,100 @@ def bill(request, vehicle_id):
 
 
 
-# def order(request):
-#     if request.method == "POST":
-#         billname = request.POST.get('billname','')
-#         billemail = request.POST.get('billemail','')
-#         billphone = request.POST.get('billphone','')
-#         billaddress = request.POST.get('billaddress','')
-#         billcity = request.POST.get('billcity','')
-#         cars11 = request.POST['cars11']
-#         dayss = request.POST.get('dayss','')
-#         date = request.POST.get('date','')
-#         fl = request.POST.get('fl','')
-#         tl = request.POST.get('tl','')
-#         # print(request.POST['cars11'])
-        
-#         order = Order(name = billname,email = billemail,phone = billphone,address = billaddress,city=billcity,cars = cars11,days_for_rent = dayss,date = date,loc_from = fl,loc_to = tl)
-#         order.save()
-#         return redirect('home')
-#     else:
-#         print("error")
-#         return render(request,'bill.html')
-
-
+ 
 
 
  
 
+
+# @login_required
+# def order(request):
+#     if request.method == "POST":
+#         # Get booking data from form
+#         billname = request.POST.get('billname', '')
+#         billemail = request.POST.get('billemail', '')
+#         billphone = request.POST.get('billphone', '')
+#         billaddress = request.POST.get('billaddress', '')
+#         billcity = request.POST.get('billcity', '')
+#         vehicle_id = request.POST.get('vehicle_id')
+#         dayss = request.POST.get('dayss', '1')
+#         date = request.POST.get('date', '')
+#         location = request.POST.get('location', '')
+
+#         if not billname or not billemail or not billphone or not billaddress or not billcity  or not vehicle_id or not dayss or not date or not location:
+#             messages.error(request, "All fields are required")
+#             return redirect('order')
+
+
+#         # Get vehicle from DB
+#         vehicle = get_object_or_404(Vehicle, id=vehicle_id)
+
+#         # Calculate total cost
+#         try:
+#             duration = int(dayss)
+#         except ValueError:
+#             messages.error(request, "Invalid number of days.")
+#             return redirect('vehicles')
+
+#         total_amount = vehicle.price * duration
+
+#         # Save booking in Booking table
+#         booking = Booking.objects.create(
+#             vehicle=vehicle,
+#             farmer=request.user,
+#             booking_date=date,
+#             duration=duration,
+#             total_amount=total_amount
+#         )
+
+#         return render(request, 'confirmbooking.html', {'booking': booking})
+
+#     return redirect('home')
+@login_required
 def order(request):
     if request.method == "POST":
+        # Get form data
         billname = request.POST.get('billname', '')
         billemail = request.POST.get('billemail', '')
         billphone = request.POST.get('billphone', '')
         billaddress = request.POST.get('billaddress', '')
         billcity = request.POST.get('billcity', '')
         vehicle_id = request.POST.get('vehicle_id')
-        dayss = request.POST.get('dayss', '')
+        dayss = request.POST.get('dayss', '1')
         date = request.POST.get('date', '')
-        location = request.POST.get('location', '')  # ✅ Combined location field
+        location = request.POST.get('location', '')
 
+        # Get the vehicle (needed for bill.html)
         vehicle = get_object_or_404(Vehicle, id=vehicle_id)
 
-        order = Order(
-            name=billname,
-            email=billemail,
-            phone=billphone,
-            address=billaddress,
-            city=billcity,
-            vehicle_name=vehicle.Vehicle_name,  # ✅ This will store the vehicle name
-            days_for_rent=int(dayss),
-            date=date,
-            location=location,  # ✅ Using the single combined location
-        )
-        order.save()
+        # Check for empty fields
+        if not billname or not billemail or not billphone or not billaddress or not billcity or not dayss or not date or not location:
+            messages.error(request, "All fields are required")
+            return render(request, 'bill.html', {
+                'vehicle': vehicle,
+            })  # stays on same page
 
-        return redirect('home')
+        # Check if days is valid number
+        try:
+            duration = int(dayss)
+        except ValueError:
+            messages.error(request, "Invalid number of days.")
+            return render(request, 'bill.html', {
+                'vehicle': vehicle,
+            })
+
+        total_amount = vehicle.price * duration
+
+        # Save booking
+        booking = Booking.objects.create(
+            vehicle=vehicle,
+            farmer=request.user,
+            booking_date=date,
+            duration=duration,
+            total_amount=total_amount
+        )
+
+        return render(request, 'confirmbooking.html', {'booking': booking})
 
     return redirect('home')
 
@@ -275,6 +313,15 @@ def contact(request):
         contactemail = request.POST.get('contactemail','')
         contactnumber = request.POST.get('contactnumber','')
         contactmsg = request.POST.get('contactmsg','')
+
+        if not contactname or not contactnumber or not contactemail or not contactmsg  :
+            messages.error(request, "All fields are required")
+            return redirect('contact')
+
+
+        if len(contactnumber) != 10:
+            messages.error(request, "Invalid mobile Number")
+            return redirect('contact')
 
         contact = Contact(name = contactname, email = contactemail, phone_number = contactnumber,message = contactmsg)
         contact.save()
