@@ -6,6 +6,8 @@ from django.contrib.auth import authenticate,login,logout
 from .models import Vehicle, Order, Contact ,UserProfile,Rating,Booking
 from django.http import JsonResponse 
 from django.contrib.auth.decorators import login_required
+from django.core.mail import send_mail
+from django.conf import settings
 # Create your views here.
 
 def index(request):
@@ -135,6 +137,10 @@ def signin(request):
         loginusername = request.POST['loginusername']
         loginpassword = request.POST['loginpassword']
 
+        if not loginusername or not loginpassword :
+            messages.error(request, "All fields are required")
+            return redirect('signin')
+
         user = authenticate(username=loginusername, password=loginpassword)
         if user is not None:
             login(request, user)
@@ -166,26 +172,86 @@ def signout(request):
 from django.contrib.auth.decorators import login_required
 from .models import Vehicle
 
+# @login_required
+# def add_vehicle(request):
+#     if request.method == 'POST':
+#         name = request.POST.get('Vehicle_name')
+#         desc = request.POST.get('Vehicle_desc')
+#         price = request.POST.get('price')
+#         image = request.FILES.get('image')
+
+#         Vehicle.objects.create(
+#             Vehicle_name=name,
+#             Vehicle_desc=desc,
+#             price=price,
+#             image=image,
+#             owner=request.user 
+#         )
+
+#         messages.success(request, "Vehicle added successfully!")
+#         return redirect('add_vehicle')  # or anywhere you want
+
+#     return render(request, 'add_vehicle.html')
+
+
+from django.contrib import messages
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Vehicle
+from django.contrib.auth.decorators import login_required
+
 @login_required
 def add_vehicle(request):
+    vehicle_to_edit = None
+
+    # If updating
+    update_id = request.GET.get('update_id')
+    if update_id:
+        vehicle_to_edit = get_object_or_404(Vehicle, pk=update_id, owner=request.user)
+
     if request.method == 'POST':
         name = request.POST.get('Vehicle_name')
         desc = request.POST.get('Vehicle_desc')
         price = request.POST.get('price')
         image = request.FILES.get('image')
+        vehicle_id = request.POST.get('vehicle_id')  # Hidden input for update
 
-        Vehicle.objects.create(
-            Vehicle_name=name,
-            Vehicle_desc=desc,
-            price=price,
-            image=image,
-            owner=request.user 
-        )
+        if vehicle_id:
+            # Update existing
+            vehicle = get_object_or_404(Vehicle, pk=vehicle_id, owner=request.user)
+            vehicle.Vehicle_name = name
+            vehicle.Vehicle_desc = desc
+            vehicle.price = price
+            if image:
+                vehicle.image = image
+            vehicle.save()
+            messages.success(request, "Vehicle updated successfully!")
+        else:
+            # Create new
+            Vehicle.objects.create(
+                Vehicle_name=name,
+                Vehicle_desc=desc,
+                price=price,
+                image=image,
+                owner=request.user
+            )
+            messages.success(request, "Vehicle added successfully!")
 
-        messages.success(request, "Vehicle added successfully!")
-        return redirect('add_vehicle')  # or anywhere you want
+        return redirect('add_vehicle')
 
-    return render(request, 'add_vehicle.html')
+    vehicles = Vehicle.objects.filter(owner=request.user)
+    return render(request, 'add_vehicle.html', {
+        'vehicles': vehicles,
+        'vehicle_to_edit': vehicle_to_edit
+    })
+
+
+@login_required
+def delete_vehicle(request, pk):
+    vehicle = get_object_or_404(Vehicle, pk=pk, owner=request.user)
+    vehicle.delete()
+    messages.success(request, "Vehicle deleted successfully!")
+    return redirect('add_vehicle')  
+
 @login_required
 def owner_bookings(request):
     owner = request.user
@@ -215,10 +281,11 @@ def bill(request, vehicle_id):
  
 
 
+ 
 # @login_required
 # def order(request):
 #     if request.method == "POST":
-#         # Get booking data from form
+#         # Get form data
 #         billname = request.POST.get('billname', '')
 #         billemail = request.POST.get('billemail', '')
 #         billphone = request.POST.get('billphone', '')
@@ -229,24 +296,28 @@ def bill(request, vehicle_id):
 #         date = request.POST.get('date', '')
 #         location = request.POST.get('location', '')
 
-#         if not billname or not billemail or not billphone or not billaddress or not billcity  or not vehicle_id or not dayss or not date or not location:
-#             messages.error(request, "All fields are required")
-#             return redirect('order')
-
-
-#         # Get vehicle from DB
+#         # Get the vehicle (needed for bill.html)
 #         vehicle = get_object_or_404(Vehicle, id=vehicle_id)
 
-#         # Calculate total cost
+#         # Check for empty fields
+#         if not billname or not billemail or not billphone or not billaddress or not billcity or not dayss or not date or not location:
+#             messages.error(request, "All fields are required")
+#             return render(request, 'bill.html', {
+#                 'vehicle': vehicle,
+#             })  # stays on same page
+
+#         # Check if days is valid number
 #         try:
 #             duration = int(dayss)
 #         except ValueError:
 #             messages.error(request, "Invalid number of days.")
-#             return redirect('vehicles')
+#             return render(request, 'bill.html', {
+#                 'vehicle': vehicle,
+#             })
 
 #         total_amount = vehicle.price * duration
 
-#         # Save booking in Booking table
+#         # Save booking
 #         booking = Booking.objects.create(
 #             vehicle=vehicle,
 #             farmer=request.user,
@@ -258,6 +329,9 @@ def bill(request, vehicle_id):
 #         return render(request, 'confirmbooking.html', {'booking': booking})
 
 #     return redirect('home')
+
+ 
+
 @login_required
 def order(request):
     if request.method == "POST":
@@ -302,9 +376,27 @@ def order(request):
             total_amount=total_amount
         )
 
+        # Send email to vehicle owner
+        send_mail(
+            'New Booking Notification',
+            f"A new booking has been made for your vehicle '{vehicle.Vehicle_name}' by {billname}.\n\n"
+            f"Details:\n"
+            f"Name: {billname}\n"
+            f"Email: {billemail}\n"
+            f"Phone: {billphone}\n"
+            f"Location: {location}\n"
+            f"Duration: {duration} days\n"
+            f"Total Amount: {total_amount}\n\n"
+            f"Booking Date: {date}\n\n"
+            f"Please log in to your account to view more details.",
+            settings.EMAIL_HOST_USER,  # Sender's email (from settings)
+            [vehicle.owner.email],  # Owner's email (associated with the vehicle)
+        )
+
         return render(request, 'confirmbooking.html', {'booking': booking})
 
     return redirect('home')
+
 
 
 def contact(request):

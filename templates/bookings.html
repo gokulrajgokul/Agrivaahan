@@ -3,12 +3,12 @@
  
 
 <div class="container mt-4">
-  <h2 class="mb-4">My Vehicle Bookings</h2>
+  <h2 class="mb-4 text-center"> Your Vehicle Bookings</h2>
   
   {% if bookings %}
- 
-    <table class="table table-responsive table-striped table-bordered border-secondary table-hover w-75">
-      <thead class="rounded ">
+    <div class=" table table-responsive">
+    <table class="table  table-bordered border-success table-hover  mx-auto  ">
+      <thead >
         <tr>
           <th>S.No</th>
           <th >Vehicle</th>
@@ -33,6 +33,7 @@
         {% endfor %}
       </tbody>
     </table>
+  </div>
    
 
 

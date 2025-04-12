@@ -1,40 +1,84 @@
- <!-- templates/add_vehicle.html -->
 {% extends 'base.html' %}
- 
 {% block body %}
- 
+
 <div class="container mt-5">
     {% include 'messages.html' %}
+
     <div class="card shadow-lg vechileadd p-4">
-        <h2 class="text-center text-success mb-4">Add New Vehicle</h2>
+        <h2 class="text-center text-success mb-4">
+            {% if vehicle_to_edit %}Update Vehicle{% else %}Add New Vehicle{% endif %}
+        </h2>
 
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
 
+            {% if vehicle_to_edit %}
+            <input type="hidden" name="vehicle_id" value="{{ vehicle_to_edit.id }}">
+            {% endif %}
+
             <div class="mb-3">
                 <label for="Vehicle_name" class="form-label">Vehicle Name</label>
-                <input type="text" class="form-control" id="Vehicle_name" name="Vehicle_name" placeholder="E.g. Tractor, Harvester" required>
+                <input type="text" class="form-control" id="Vehicle_name" name="Vehicle_name"
+                    placeholder="E.g. Tractor, Harvester" value="{{ vehicle_to_edit.Vehicle_name|default_if_none:'' }}"
+                    required>
             </div>
 
             <div class="mb-3">
                 <label for="Vehicle_desc" class="form-label">Vehicle Description</label>
-                <textarea class="form-control" id="Vehicle_desc" name="Vehicle_desc" rows="3" placeholder="Enter vehicle details" required></textarea>
+                <textarea class="form-control" id="Vehicle_desc" name="Vehicle_desc" rows="3"
+                    placeholder="Enter vehicle details"
+                    required>{{ vehicle_to_edit.Vehicle_desc|default_if_none:'' }}</textarea>
             </div>
 
             <div class="mb-3">
                 <label for="price" class="form-label">Price per day (₹)</label>
-                <input type="number" class="form-control" id="price" name="price" min="1" required>
+                <input type="number" class="form-control" id="price" name="price" min="1"
+                    value="{{ vehicle_to_edit.price|default_if_none:'' }}" required>
             </div>
 
             <div class="mb-3">
                 <label for="image" class="form-label">Upload Vehicle Image</label>
-                <input type="file" class="form-control" id="image" name="image" accept="image/*" required>
+                <input type="file" class="form-control" id="image" name="image" accept="image/*" {% if not vehicle_to_edit %}required{% endif %}>
             </div>
 
             <div class="text-center">
-                <button type="submit" class="btn btn-success px-5">Add Vehicle</button>
+                <button type="submit" class="btn btn-success px-5">
+                    {% if vehicle_to_edit %}
+                      Update
+                    {% else %}
+                      Add 
+                    {% endif %}Vehicle
+                </button>
             </div>
         </form>
     </div>
+
+    <hr class="my-5">
+
+    <h3 class="text-center mb-4">Your Vehicles</h3>
+
+    <div class="row">
+        {% for v in vehicles %}
+        <div class="col-md-4 mt-4">
+            <div class="card mb-3 shadow-sm h-100">
+                <div class="card-body">
+                    <p class="card-title"><strong>Vehicle Name:</strong> {{ v.Vehicle_name }}</p>
+                    <p class="card-text"><strong>Description:</strong> {{ v.Vehicle_desc }}</p>
+                    <p class="card-text"><strong>Price per day:</strong> ₹{{ v.price }}</p>
+                    {% if v.image %}
+                    <img src="{{ v.image.url }}" alt="{{ v.Vehicle_name }}" width="150" class="mb-3">
+                    {% endif %}
+                    <div>
+                        <a href="?update_id={{ v.id }}" class="btn btn-outline-primary btn-sm me-2">Update</a>
+                        <a href="{% url 'delete_vehicle' v.id %}" class="btn btn-outline-danger btn-sm">Delete</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-center">You haven’t added any vehicles yet.</p>
+        {% endfor %}
+    </div> <!-- ✅ closes the row -->
+
 </div>
 {% endblock %}
