@@ -1,6 +1,7 @@
 from email.policy import default
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 class Vehicle(models.Model):
     
@@ -105,6 +106,7 @@ class Booking(models.Model):
     booking_date = models.DateField()
     duration = models.IntegerField()
     total_amount = models.FloatField()
+    created_at = models.DateTimeField(default=timezone.now) 
 
     def __str__(self):
         return f"{self.vehicle.Vehicle_name} booked by {self.farmer.username}"

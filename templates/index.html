@@ -51,9 +51,24 @@
   </div>
 </div>
  -->
+<div class="homecontent">
+<h1> RENT ANY EQUIPMENTS</h1>
+jg
+</p>
 
-
-
+ {% if user.is_authenticated %}
+ {% if user.userprofile.role == "farmer" %}
+   <div class="text-start ">
+     <a class="btn btn-info btn-lg" href="/vehicles" role="button">Explore Vehicles</a>
+   </div>
+ {% endif %}
+ {% if user.userprofile.role == "owner" %}
+ <div class="text-start ">
+   <a class="btn btn-info btn-lg" href="/add-vehicle" role="button">Register your Vehicles</a>
+ </div>
+{% endif %}
+ {% endif %}
+</div>
 
 </div>
   <hr style="height:2px;border-width:0;color:brown;background-color:brown ; margin-top:35px ">

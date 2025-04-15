@@ -1,4 +1,4 @@
-from django.http import Http404, HttpResponse
+from django.http import Http404, HttpResponse, HttpResponseForbidden
 from django.shortcuts import render,redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib import messages
@@ -8,6 +8,7 @@ from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from django.conf import settings
+
 # Create your views here.
 
 def index(request):
@@ -255,14 +256,42 @@ def delete_vehicle(request, pk):
 @login_required
 def owner_bookings(request):
     owner = request.user
-    bookings = Booking.objects.filter(vehicle__owner=owner)
+    bookings = Booking.objects.filter(vehicle__owner=owner).order_by('created_at')
     return render(request, 'bookings.html', {'bookings': bookings})
+
+@login_required
+def delete_booking(request, booking_id):
+    booking = get_object_or_404(Booking, id=booking_id)
+    
+    # Ensure only the vehicle owner can delete this booking
+    if booking.vehicle.owner != request.user:
+        return HttpResponseForbidden("You are not allowed to delete this booking.")
+    
+    if request.method == "POST":
+        booking.delete()
+        messages.success(request, "Booking deleted successfully.")
+        return redirect('owner_bookings')
 
 def vehicles(request):
     Vehicles = Vehicle.objects.all()
     # print(cars)
     params = {'Vehicle':Vehicles}
     return render(request,'vehicles.html',params)
+
+
+@login_required
+def farmer_bookings(request):
+    farmer = request.user
+    bookings = Booking.objects.filter(farmer=farmer).order_by('created_at')
+    return render(request, 'farmer_bookings.html', {'bookings': bookings})
+
+@login_required
+def delete_farmer_booking(request, booking_id):
+    booking = get_object_or_404(Booking, id=booking_id, farmer=request.user)
+    booking.delete()
+    messages.success(request, "Booking deleted successfully.")
+    return redirect('farmer_bookings')
+
 
 # def bill(request):
 #     Vehicles= Vehicle.objects.all()

@@ -65,9 +65,11 @@
       </div>
     </div>
     {% if user.is_authenticated %}
+    {% if user.userprofile.role == "farmer" %}
       <div class="text-center mt-4">
         <a class="btn btn-success btn-lg" href="/vehicles" role="button">Explore Vehicles</a>
       </div>
+    {% endif %}
     {% endif %}
   </div>
 {% endblock body %}

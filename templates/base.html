@@ -26,7 +26,7 @@
     
     <nav class="navbar navbar-expand-lg navbar-dark p-2  sticky-top">
         <!-- <a class="navbar-brand" href="#">AGRIVAAHAN</a> -->
-         <img src="{% static 'images/agrivahaanbg.png'%}" alt="logo" style="height:13%; width:15%">
+         <img src="{% static 'images/greenbg.png'%}" alt="logo" style="height:13%; width:15%">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -45,6 +45,9 @@
             {% if user.userprofile.role == "farmer" %}
               <li class="nav-item">
                 <a class="nav-link active" href="/vehicles">Vehicles</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="/my-bookings">My Bookings</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link active" href="/contact">Contact</a>
