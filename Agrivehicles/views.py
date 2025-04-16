@@ -169,9 +169,7 @@ def signout(request):
         return redirect('signin')
     
     # return HttpResponse('signout')
-
-from django.contrib.auth.decorators import login_required
-from .models import Vehicle
+ 
 
 # @login_required
 # def add_vehicle(request):
@@ -195,10 +193,10 @@ from .models import Vehicle
 #     return render(request, 'add_vehicle.html')
 
 
-from django.contrib import messages
-from django.shortcuts import render, redirect, get_object_or_404
-from .models import Vehicle
-from django.contrib.auth.decorators import login_required
+# from django.contrib import messages
+# from django.shortcuts import render, redirect, get_object_or_404
+# from .models import Vehicle
+# from django.contrib.auth.decorators import login_required
 
 @login_required
 def add_vehicle(request):

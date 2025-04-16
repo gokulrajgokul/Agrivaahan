@@ -73,6 +73,13 @@ jg
 </div>
   <hr style="height:2px;border-width:0;color:brown;background-color:brown ; margin-top:35px ">
   <h3 style="text-align:center">OUR VEHICLES</h3>
+  <div class="row">
+    {% for i in Vehicle %}
+    <div class="col-lg-4">
+      <img src="/media/{{ i.image }}"alt="imggg">
+    </div>
+    {% endfor %}
+  </div>
   
   <div class="row m-5" >
   <div class="col-lg-4">
@@ -82,7 +89,7 @@ jg
     </div>
    
   
-  </div><!-- /.col-lg-4 -->
+  </div> 
   <div class="col-lg-4">
     <div class="container" >
       {%load static%}
@@ -91,7 +98,7 @@ jg
     
     
    
-  </div><!-- /.col-lg-4 -->
+  </div> 
   <div class="col-lg-4">
     <div class="container" >
       {%load static%}
@@ -153,7 +160,7 @@ jg
     </div>
     
   </div><!-- /.col-lg-4 -->
-</div>
+</div> 
 
   
 

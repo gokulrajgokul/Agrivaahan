@@ -105,7 +105,44 @@
     </div>
 </main>
 
+<script>
+ 
+ $(document).ready(function () {
+        $('.rating-stars .star').on('click', function () {
+            const stars = $(this).data('value');
+            const parent = $(this).closest('.rating-stars');
+            const vehicleId = parent.data('vehicle-id');
 
+            $.ajax({
+                url: "{% url 'submit_rating' %}",
+                type: "POST",
+                data: {
+                    stars: stars,
+                    vehicle_id: vehicleId,
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                success: function (response) {
+                    if (response.success) {
+                        // Update stars
+                        parent.find('.star').removeClass('text-warning').addClass('text-secondary');
+                        parent.find('.star').each(function () {
+                            if ($(this).data('value') <= stars) {
+                                $(this).removeClass('text-secondary').addClass('text-warning');
+                            }
+                        });
+                        // Update average rating
+                        parent.find('.avg-rating').text('(' + response.new_avg.toFixed(1) + ')');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.log('Rating error:', error);
+                    alert("Error submitting rating.");
+                }
+            });
+        });
+    });
+
+</script>
 
 
 {% endblock body %}
