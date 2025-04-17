@@ -254,7 +254,7 @@ def delete_vehicle(request, pk):
 @login_required
 def owner_bookings(request):
     owner = request.user
-    bookings = Booking.objects.filter(vehicle__owner=owner).order_by('created_at')
+    bookings = Booking.objects.filter(vehicle__owner=owner, visible_to_owner=True).order_by('created_at')
     return render(request, 'bookings.html', {'bookings': bookings})
 
 @login_required
@@ -266,7 +266,9 @@ def delete_booking(request, booking_id):
         return HttpResponseForbidden("You are not allowed to delete this booking.")
     
     if request.method == "POST":
-        booking.delete()
+        booking.visible_to_owner = False  # Hide from owner's view
+        booking.save()
+        # booking.delete()
         messages.success(request, "Booking deleted successfully.")
         return redirect('owner_bookings')
 
@@ -280,13 +282,15 @@ def vehicles(request):
 @login_required
 def farmer_bookings(request):
     farmer = request.user
-    bookings = Booking.objects.filter(farmer=farmer).order_by('created_at')
+    bookings = Booking.objects.filter(farmer=farmer, visible_to_farmer=True).order_by('created_at')
     return render(request, 'farmer_bookings.html', {'bookings': bookings})
 
 @login_required
 def delete_farmer_booking(request, booking_id):
     booking = get_object_or_404(Booking, id=booking_id, farmer=request.user)
-    booking.delete()
+    booking.visible_to_farmer = False  # Soft-delete for farmer
+    booking.save()
+    # booking.delete()
     messages.success(request, "Booking deleted successfully.")
     return redirect('farmer_bookings')
 
@@ -510,3 +514,7 @@ def submit_rating(request):
 
 def confirmbooking(request):
     return render(request, 'confirmbooking.html')
+
+
+def custom_404(request, exception):
+    return render(request, '404.html', status=404)

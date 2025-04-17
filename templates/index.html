@@ -1,4 +1,9 @@
-{% extends 'base.html' %}
+
+{% extends 'base.html' %} 
+ {% block style %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/index.css' %}">
+{% endblock style %}
 
 {% block title %}Home{% endblock title %}
 

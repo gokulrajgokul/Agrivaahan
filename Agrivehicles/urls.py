@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-
+ 
 from Agrivehicles import views
 
 urlpatterns = [
@@ -28,3 +28,5 @@ urlpatterns = [
     
 
     ]
+
+ 

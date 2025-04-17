@@ -1,7 +1,10 @@
 {% extends 'base.html' %}
 
+{% block style %}
 {% load static %}
-<link rel="stylesheet" href="{% static 'style.css' %}">
+<link rel="stylesheet" href="{% static 'css/register.css' %}">
+{% endblock style %}
+
 
 {% block body %}
 
@@ -32,12 +35,13 @@
                                           <option value="owner">Vehicle Owner</option>
                                         
                                         </select>
-                                      </div>                   <div class="mb-3">
+                                      </div>                 
+                                      <div class="mb-3">
                                         <label   class="form-label">UserName</label>
                                         <input type="text" class="form-control" id="username" placeholder="Enter username" name="username" >
-                                    </div>
+                                      </div>
                                     <div class="mb-3">
-                                        <labe  class="form-label">Phone Number</label>
+                                        <label  class="form-label">Phone Number</label>
                                         <input type="number" class="form-control" id="number" placeholder="Eg: 9120001478" name="number"  >
                                     </div>
                                     <div class="mb-3">

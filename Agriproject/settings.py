@@ -24,12 +24,14 @@ MEDIA_URL = '/media/'
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-tmpy)gfsm43jjsaz#t=quuc9w!03wm%hmt(o#vae_)*_1s_ut7'
+from decouple import config
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+# ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
-ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -53,8 +55,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
-
+ 
 ROOT_URLCONF = 'Agriproject.urls'
 
 TEMPLATES = [
@@ -96,7 +99,7 @@ DATABASES = {
         'PORT': '3306',
     }
 }
-from decouple import config
+
 # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
@@ -147,6 +150,9 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),  # Static should be inside 'djangodemo'
 ]
+ 
+STATIC_ROOT = BASE_DIR / 'staticfiles'  # for collectstatic
+ 
 
 
 # Default primary key field type

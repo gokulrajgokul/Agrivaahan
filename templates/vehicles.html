@@ -1,9 +1,12 @@
+
 {% extends 'base.html' %}
 
 {% block title %}Vehicles{% endblock title %}
-
+{% block style %}
 {% load static %}
-<link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+<link rel="stylesheet" href="{% static 'css/vehicles.css' %}">
+{% endblock style %}
 
 {% block body %}
 
@@ -74,7 +77,7 @@
                 {% for i in Vehicle %}
                 <div class="col-md-4 vehicle-card mb-4">
                     <div class="card shadow-sm h-100">
-                        <img src="/media/{{ i.image }}" alt="Vehicle" class="card-img-top" height="275"
+                        <img src="{{ i.image.url }}" alt="Vehicle" class="card-img-top" height="275"
                             style="object-fit: cover;">
                         <div class="card-body d-flex flex-column">
                             <h4 class="text-center vehicle-name">{{ i.Vehicle_name }}</h4>

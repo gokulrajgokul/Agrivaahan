@@ -106,6 +106,8 @@ class Booking(models.Model):
     booking_date = models.DateField()
     duration = models.IntegerField()
     total_amount = models.FloatField()
+    visible_to_farmer = models.BooleanField(default=True)
+    visible_to_owner = models.BooleanField(default=True)
     created_at = models.DateTimeField(default=timezone.now) 
 
     def __str__(self):
