@@ -26,3 +26,10 @@ button:hover {
     transform: translateY(-3px) scale(1.05);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   }
+/* .loginsection{
+  background-image: url('../images/balerbg.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  height:700px;
+} */

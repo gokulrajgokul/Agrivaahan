@@ -193,3 +193,9 @@ function printElement(elem) {
   printSection.appendChild(domClone);
   window.print();
 }
+ 
+
+ 
+
+
+

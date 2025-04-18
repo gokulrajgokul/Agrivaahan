@@ -8,6 +8,7 @@ from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from django.conf import settings
+from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
 
@@ -518,3 +519,33 @@ def confirmbooking(request):
 
 def custom_404(request, exception):
     return render(request, '404.html', status=404)
+
+@login_required
+@csrf_exempt  # Disable CSRF for simplicity (not recommended for production)
+def update_profile(request):
+    if request.method == 'POST':
+        user = request.user
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        phone = request.POST.get('phone')
+        role = request.POST.get('role')
+
+        # Update user details
+        user.username = username
+        user.email = email
+        user.save()
+
+        # Update profile details (if user profile exists)
+        if hasattr(user, 'userprofile'):
+            user_profile = user.userprofile
+        else:
+            user_profile = UserProfile(user=user)
+
+        user_profile.phone = phone
+        user_profile.role = role
+        user_profile.save()
+
+        # Respond with success
+        return JsonResponse({'status': 'success'})
+
+    return JsonResponse({'status': 'error', 'message': 'Invalid request'}, status=400)

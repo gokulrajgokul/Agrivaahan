@@ -10,18 +10,17 @@ label{
     font-size: larger;
  }
 button {
-    padding: 10px 20px;
-    
-    color: white;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    font-family: 'Open Sans', sans-serif; /* Optional */
-    font-size: 16px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
+  padding: 10px 20px;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: 'Open Sans', sans-serif; /* Optional */
+  font-size: 16px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
   
 button:hover {
-    transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   }

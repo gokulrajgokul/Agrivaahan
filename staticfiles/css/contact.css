@@ -9,10 +9,10 @@ h1, h2, h3, h4 {
   
 label{
     font-size: larger;
+     
  }
- button {
+button {
     padding: 10px 20px;
-    
     color: white;
     border: none;
     border-radius: 10px;
@@ -26,3 +26,6 @@ button:hover {
     transform: translateY(-3px) scale(1.05);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   }
+h2{
+  color: greenyellow;
+}

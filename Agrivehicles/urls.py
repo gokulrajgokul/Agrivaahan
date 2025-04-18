@@ -24,6 +24,7 @@ urlpatterns = [
     path('search/', views.search_vehicles, name='search_vehicles'),
     path('submit-rating/', views.submit_rating, name='submit_rating'),
     path('confirmbooking', views.confirmbooking, name='confirmbooking'),
+    path('update-profile/', views.update_profile, name='update_profile')
 
     
 
