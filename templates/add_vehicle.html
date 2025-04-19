@@ -21,14 +21,14 @@
             {% endif %}
 
             <div class="mb-3">
-                <label for="Vehicle_name" class="form-label">Vehicle Name</label>
+                <label for="Vehicle_name" class="form-label"> Name</label>
                 <input type="text" class="form-control" id="Vehicle_name" name="Vehicle_name"
                     placeholder="E.g. Tractor, Harvester" value="{{ vehicle_to_edit.Vehicle_name|default_if_none:'' }}"
                     required>
             </div>
 
             <div class="mb-3">
-                <label for="Vehicle_desc" class="form-label">Vehicle Description</label>
+                <label for="Vehicle_desc" class="form-label">Description</label>
                 <textarea class="form-control" id="Vehicle_desc" name="Vehicle_desc" rows="3"
                     placeholder="Enter vehicle details"
                     required>{{ vehicle_to_edit.Vehicle_desc|default_if_none:'' }}</textarea>
@@ -66,7 +66,7 @@
         <div class="col-md-4 mt-4">
             <div class="card mb-3 shadow-sm h-100">
                 <div class="card-body">
-                    <p class="card-title"><strong>Vehicle Name:</strong> {{ v.Vehicle_name }}</p>
+                    <p class="card-title"><strong> Name:</strong> {{ v.Vehicle_name }}</p>
                     <p class="card-text"><strong>Description:</strong> {{ v.Vehicle_desc }}</p>
                     <p class="card-text"><strong>Price per day:</strong> ₹{{ v.price }}</p>
                     {% if v.image %}

@@ -50,12 +50,12 @@ body {
 }
 .custom-carousel {
   max-width: 700px;   
-  height: 600px;      
+  height: 700px;      
 }
 .carousel-inner {
   
   position: relative;
-  height: 500px;  /* Fixed height */
+  height: 600px;  /* Fixed height */
 }
 
 .custom-carousel img {
