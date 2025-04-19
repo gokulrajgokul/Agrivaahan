@@ -5,7 +5,7 @@
   top: 60px; /* Adjust this value to create a gap below the navbar */
   right: -350px; /* hidden initially */
   width: 300px;
-  height: calc(100% - 60px); /* Adjust height to leave space for the navbar */
+  /* Adjust height to leave space for the navbar */
   background-color: #f8f9fa;
   transition: right 0.3s ease;
   z-index: 1050;

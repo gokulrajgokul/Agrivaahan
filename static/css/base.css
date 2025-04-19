@@ -11,7 +11,8 @@ h1, h2, h3, h4 {
     /* background: linear-gradient(160deg, #28a745, #85e085);  */
     /* background: rgba(255, 255, 255, 0.2);  
     backdrop-filter: blur(10px); */
-    background: linear-gradient(to right, #E0F7FA, #81D4FA, #0277BD);
+    background: linear-gradient(160deg, #85e085, #28a745);
+    /* background: linear-gradient(to right, #E0F7FA, #81D4FA, #0277BD); */
     color: white;
     
  }

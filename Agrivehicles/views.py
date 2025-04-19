@@ -13,7 +13,8 @@ from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
 
 def index(request):
-	return render(request,'index.html')
+    vehicles = Vehicle.objects.all()
+    return render(request,'index.html',{'carousel_images': vehicles})
 def about(request):
     return render(request,'about.html ')
 
