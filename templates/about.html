@@ -4,74 +4,35 @@
 <link rel="stylesheet" href="{% static 'css/about.css' %}">
 {% endblock style%}
 {% block title %}About Us{% endblock title %}
-
 {% block body %}
-  <div class="bg-info text-white text-center py-5">
-    <div class="container">
-      <h1 class="display-1" style="font-size: 90px;">About Us!</h1>
-      <h2 class="mt-4">🌟 Who We Are</h2>
-      <p>AgriVaahan is more than just a rental service—it’s a movement to empower farmers with easy access to modern farm machinery...</p>
-      <h2>🚀 Our Mission</h2>
-      <p>To revolutionize farming by making advanced farm vehicles and equipment accessible to every farmer, big or small...</p>
-      <a class="btn btn-success btn-lg" href="#why-agrivaahan" role="button">Why AgriVaahan?</a>
-    </div>
-  </div>
+<section class="about-section d-flex align-items-center justify-content-center">
+  <div class="overlay"></div>
+  <div class="container text-black">
+    <div class="row align-items-center text-white">
+      <div class="col-md-6 ">
+        <!-- Left side image is in background -->
+      </div>
+      <div class="col-md-6 content p-4">
+        <h1 class="display-4 mb-4">About AgriVaahan</h1>
+        <h3>🌾 Who We Are</h3>
+        <p>AgriVaahan is a mission-driven platform aimed at empowering farmers through accessible and affordable farm vehicle rentals.</p>
 
-  <div class="container py-5" id="why-agrivaahan">
-    <h1 class="text-center mb-4">Why Choose Us?</h1>
-    <div class="row g-4">
-      <div class="col-lg-4">
-        <div class="text-center">
-          {% load static %}
-          <img src="{% static 'car-wash.png' %}" class="img-fluid rounded shadow" width="300" height="300">
-        </div>
-        <h2 class="text-center mt-3">Wide Range of Vehicles</h2>
-        <p class="text-center">From tractors to harvesters and other farming equipment...</p>
-      </div>
-      <div class="col-lg-4">
-        <div class="text-center">
-          <img src="{% static 'trust.jpg' %}" class="img-fluid rounded shadow" width="300" height="300">
-        </div>
-        <h2 class="text-center mt-3">🚜 Well-Maintained Vehicles</h2>
-        <p class="text-center">All farm vehicles and machinery are regularly serviced...</p>
-      </div>
-      <div class="col-lg-4">
-        <div class="text-center">
-          <img src="{% static 'affordable.jpg' %}" class="img-fluid rounded shadow" width="300" height="300">
-        </div>
-        <h2 class="text-center mt-3">💰 Affordable & Flexible Rentals</h2>
-        <p class="text-center">Cost-effective rental plans suited for every farmer...</p>
+        <h3 class="mt-4">🚀 Our Mission</h3>
+        <p>To bridge the gap between modern agricultural machinery and farmers across all regions by offering reliable, on-demand access.</p>
+
+        <h3 class="mt-4">💡 Why AgriVaahan?</h3>
+        <ul>
+          <li>✔ Wide variety of farm vehicles & equipment</li>
+          <li>✔ Transparent & affordable pricing</li>
+          <li>✔ Easy, hassle-free booking</li>
+          <li>✔ Reliable service & timely delivery</li>
+        </ul>
+
+        {% if user.is_authenticated and user.userprofile.role == "farmer" %}
+          <a href="/vehicles" class="btn btn-success btn-lg mt-3">Explore Vehicles</a>
+        {% endif %}
       </div>
     </div>
-    <div class="row g-4 mt-4">
-      <div class="col-lg-4">
-        <div class="text-center">
-          <img src="{% static 'car-wash.png' %}" class="img-fluid rounded shadow" width="300" height="300">
-        </div>
-        <h2 class="text-center mt-3">Transparent Pricing</h2>
-        <p class="text-center">No hidden charges! What you see is what you pay...</p>
-      </div>
-      <div class="col-lg-4">
-        <div class="text-center">
-          <img src="{% static 'car-wash.png' %}" class="img-fluid rounded shadow" width="300" height="300">
-        </div>
-        <h2 class="text-center mt-3">Easy Booking Process</h2>
-        <p class="text-center">Our user-friendly platform allows you to browse and book vehicles easily...</p>
-      </div>
-      <div class="col-lg-4">
-        <div class="text-center">
-          <img src="{% static 'car-wash.png' %}" class="img-fluid rounded shadow" width="300" height="300">
-        </div>
-        <h2 class="text-center mt-3">Reliable Service</h2>
-        <p class="text-center">We ensure timely delivery and hassle-free rentals...</p>
-      </div>
-    </div>
-    {% if user.is_authenticated %}
-    {% if user.userprofile.role == "farmer" %}
-      <div class="text-center mt-4">
-        <a class="btn btn-success btn-lg" href="/vehicles" role="button">Explore Vehicles</a>
-      </div>
-    {% endif %}
-    {% endif %}
   </div>
+</section>
 {% endblock body %}

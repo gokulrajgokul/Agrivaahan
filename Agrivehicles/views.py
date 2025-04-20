@@ -415,7 +415,7 @@ def order(request):
             f"A new booking has been made for your vehicle '{vehicle.Vehicle_name}' by {billname}.\n\n"
             f"Details:\n"
             f"Name: {billname}\n"
-            f"Email: {billemail}\n"
+            
             f"Phone: {billphone}\n"
             f"Location: {location}\n"
             f"Duration: {duration} days\n"
