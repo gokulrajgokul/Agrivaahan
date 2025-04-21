@@ -135,12 +135,43 @@ def register(request):
 
   # make sure this import exists
 
+# def signin(request):
+#     if request.method == "POST":
+#         loginusername = request.POST['loginusername']
+#         loginpassword = request.POST['loginpassword']
+
+#         if not loginusername or not loginpassword :
+#             messages.error(request, "All fields are required")
+#             return redirect('signin')
+
+#         user = authenticate(username=loginusername, password=loginpassword)
+#         if user is not None:
+#             login(request, user)
+
+#             try:
+#                 user_profile = UserProfile.objects.get(user=user)
+#                 if user_profile.role == 'owner':
+#                     return redirect('home')  # Owner → Add Vehicle page
+#                 else:
+#                     return redirect('vehicles')  # Farmer → View Vehicles page
+#             except UserProfile.DoesNotExist:
+#                 messages.error(request, "User profile not found.")
+#                 return redirect('signin')
+#         else:
+#             messages.error(request, "Invalid credentials")
+#             return redirect('signin')
+
+#     else:
+#         return render(request, 'login.html')
+
+
+
 def signin(request):
     if request.method == "POST":
         loginusername = request.POST['loginusername']
         loginpassword = request.POST['loginpassword']
 
-        if not loginusername or not loginpassword :
+        if not loginusername or not loginpassword:
             messages.error(request, "All fields are required")
             return redirect('signin')
 
@@ -148,12 +179,15 @@ def signin(request):
         if user is not None:
             login(request, user)
 
+            # Superuser login bypasses profile role check
+            if user.is_superuser:
+                return redirect('home')  # Django admin page
             try:
                 user_profile = UserProfile.objects.get(user=user)
                 if user_profile.role == 'owner':
-                    return redirect('home')  # Owner → Add Vehicle page
+                    return redirect('home')
                 else:
-                    return redirect('vehicles')  # Farmer → View Vehicles page
+                    return redirect('vehicles')
             except UserProfile.DoesNotExist:
                 messages.error(request, "User profile not found.")
                 return redirect('signin')
@@ -161,8 +195,8 @@ def signin(request):
             messages.error(request, "Invalid credentials")
             return redirect('signin')
 
-    else:
-        return render(request, 'login.html')
+    return render(request, 'login.html')
+
 
 
 def signout(request):

@@ -23,7 +23,7 @@
               <br>So what are you waiting for? Start your engine and let AgriVaahan power your journey to a more
               efficient and productive farm life! 🚜🌾
             </p> -->
-            <p class="mt-5 fw-semibold">Whether you run a small farm or manage acres of land, AgriVaahan is here to make your work easier. Rent everything from tractors to sprayers and get the job done without the heavy investment.
+            <p class="mt-5 fw-semibold text-white">Whether you run a small farm or manage acres of land, AgriVaahan is here to make your work easier. Rent everything from tractors to sprayers and get the job done without the heavy investment.
               Farming should feel fulfilling — not frustrating. Let AgriVaahan lighten the load. 🌾💚
               
               </p>
@@ -153,6 +153,43 @@
   </div>
 </div>
 
+
+
+
+<section id="services" class="services-section">
+  <div class="container">
+    <h2 class="section-title">Our Services</h2>
+    <div class="services-cards">
+      <div class="service-card">
+       
+        <h3>Rent a Vehicle</h3>
+        <p>Browse and book farm vehicles and machinery at your convenience. Quick, affordable, and farmer-friendly.</p>
+        
+        {% if user.is_authenticated %}
+        {% if user.userprofile.role == "farmer" %}
+        <a href="/vehicles" class="btn-service">Explore Vehicles</a>
+        {% else %}
+        <a href="/register" class="btn-service">Register</a>
+        {% endif %}
+        {% endif %}
+
+      </div>
+      <div class="service-card">
+    
+        <h3>Add Your Vehicle</h3>
+        <p>Own a farm vehicle? Don’t let your machine sit idle — share it and start earning!  Support local farmers and make money by renting out your vehicle</p>
+        
+        {% if user.is_authenticated %}
+        {% if user.userprofile.role == "owner" %}
+        <a href="/add-vehicle" class="btn-service">ADD Vehicle</a>
+        {% else %}
+        <a href="/register" class="btn-service">Register</a>
+        {% endif %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
 
 
 {% endblock body %}

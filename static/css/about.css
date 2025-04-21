@@ -22,5 +22,9 @@ button:hover {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   } 
 .about-section{
-  background-color: burlywood;
+  /* background-color: burlywood; */
+  background-image: url('../images/balerbg.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
 }

@@ -49,6 +49,7 @@ body {
   transition: all 0.3s ease-in-out;
 }
 .custom-carousel {
+ 
   max-width: 700px;   
   height: 700px;      
 }
@@ -64,6 +65,7 @@ body {
   height: 100%;
 }
 .slider{
+  margin-top: -20px;
  background-color: rgb(200, 200, 200);
 
 }
@@ -71,4 +73,80 @@ body {
   font-size: 3rem;
   color:white;
   margin:20px 10px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.services-section {
+  background-color: #f9f9f9;
+  padding: 60px 0;
+  text-align: center;
+}
+
+.section-title {
+  font-size: 32px;
+  margin-bottom: 40px;
+  color: #2d572c;
+}
+
+.services-cards {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.service-card {
+  background: white;
+  padding: 30px 20px;
+  border-radius: 12px;
+  width: 350px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+}
+
+.service-card:hover {
+  transform: translateY(-8px);
+}
+
+.service-card i {
+  font-size: 40px;
+  color: #4CAF50;
+  margin-bottom: 15px;
+}
+
+.service-card h3 {
+  font-size: 22px;
+  margin-bottom: 10px;
+  color: greenyellow;
+  /* color: #333; */
+}
+
+.service-card p {
+  font-size: 15px;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.btn-service {
+  text-decoration: none;
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: 600;
+  transition: background 0.3s;
+}
+
+.btn-service:hover {
+  background-color: #388e3c;
 }
