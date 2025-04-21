@@ -23,8 +23,9 @@ button:hover {
   } 
 .about-section{
   /* background-color: burlywood; */
-  background-image: url('../images/balerbg.jpg');
+  background-image: url('../images/balertractor.png');
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
+  height: 650px;
 }
