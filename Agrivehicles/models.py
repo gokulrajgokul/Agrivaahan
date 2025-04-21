@@ -12,6 +12,7 @@ class Vehicle(models.Model):
     price = models.IntegerField(default=0)
     image = models.ImageField(upload_to="Vehicle/images",default="")
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    owner_location=models.CharField(max_length=100 ,default="")
     rating = models.FloatField(default=0)         # Average rating
     num_ratings = models.IntegerField(default=0)  # Number of ratings
 

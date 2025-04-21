@@ -214,6 +214,7 @@ def add_vehicle(request):
         desc = request.POST.get('Vehicle_desc')
         price = request.POST.get('price')
         image = request.FILES.get('image')
+        owner_location = request.POST.get('owner_location')
         vehicle_id = request.POST.get('vehicle_id')  # Hidden input for update
 
         if vehicle_id:
@@ -222,6 +223,7 @@ def add_vehicle(request):
             vehicle.Vehicle_name = name
             vehicle.Vehicle_desc = desc
             vehicle.price = price
+            vehicle.owner_location = owner_location
             if image:
                 vehicle.image = image
             vehicle.save()
@@ -233,7 +235,8 @@ def add_vehicle(request):
                 Vehicle_desc=desc,
                 price=price,
                 image=image,
-                owner=request.user
+                owner=request.user,
+                owner_location=owner_location 
             )
             messages.success(request, "Vehicle added successfully!")
 
@@ -460,6 +463,10 @@ def search_vehicles(request):
         vehicles = Vehicle.objects.all()  # Show all vehicles when no search input
 
     return render(request, 'vehicles.html', {'vehicles': vehicles, 'query': query})
+
+  
+
+
 
 
 

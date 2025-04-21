@@ -22,12 +22,15 @@
         </div>
     </section>
 
+
+ 
+
     <!-- Search Bar -->
  
     <div class="row g-2 align-items-center m-4">
       <div class="col-md-6 col-sm-12">
         </div>
-        <!-- Search bar -->
+      
         <div class="col-md-6 col-sm-12">
           <div class="input-group ms-2">
             <input type="text" id="searchInput" class="form-control" placeholder="Search by vehicle name..." onkeyup="searchVehicles()">
@@ -37,7 +40,7 @@
       
          
       </div>
-      
+       
       
       
 
@@ -60,6 +63,7 @@
                             <p class="card-text">{{ i.Vehicle_desc }}</p>
                             <p>Price per Day: {{ i.price }}</p>
                             <p class="card-text text-muted"><strong>Owner:</strong> {{ i.owner.username }}</p>
+                            <p class="card-text text-muted"><strong>Owner Location:</strong> {{ i.owner_location }}</p>
                             <p class="card-text text-muted"><strong>Mobile No:</strong> {{ i.owner.userprofile.phone }}</p>
                             <div class="rating-stars" data-vehicle-id="{{ i.id }}">
                                 {% for star in "12345"|slice:":5" %}

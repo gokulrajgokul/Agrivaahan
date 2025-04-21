@@ -21,3 +21,6 @@ button:hover {
     transform: translateY(-3px) scale(1.05);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   } 
+.about-section{
+  background-color: burlywood;
+}

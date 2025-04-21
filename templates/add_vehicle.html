@@ -45,6 +45,13 @@
                 <input type="file" class="form-control" id="image" name="image" accept="image/*" {% if not vehicle_to_edit %}required{% endif %}>
             </div>
 
+            <div class="mb-3">
+                <label for="owner_location" class="form-label">Owner Location</label>
+                <input type="text" class="form-control" id="owner_location" name="owner_location"
+                    placeholder="Enter your location"
+                    value="{{ vehicle_to_edit.owner_location|default_if_none:'' }}" required>
+            </div>
+
             <div class="text-center">
                 <button type="submit" class="btn btn-success px-5">
                     {% if vehicle_to_edit %}
