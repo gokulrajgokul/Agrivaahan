@@ -23,9 +23,23 @@ button:hover {
   } 
 .about-section{
   /* background-color: burlywood; */
-  background-image: url('../images/balertractor.png');
+  background-image: url('../images/harevesternewbg.jpeg');
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
   height: 650px;
 }
+
+
+.card {
+  transition: all 0.3s ease-in-out;
+}
+.card:hover {
+  transform: translateY(-10px) scale(1.02);
+  background-color: #f8f9fa; /* Light gray background */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease-in-out;
+  border: 2px solid green;
+}
+
+

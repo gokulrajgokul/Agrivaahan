@@ -22,5 +22,19 @@ h1, h2, h3, h4 {
     transform: scaleX(1);
    
  }
+
+
+
+ .card:hover {
+  transform: translateY(-10px) scale(1.02);
+  background-color: #f8f9fa; /* Light gray background */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease-in-out;
+  border: 2px solid green;
+}
+
+.card {
+  transition: all 0.3s ease-in-out;
+}
   
 
