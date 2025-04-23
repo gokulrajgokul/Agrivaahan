@@ -58,19 +58,25 @@ function togglePassword(inputId, iconId) {
 
 
 //  vehicle.js
-    function searchVehicles() {
-        let input = document.getElementById('searchInput').value.toLowerCase();
-        let cards = document.querySelectorAll('.vehicle-card');
+    // function searchVehicles() {
+    //     let input = document.getElementById('searchInput').value.toLowerCase();
+    //     let cards = document.querySelectorAll('.vehicle-card');
 
-        cards.forEach(card => {
-            let name = card.querySelector('.vehicle-name').textContent.toLowerCase();
-            if (name.includes(input)) {
-                card.style.display = 'block';
-            } else {
-                card.style.display = 'none';
-            }
-        });
-    }
+    //     cards.forEach(card => {
+    //         let name = card.querySelector('.vehicle-name').textContent.toLowerCase();
+    //         if (name.includes(input)) {
+    //             card.style.display = 'block';
+    //         } else {
+    //             card.style.display = 'none';
+    //         }
+    //     });
+    // }
+
+
+
+
+ 
+
 
 
 

@@ -21,10 +21,11 @@ urlpatterns = [
     path('bill/<int:vehicle_id>/', views.bill, name='bill'),
     path('order/', views.order, name='order'),
     path("contact",views.contact,name = 'contact'),
-    path('search/', views.search_vehicles, name='search_vehicles'),
+    # path('search/', views.search_vehicles, name='search_vehicles'),
     path('submit-rating/', views.submit_rating, name='submit_rating'),
     path('confirmbooking', views.confirmbooking, name='confirmbooking'),
-    path('update-profile/', views.update_profile, name='update_profile')
+    path('update-profile/', views.update_profile, name='update_profile'),
+    path("delivery",views.delivery,name = 'delivery'),
 
     
 

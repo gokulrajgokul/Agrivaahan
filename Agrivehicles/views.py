@@ -234,6 +234,62 @@ def signout(request):
 # from .models import Vehicle
 # from django.contrib.auth.decorators import login_required
 
+
+
+
+
+
+
+# @login_required
+# def add_vehicle(request):
+#     vehicle_to_edit = None
+
+#     # If updating
+#     update_id = request.GET.get('update_id')
+#     if update_id:
+#         vehicle_to_edit = get_object_or_404(Vehicle, pk=update_id, owner=request.user)
+
+#     if request.method == 'POST':
+#         name = request.POST.get('Vehicle_name')
+#         desc = request.POST.get('Vehicle_desc')
+#         price = request.POST.get('price')
+#         image = request.FILES.get('image')
+#         owner_location = request.POST.get('owner_location')
+#         vehicle_id = request.POST.get('vehicle_id')  # Hidden input for update
+
+#         if vehicle_id:
+#             # Update existing
+#             vehicle = get_object_or_404(Vehicle, pk=vehicle_id, owner=request.user)
+#             vehicle.Vehicle_name = name
+#             vehicle.Vehicle_desc = desc
+#             vehicle.price = price
+#             vehicle.owner_location = owner_location
+#             if image:
+#                 vehicle.image = image
+#             vehicle.save()
+#             messages.success(request, "Vehicle updated successfully!")
+#         else:
+#             # Create new
+#             Vehicle.objects.create(
+#                 Vehicle_name=name,
+#                 Vehicle_desc=desc,
+#                 price=price,
+#                 image=image,
+#                 owner=request.user,
+#                 owner_location=owner_location 
+#             )
+#             messages.success(request, "Vehicle added successfully!")
+
+#         return redirect('add_vehicle')
+
+#     vehicles = Vehicle.objects.filter(owner=request.user)
+#     return render(request, 'add_vehicle.html', {
+#         'vehicles': vehicles,
+#         'vehicle_to_edit': vehicle_to_edit
+#     })
+
+
+
 @login_required
 def add_vehicle(request):
     vehicle_to_edit = None
@@ -249,28 +305,31 @@ def add_vehicle(request):
         price = request.POST.get('price')
         image = request.FILES.get('image')
         owner_location = request.POST.get('owner_location')
-        vehicle_id = request.POST.get('vehicle_id')  # Hidden input for update
+        is_available = request.POST.get('is_available') == 'on'  # <- New line
+        vehicle_id = request.POST.get('vehicle_id')
 
         if vehicle_id:
-            # Update existing
+            # Update existing vehicle
             vehicle = get_object_or_404(Vehicle, pk=vehicle_id, owner=request.user)
             vehicle.Vehicle_name = name
             vehicle.Vehicle_desc = desc
             vehicle.price = price
             vehicle.owner_location = owner_location
+            vehicle.is_available = is_available  # <- New line
             if image:
                 vehicle.image = image
             vehicle.save()
             messages.success(request, "Vehicle updated successfully!")
         else:
-            # Create new
+            # Create new vehicle
             Vehicle.objects.create(
                 Vehicle_name=name,
                 Vehicle_desc=desc,
                 price=price,
                 image=image,
                 owner=request.user,
-                owner_location=owner_location 
+                owner_location=owner_location,
+                is_available=is_available  # <- New line
             )
             messages.success(request, "Vehicle added successfully!")
 
@@ -281,6 +340,7 @@ def add_vehicle(request):
         'vehicles': vehicles,
         'vehicle_to_edit': vehicle_to_edit
     })
+
 
 
 @login_required
@@ -311,11 +371,29 @@ def delete_booking(request, booking_id):
         messages.success(request, "Booking deleted successfully.")
         return redirect('owner_bookings')
 
+# def vehicles(request):
+#     Vehicles = Vehicle.objects.all()
+    
+#     params = {'Vehicle':Vehicles}
+#     return render(request,'vehicles.html',params)
 def vehicles(request):
-    Vehicles = Vehicle.objects.all()
-    # print(cars)
-    params = {'Vehicle':Vehicles}
-    return render(request,'vehicles.html',params)
+    name_query = request.GET.get('name', '')
+    location_query = request.GET.get('location', '')
+
+    vehicles = Vehicle.objects.all()  # ✅ Show all vehicles, regardless of availability
+
+    if name_query:
+        vehicles = vehicles.filter(Vehicle_name__icontains=name_query)
+
+    if location_query:
+        vehicles = vehicles.filter(owner_location__icontains=location_query)
+
+    return render(request, 'vehicles.html', {
+        'Vehicle': vehicles,
+        'name_query': name_query,
+        'location_query': location_query
+    })
+
 
 
 @login_required
@@ -489,14 +567,14 @@ def contact(request):
         contact.save()
     return render(request,'contact.html ')
 
-def search_vehicles(request):
-    query = request.GET.get('q', '')  # Get search query from request
-    if query:
-        vehicles = Vehicle.objects.filter(Vehicle_name__icontains=query)  # Use correct field name
-    else:
-        vehicles = Vehicle.objects.all()  # Show all vehicles when no search input
+# def search_vehicles(request):
+#     query = request.GET.get('q', '')  # Get search query from request
+#     if query:
+#         vehicles = Vehicle.objects.filter(Vehicle_name__icontains=query)  # Use correct field name
+#     else:
+#         vehicles = Vehicle.objects.all()  # Show all vehicles when no search input
 
-    return render(request, 'vehicles.html', {'vehicles': vehicles, 'query': query})
+#     return render(request, 'vehicles.html', {'vehicles': vehicles, 'query': query})
 
   
 
@@ -591,3 +669,5 @@ def update_profile(request):
         return JsonResponse({'status': 'success'})
 
     return JsonResponse({'status': 'error', 'message': 'Invalid request'}, status=400)
+def delivery(request):
+    return render(request,'delivery.html ')

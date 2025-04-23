@@ -35,7 +35,7 @@
             </div>
 
             <div class="mb-3">
-                <label for="price" class="form-label">Price per day (₹)</label>
+                <label for="price" class="form-label">Price per hour(₹)</label>
                 <input type="number" class="form-control" id="price" name="price" min="1"
                     value="{{ vehicle_to_edit.price|default_if_none:'' }}" required>
             </div>
@@ -50,6 +50,13 @@
                 <input type="text" class="form-control" id="owner_location" name="owner_location"
                     placeholder="Enter your location"
                     value="{{ vehicle_to_edit.owner_location|default_if_none:'' }}" required>
+            </div>
+            <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" id="is_available" name="is_available"
+                       {% if vehicle_to_edit and vehicle_to_edit.is_available %}checked{% endif %}>
+                <label class="form-check-label" for="is_available">
+                    Vehicle is Available for Rent
+                </label>
             </div>
 
             <div class="text-center">
@@ -73,9 +80,17 @@
         <div class="col-md-4 mt-4">
             <div class="card mb-3 shadow-sm h-100">
                 <div class="card-body">
+                    <p class="card-text">
+                        <strong>Status:</strong>
+                        {% if v.is_available %}
+                            <span class="text-success">Available</span>
+                        {% else %}
+                            <span class="text-danger">Unavailable</span>
+                        {% endif %}
+                    </p>
                     <p class="card-title"><strong> Name:</strong> {{ v.Vehicle_name }}</p>
                     <p class="card-text"><strong>Description:</strong> {{ v.Vehicle_desc }}</p>
-                    <p class="card-text"><strong>Price per day:</strong> ₹{{ v.price }}</p>
+                    <p class="card-text"><strong>Price per hour:</strong> ₹{{ v.price }}</p>
                     {% if v.image %}
                     <img src="{{ v.image.url }}" alt="{{ v.Vehicle_name }}" width="150" class="mb-3">
                     {% endif %}
