@@ -671,3 +671,16 @@ def update_profile(request):
     return JsonResponse({'status': 'error', 'message': 'Invalid request'}, status=400)
 def delivery(request):
     return render(request,'delivery.html ')
+
+def get_user_role(request):
+    username = request.GET.get('username')
+    if username:
+        try:
+            user = User.objects.get(username=username)
+            user_profile = UserProfile.objects.get(user=user)
+            return JsonResponse({'role': user_profile.role})
+        except User.DoesNotExist:
+            return JsonResponse({'role': 'unknown'})
+        except UserProfile.DoesNotExist:
+            return JsonResponse({'role': 'unknown'})
+    return JsonResponse({'role': 'unknown'})

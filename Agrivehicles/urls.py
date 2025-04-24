@@ -26,6 +26,7 @@ urlpatterns = [
     path('confirmbooking', views.confirmbooking, name='confirmbooking'),
     path('update-profile/', views.update_profile, name='update_profile'),
     path("delivery",views.delivery,name = 'delivery'),
+    path('get-user-role/', views.get_user_role, name='get_user_role')
 
     
 
