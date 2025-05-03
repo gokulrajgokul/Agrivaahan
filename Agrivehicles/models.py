@@ -16,6 +16,10 @@ class Vehicle(models.Model):
     is_available = models.BooleanField(default=True)
     rating = models.FloatField(default=0)         # Average rating
     num_ratings = models.IntegerField(default=0)  # Number of ratings
+    
+    delivery_time_0_10 = models.CharField(max_length=50, blank=True, null=True)
+    delivery_time_10_20 = models.CharField(max_length=50, blank=True, null=True)
+   
 
     def __str__(self):
         return self.Vehicle_name
@@ -114,3 +118,12 @@ class Booking(models.Model):
 
     def __str__(self):
         return f"{self.vehicle.Vehicle_name} booked by {self.farmer.username}"
+class VehicleReview(models.Model):
+    vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    rating = models.PositiveSmallIntegerField()
+    review = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+       return f"{self.user.username} rated {self.vehicle.Vehicle_name} {self.rating} stars - '{self.review[:30]}...'"

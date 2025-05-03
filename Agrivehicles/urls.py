@@ -25,8 +25,10 @@ urlpatterns = [
     path('submit-rating/', views.submit_rating, name='submit_rating'),
     path('confirmbooking', views.confirmbooking, name='confirmbooking'),
     path('update-profile/', views.update_profile, name='update_profile'),
-    path("delivery",views.delivery,name = 'delivery'),
-    path('get-user-role/', views.get_user_role, name='get_user_role')
+ 
+    path('get-user-role/', views.get_user_role, name='get_user_role'),
+    path('submit-review/', views.submit_review, name='submit_review'),
+     path('get-reviews/<int:vehicle_id>/', views.get_reviews, name='get_reviews'),
 
     
 

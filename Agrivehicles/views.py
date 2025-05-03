@@ -3,12 +3,13 @@ from django.shortcuts import render,redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate,login,logout
-from .models import Vehicle, Order, Contact ,UserProfile,Rating,Booking
+from .models import Vehicle, Order, Contact ,UserProfile,Rating,Booking, VehicleReview
 from django.http import JsonResponse 
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
+import json
 
 # Create your views here.
 
@@ -307,6 +308,8 @@ def add_vehicle(request):
         owner_location = request.POST.get('owner_location')
         is_available = request.POST.get('is_available') == 'on'  # <- New line
         vehicle_id = request.POST.get('vehicle_id')
+        delivery_time_0_10 = request.POST.get('delivery_time_0_10')
+        delivery_time_10_20 = request.POST.get('delivery_time_10_20')
 
         if vehicle_id:
             # Update existing vehicle
@@ -316,6 +319,8 @@ def add_vehicle(request):
             vehicle.price = price
             vehicle.owner_location = owner_location
             vehicle.is_available = is_available  # <- New line
+            delivery_time_0_10=delivery_time_0_10,
+            delivery_time_10_20=delivery_time_10_20,
             if image:
                 vehicle.image = image
             vehicle.save()
@@ -329,7 +334,9 @@ def add_vehicle(request):
                 image=image,
                 owner=request.user,
                 owner_location=owner_location,
-                is_available=is_available  # <- New line
+                is_available=is_available,  # <- New line
+                delivery_time_0_10=delivery_time_0_10,
+                delivery_time_10_20=delivery_time_10_20,
             )
             messages.success(request, "Vehicle added successfully!")
 
@@ -582,7 +589,7 @@ def contact(request):
 
 
 
-# views.py
+ 
  
 
 @login_required
@@ -669,8 +676,7 @@ def update_profile(request):
         return JsonResponse({'status': 'success'})
 
     return JsonResponse({'status': 'error', 'message': 'Invalid request'}, status=400)
-def delivery(request):
-    return render(request,'delivery.html ')
+ 
 
 def get_user_role(request):
     username = request.GET.get('username')
@@ -684,3 +690,31 @@ def get_user_role(request):
         except UserProfile.DoesNotExist:
             return JsonResponse({'role': 'unknown'})
     return JsonResponse({'role': 'unknown'})
+
+
+@csrf_exempt
+def submit_review(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        rating = data.get('rating')
+        review = data.get('review')
+        vehicle_id = data.get('vehicle_id')
+        vehicle = Vehicle.objects.get(id=vehicle_id)
+
+        VehicleReview.objects.create(
+            vehicle=vehicle,
+            user=request.user,
+            rating=rating,
+            review=review
+        )
+        return JsonResponse({'message': 'Review submitted successfully'})
+    return JsonResponse({'error': 'Invalid request'}, status=400)
+def get_reviews(request, vehicle_id):
+    # Fetch reviews for the given vehicle ID
+    reviews = VehicleReview.objects.filter(vehicle_id=vehicle_id).values('rating', 'review', 'user__username', 'created_at')
+    
+    # Convert queryset to a list of dictionaries
+    reviews_data = list(reviews)
+    
+    # Return the reviews as JSON
+    return JsonResponse({'reviews': reviews_data})
