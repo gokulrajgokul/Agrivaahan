@@ -312,21 +312,21 @@ def add_vehicle(request):
         delivery_time_10_20 = request.POST.get('delivery_time_10_20')
 
         if vehicle_id:
-            # Update existing vehicle
+           
             vehicle = get_object_or_404(Vehicle, pk=vehicle_id, owner=request.user)
             vehicle.Vehicle_name = name
             vehicle.Vehicle_desc = desc
             vehicle.price = price
             vehicle.owner_location = owner_location
-            vehicle.is_available = is_available  # <- New line
-            delivery_time_0_10=delivery_time_0_10,
-            delivery_time_10_20=delivery_time_10_20,
+            vehicle.is_available = is_available   
+            vehicle.delivery_time_0_10 = delivery_time_0_10,
+            vehicle.delivery_time_10_20 = delivery_time_10_20,
             if image:
                 vehicle.image = image
             vehicle.save()
             messages.success(request, "Vehicle updated successfully!")
         else:
-            # Create new vehicle
+            
             Vehicle.objects.create(
                 Vehicle_name=name,
                 Vehicle_desc=desc,
@@ -334,9 +334,9 @@ def add_vehicle(request):
                 image=image,
                 owner=request.user,
                 owner_location=owner_location,
-                is_available=is_available,  # <- New line
-                delivery_time_0_10=delivery_time_0_10,
-                delivery_time_10_20=delivery_time_10_20,
+                is_available=is_available,   
+                delivery_time_0_10=delivery_time_0_10 ,
+                delivery_time_10_20=delivery_time_10_20 ,
             )
             messages.success(request, "Vehicle added successfully!")
 
