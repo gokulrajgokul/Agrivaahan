@@ -51,11 +51,11 @@
                     placeholder="Enter your location"
                     value="{{ vehicle_to_edit.owner_location|default_if_none:'' }}" required>
             </div>
-            <div class="form-group">
+            <div class="form-group mb-3">
                 <label for="delivery_time_0_10">Delivery Time (0–10 km)</label>
                 <input type="text" name="delivery_time_0_10" class="form-control" placeholder="e.g. 30 minutes">
             </div>
-            <div class="form-group">
+            <div class="form-group mb-3">
                 <label for="delivery_time_10_20">Delivery Time (10–20 km)</label>
                 <input type="text" name="delivery_time_10_20" class="form-control" placeholder="e.g. 1 hour">
             </div>
