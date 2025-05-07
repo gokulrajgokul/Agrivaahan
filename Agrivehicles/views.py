@@ -10,6 +10,7 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 import json
+from django.db.models import Avg
 
 # Create your views here.
 
@@ -387,7 +388,7 @@ def vehicles(request):
     name_query = request.GET.get('name', '')
     location_query = request.GET.get('location', '')
 
-    vehicles = Vehicle.objects.all()  # ✅ Show all vehicles, regardless of availability
+    vehicles = Vehicle.objects.all().annotate(avg_rating=Avg('ratings__stars')) # ✅ Show all vehicles, regardless of availability
 
     if name_query:
         vehicles = vehicles.filter(Vehicle_name__icontains=name_query)
@@ -400,7 +401,6 @@ def vehicles(request):
         'name_query': name_query,
         'location_query': location_query
     })
-
 
 
 @login_required
@@ -592,6 +592,54 @@ def contact(request):
  
  
 
+# @login_required
+# def submit_rating(request):
+#     if request.method == "POST":
+#         try:
+#             vehicle_id = request.POST.get('vehicle_id')
+#             stars = request.POST.get('stars')
+#             print(f"Raw POST data: {request.POST}")
+
+#             if not stars:
+#                 raise ValueError("Stars value is empty!")
+
+#             try:
+#                 stars = int(stars)
+#                 if stars < 1 or stars > 5:
+#                     raise ValueError("Stars must be between 1 and 5")
+#             except (ValueError, TypeError):
+#                 return JsonResponse({'success': False, 'error': 'Invalid star value'})
+
+#             vehicle = Vehicle.objects.get(id=vehicle_id)
+
+#             # Use defaults to avoid NULL save
+#             rating_obj, created = Rating.objects.get_or_create(
+#                 user=request.user,
+#                 vehicle=vehicle,
+#                 defaults={'stars': stars}
+#             )
+
+#             if not created:
+#                 rating_obj.stars = stars
+#                 rating_obj.save()
+
+#             # Update average rating
+#             all_ratings = Rating.objects.filter(vehicle=vehicle)
+#             total = sum(r.stars for r in all_ratings)
+#             count = all_ratings.count()
+#             vehicle.rating = total / count
+#             vehicle.num_ratings = count
+#             vehicle.save()
+
+#             return JsonResponse({'success': True, 'new_avg': vehicle.rating})
+
+#         except Exception as e:
+#             print("Error:", str(e))
+#             return JsonResponse({'success': False, 'error': str(e)})
+
+#     return JsonResponse({'success': False, 'error': 'Invalid request'})
+
+ 
 @login_required
 def submit_rating(request):
     if request.method == "POST":
@@ -601,18 +649,17 @@ def submit_rating(request):
             print(f"Raw POST data: {request.POST}")
 
             if not stars:
-                raise ValueError("Stars value is empty!")
+                return JsonResponse({'success': False, 'error': 'Stars value is empty'})
 
             try:
                 stars = int(stars)
                 if stars < 1 or stars > 5:
-                    raise ValueError("Stars must be between 1 and 5")
+                    return JsonResponse({'success': False, 'error': 'Stars must be between 1 and 5'})
             except (ValueError, TypeError):
                 return JsonResponse({'success': False, 'error': 'Invalid star value'})
 
             vehicle = Vehicle.objects.get(id=vehicle_id)
 
-            # Use defaults to avoid NULL save
             rating_obj, created = Rating.objects.get_or_create(
                 user=request.user,
                 vehicle=vehicle,
@@ -623,15 +670,20 @@ def submit_rating(request):
                 rating_obj.stars = stars
                 rating_obj.save()
 
-            # Update average rating
             all_ratings = Rating.objects.filter(vehicle=vehicle)
             total = sum(r.stars for r in all_ratings)
             count = all_ratings.count()
-            vehicle.rating = total / count
+            avg_rating = round(total / count, 1) if count > 0 else 0.0
+
+            vehicle.rating = avg_rating
             vehicle.num_ratings = count
             vehicle.save()
 
-            return JsonResponse({'success': True, 'new_avg': vehicle.rating})
+            return JsonResponse({
+                'success': True,
+                'new_avg': avg_rating,
+                'count': count
+            })
 
         except Exception as e:
             print("Error:", str(e))
