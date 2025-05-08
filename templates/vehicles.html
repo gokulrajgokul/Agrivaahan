@@ -55,9 +55,9 @@
 
     <div class="album py-5 bg-light">
         <div class="container">
-            {% if Vehicle %}
+            {% if vehicles %}
             <div class="row" id="vehicleContainer">
-                {% for i in Vehicle %}
+                {% for i in vehicles %}
                 <div class="col-md-4 vehicle-card mb-4">
                     <div class="card shadow-sm h-100">
                         <img src="{{ i.image.url }}" alt="Vehicle" class="card-img-top" height="350"
@@ -84,40 +84,59 @@
                             <div class="delivery-timings">
                                 <h5>Delivery Timing Estimates:</h5>
                                 <ul>
-                                  {% if i.delivery_time_0_10 %}
+                                    {% if i.delivery_time_0_10 %}
                                     <li>0–10 km: {{ i.delivery_time_0_10 }}</li>
-                                  {% endif %}
-                                  {% if i.delivery_time_10_20 %}
+                                    {% endif %}
+                                    {% if i.delivery_time_10_20 %}
                                     <li>10–20 km: {{ i.delivery_time_10_20 }}</li>
-                                  {% endif %}
-                                   
+                                    {% endif %}
+
                                 </ul>
-                              </div>
-                           
-                        
+                            </div>
+ 
                             <div class="rating-stars" data-vehicle-id="{{ i.id }}">
                                 {% for star in "12345"|slice:":5" %}
                                 <i class="bi bi-star-fill star text-secondary" data-value="{{ forloop.counter }}"
                                     data-vehicle-id="{{ i.id }}" style="cursor: pointer;"></i>
                                 {% endfor %}
-                              
-                                {% if i.avg_rating %}
-  <span class="avg-rating">({{ i.avg_rating|floatformat:1 }})</span>
-{% else %}
-  No ratings yet
-{% endif %}
 
+                                    <span id="avg-rating-{{ i.id }}">
+                                        {% if i.avg_rating %}
+                                            ({{ i.avg_rating|floatformat:1 }})
+                                        {% else %}
+                                            No ratings yet
+                                        {% endif %}
+                                    </span>
                             </div>
+
+                            <!-- <div class="rating-stars" data-vehicle-id="{{ i.Vehicle_id }}">
+                                {% for star in "12345"|slice:":5" %}
+                                    <i class="bi bi-star-fill star text-secondary"
+                                       data-value="{{ forloop.counter }}"
+                                       data-vehicle-id="{{ i.Vehicle_id }}"
+                                       style="cursor: pointer;"></i>
+                                {% endfor %}
+                            
+                                <span id="avg-rating-{{ i.Vehicle_id }}">
+                                    {% if i.avg_rating %}
+                                        ({{ i.avg_rating|floatformat:1 }})
+                                    {% else %}
+                                        No ratings yet
+                                    {% endif %}
+                                </span>
+                            </div>  -->
+                             
 
                             <div class="review-section" id="review-section-{{ i.id }}"
                                 style="display: none; margin-top: 10px;">
-                                <textarea class="w-100 " id="review-text-{{ i.id }}" placeholder="Write your review..."></textarea><br>
+                                <textarea class="w-100 " id="review-text-{{ i.id }}"
+                                    placeholder="Write your review..."></textarea><br>
                                 <button class="submit-review btn btn-outline-warning"
                                     data-vehicle-id="{{ i.id }}">Submit</button>
                             </div>
                             <a class="text-info text-decoration-none cursor-pointer  mt-2 toggle-reviews"
                                 data-vehicle-id="{{ i.id }}" data-bs-toggle="modal" data-bs-target="#reviewModal">
-                                 Reviews
+                                Reviews
                             </a>
 
 
@@ -138,7 +157,7 @@
     </div>
 </main>
 
-
+<!-- 
 <script>
 
     $(document).ready(function () {
@@ -165,7 +184,8 @@
                             }
                         });
                         // Update average rating
-                        parent.find('.avg-rating').text('(' + response.new_avg.toFixed(1) + ')');
+                       // parent.find('.avg-rating').text('(' + response.new_avg.toFixed(1) + ')');
+                       $('#avg-rating-' + vehicleId).text('(' + response.new_avg.toFixed(1) + ')');
                     }
                 },
                 error: function (xhr, status, error) {
@@ -273,7 +293,7 @@
                         if (data.reviews.length > 0) {
                             modalBody.innerHTML = '';  // Clear loading text
 
-                       
+
 
                             data.reviews.forEach(review => {
                                 const reviewElement = document.createElement('div');
@@ -300,7 +320,245 @@
 
 
 
-</script>
+</script> -->
+<!-- 
+ <script> 
+
+    $(document).ready(function () {
+
+        // === STAR RATING ===
+        $('.rating-stars .star').on('click', function () {
+            const stars = $(this).data('value');
+            const vehicleId = $(this).data('vehicle-id');
+            const parent = $(this).closest('.rating-stars');
+
+            $.ajax({
+                url: "{% url 'submit_rating' %}",
+                type: "POST",
+                data: {
+                    stars: stars,
+                    vehicle_id: vehicleId,
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                success: function (response) {
+                    if (response.success) {
+                        // Highlight stars
+                        parent.find('.star').each(function () {
+                            const value = $(this).data('value');
+                            $(this).toggleClass('text-warning', value <= stars);
+                            $(this).toggleClass('text-secondary', value > stars);
+                        });
+
+                        // Update average rating text
+                        $('#avg-rating-' + vehicleId).text('(' + response.new_avg.toFixed(1) + ')');
+
+                        // Show review textarea
+                        $('#review-section-' + vehicleId).show();
+                    }
+                },
+                error: function () {
+                    alert("Error submitting rating.");
+                }
+            });
+        });
+
+        // === SUBMIT REVIEW ===
+        $('.submit-review').on('click', function () {
+            const vehicleId = $(this).data('vehicle-id');
+            const reviewText = $('#review-text-' + vehicleId).val().trim();
+            const star = $('.rating-stars[data-vehicle-id="' + vehicleId + '"] .star.text-warning').length;
+
+            if (!star || !reviewText) {
+                alert("Please give a rating and write a review.");
+                return;
+            }
+
+            fetch('/submit-review/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken'),
+                },
+                body: JSON.stringify({
+                    vehicle_id: vehicleId,
+                    rating: star,
+                    review: reviewText
+                })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    alert('Review submitted!');
+                    $('#review-text-' + vehicleId).val('');
+                    $('#review-section-' + vehicleId).hide();
+                })
+                .catch(err => {
+                    console.error('Review error:', err);
+                });
+        });
+
+        // === RESET FILTER FORM ===
+        $('#resetButton').on('click', function () {
+            $('input[name="name"]').val('');
+            $('input[name="location"]').val('');
+            $(this).closest('form').submit();
+        });
+
+        // === FETCH REVIEWS (MODAL) ===
+        $('.toggle-reviews').on('click', function () {
+            const vehicleId = $(this).data('vehicle-id');
+            const modalBody = $('#modalReviewBody');
+            modalBody.html('<p>Loading reviews...</p>');
+
+            fetch(`/get-reviews/${vehicleId}/`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.reviews.length > 0) {
+                        modalBody.html('');
+                        data.reviews.forEach(review => {
+                            modalBody.append(`
+                                <div class="review p-2 border rounded mb-1">
+                                    <strong><i class="bi bi-star-fill" style="color: yellow;"></i> ${review.rating}</strong><br>
+                                    ${review.review}
+                                    <small class="text-muted d-block">By ${review.user__username} on ${new Date(review.created_at).toLocaleString()}</small>
+                                </div>
+                            `);
+                        });
+                    } else {
+                        modalBody.html('<p>No reviews available for this vehicle.</p>');
+                    }
+                })
+                .catch(() => {
+                    modalBody.html('<p>Error loading reviews. Please try again later.</p>');
+                });
+        });
+
+        // === HELPER: Get CSRF token ===
+        function getCookie(name) {
+            const value = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
+            return value ? value.pop() : '';
+        }
+    });
+</script>  -->
+
+ <script>
+    $(document).ready(function () {
+
+        // === STAR RATING ===
+        $('.rating-stars .star').on('click', function () {
+            const stars = $(this).data('value');
+            const vehicleId = $(this).data('vehicle-id');  // Changed to use vehicle_id
+            const parent = $(this).closest('.rating-stars');
+
+
+            console.log('Vehicle ID:', vehicleId);
+            $.ajax({
+                url: "{% url 'submit_rating' %}",
+                type: "POST",
+                data: {
+                    stars: stars,
+                    vehicle_id: vehicleId,  // Changed to use vehicle_id
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                success: function (response) {
+                    if (response.success) {
+                        // Highlight stars
+                        parent.find('.star').each(function () {
+                            const value = $(this).data('value');
+                            $(this).toggleClass('text-warning', value <= stars);
+                            $(this).toggleClass('text-secondary', value > stars);
+                        });
+
+                        // Update average rating text
+                        $('#avg-rating-' + vehicleId).text('(' + response.new_avg.toFixed(1) + ')');  // Changed to use vehicle_id
+
+                        // Show review textarea
+                        $('#review-section-' + vehicleId).show();  // Changed to use vehicle_id
+                    }
+                },
+                error: function () {
+                    alert("Error submitting rating.");
+                }
+            });
+        });
+
+        // === SUBMIT REVIEW ===
+        $('.submit-review').on('click', function () {
+            const vehicleId = $(this).data('vehicle-id');  // Changed to use vehicle_id
+            const reviewText = $('#review-text-' + vehicleId).val().trim();
+            const star = $('.rating-stars[data-vehicle-id="' + vehicleId + '"] .star.text-warning').length;
+
+            if (!star || !reviewText) {
+                alert("Please give a rating and write a review.");
+                return;
+            }
+
+            fetch('/submit-review/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken'),
+                },
+                body: JSON.stringify({
+                    vehicle_id: vehicleId,  // Changed to use vehicle_id
+                    rating: star,
+                    review: reviewText
+                })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    alert('Review submitted!');
+                    $('#review-text-' + vehicleId).val('');
+                    $('#review-section-' + vehicleId).hide();
+                })
+                .catch(err => {
+                    console.error('Review error:', err);
+                });
+        });
+
+        // === RESET FILTER FORM ===
+        $('#resetButton').on('click', function () {
+            $('input[name="name"]').val('');
+            $('input[name="location"]').val('');
+            $(this).closest('form').submit();
+        });
+
+        // === FETCH REVIEWS (MODAL) ===
+        $('.toggle-reviews').on('click', function () {
+            const vehicleId = $(this).data('vehicle-id');  // Changed to use vehicle_id
+            const modalBody = $('#modalReviewBody');
+            modalBody.html('<p>Loading reviews...</p>');
+
+            fetch(`/get-reviews/${vehicleId}/`)  // Changed to use vehicle_id
+                .then(response => response.json())
+                .then(data => {
+                    if (data.reviews.length > 0) {
+                        modalBody.html('');
+                        data.reviews.forEach(review => {
+                            modalBody.append(`
+                                <div class="review p-2 border rounded mb-1">
+                                    <strong><i class="bi bi-star-fill" style="color: yellow;"></i> ${review.rating}</strong><br>
+                                    ${review.review}
+                                    <small class="text-muted d-block">By ${review.user__username} on ${new Date(review.created_at).toLocaleString()}</small>
+                                </div>
+                            `);
+                        });
+                    } else {
+                        modalBody.html('<p>No reviews available for this vehicle.</p>');
+                    }
+                })
+                .catch(() => {
+                    modalBody.html('<p>Error loading reviews. Please try again later.</p>');
+                });
+        });
+
+        // === HELPER: Get CSRF token ===
+        function getCookie(name) {
+            const value = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
+            return value ? value.pop() : '';
+        }
+    });
+</script>  
+
 <!-- Modal Structure (hidden by default) -->
 <div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="reviewModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">

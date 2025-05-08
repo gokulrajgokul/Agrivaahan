@@ -21,6 +21,15 @@ class Vehicle(models.Model):
     delivery_time_10_20 = models.CharField(max_length=50, blank=True, null=True)
    
 
+
+
+    def save(self, *args, **kwargs):
+        if self.Vehicle_id == 0 or self.Vehicle_id is None:
+            last_id = Vehicle.objects.aggregate(models.Max('Vehicle_id'))['Vehicle_id__max'] or 0
+            self.Vehicle_id = last_id + 1
+        super().save(*args, **kwargs)
+
+
     def __str__(self):
         return self.Vehicle_name
 class Rating(models.Model):
