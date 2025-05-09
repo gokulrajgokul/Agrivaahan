@@ -396,6 +396,29 @@ def delete_booking(request, booking_id):
 
 
 
+# def vehicles(request):
+#     name_query = request.GET.get('name', '')
+#     location_query = request.GET.get('location', '')
+
+#     vehicles = Vehicle.objects.all().annotate(avg_rating=Avg('ratings__stars'))
+
+#     if name_query:
+#         vehicles = vehicles.filter(Vehicle_name__icontains=name_query)
+
+#     if location_query:
+#         vehicles = vehicles.filter(owner_location__icontains=location_query)
+
+#     return render(request, 'vehicles.html', {
+#         'vehicles': vehicles,
+#         'name_query': name_query,
+#         'location_query': location_query
+#     })
+
+
+
+
+
+
 def vehicles(request):
     name_query = request.GET.get('name', '')
     location_query = request.GET.get('location', '')
@@ -408,17 +431,15 @@ def vehicles(request):
     if location_query:
         vehicles = vehicles.filter(owner_location__icontains=location_query)
 
+    # Get distinct locations for dropdown
+    all_locations = Vehicle.objects.values_list('owner_location', flat=True).distinct()
+
     return render(request, 'vehicles.html', {
         'vehicles': vehicles,
         'name_query': name_query,
-        'location_query': location_query
+        'location_query': location_query,
+        'all_locations': all_locations,
     })
-
-
-
-
-
-
 
 
 
