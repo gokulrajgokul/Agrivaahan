@@ -1,0 +1,22 @@
+/* profile.css */
+
+.profile-panel {
+  position: fixed;
+  top: 60px; /* Adjust this value to create a gap below the navbar */
+  right: -350px; /* hidden initially */
+  width: 300px;
+  /* Adjust height to leave space for the navbar */
+  background-color: #f8f9fa;
+  transition: right 0.3s ease;
+  z-index: 1050;
+  box-shadow: -2px 0 8px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+}
+
+.profile-panel.active {
+  right: 0; /* visible when active */
+}
+
+.profile-content {
+  padding: 20px;
+}

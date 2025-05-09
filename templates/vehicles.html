@@ -1,0 +1,607 @@
+{% extends 'base.html' %}
+
+{% block title %}Vehicles{% endblock title %}
+{% block style %}
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'css/vehicles.css' %}">
+{% endblock style %}
+
+{% block body %}
+
+<main role="main" style="background-color: rgb(200, 200, 200)">
+
+    <section class="vehicleInfo text-center py-5 mb-0">
+        <div class="container-fluid">
+            <h1 class="display-5 text-uppercase">Welcome {{ request.user }} !!🌿</h1>
+            <div class="marquee py-2  ">
+                <span style="font-size:1.6rem;">🌿 Welcome to AgriVaahan – Your Smart Farm Vehicle Partner 🚜 Get wide
+                    varieties of Vehicles and Machineries in affordable prices!! Well maintained vehicles and
+                    machineries are Available</span>
+            </div>
+
+        </div>
+    </section>
+
+
+    <form method="get" class="row g-2 align-items-center m-4">
+        <div class="col-md-3">
+            <input type="text" name="name" class="form-control" placeholder="Search by vehicle name..."
+                value="{{ name_query }}">
+        </div>
+
+
+         <div class="col-md-1">
+            <button type="submit" class="btn btn-primary w-100">Search</button>
+        </div>
+
+        <!-- Reset Button -->
+        <div class="col-md-1">
+            <button type="button" class="btn btn-danger w-100" id="resetButton">Reset</button>
+        </div>
+         <div class="col-md-1 offset-md-3 fw-bold  fs-6 bg-primary text-white  rounded px-2 py-1">
+             <label><i  class="bi bi-geo-fill"></i>LOCATION</label>
+        </div>
+        <!-- <div class="col-md-4">
+            <input type="text" name="location" class="form-control" placeholder="Search by location..."
+                value="{{ location_query }}">
+        </div> -->
+
+        <div class="col-md-3">
+        
+    <select name="location" class="form-control" onchange="this.form.submit()">
+        <option value="">-- Select Location --</option>
+        {% for loc in all_locations %}
+            <option value="{{ loc }}" {% if loc == location_query %}selected{% endif %}>
+                {{ loc }}
+            </option>
+        {% endfor %}
+    </select>
+</div> 
+<!-- <div class="col-md-4">
+    <input list="location-list" name="location" class="form-control" placeholder="Search by location..."
+           value="{{ location_query }}">
+    <datalist id="location-list">
+        {% for loc in all_locations %}
+            <option value="{{ loc }}">
+        {% endfor %}
+    </datalist>
+</div> -->
+
+
+       
+    </form>
+
+
+
+
+
+
+
+
+
+    <div class="album py-5 bg-light">
+        <div class="container">
+            {% if vehicles %}
+            <div class="row" id="vehicleContainer">
+                {% for i in vehicles %}
+                <div class="col-md-4 vehicle-card mb-4">
+                    <div class="card shadow-sm h-100">
+                        <img src="{{ i.image.url }}" alt="Vehicle" class="card-img-top" height="350"
+                            style="object-fit: cover;">
+                        <div class="card-body d-flex flex-column">
+                            <h3 class="card-text text-center">
+
+                                {% if i.is_available %}
+                                <span class="text-success">Available</span>
+                                {% else %}
+                                <span class="text-danger">Currently Unavailable</span>
+                                {% endif %}
+                            </h3>
+                            <h4 class="text-center vehicle-name">{{ i.Vehicle_name }}</h4>
+
+                            <p class="card-text">{{ i.Vehicle_desc }}</p>
+                            <p>Price per hour: {{ i.price }}</p>
+                            <p class="card-text text-muted"><strong>Owner:</strong> {{ i.owner.username }}</p>
+                            <p class="card-text text-muted"><strong>Owner Location:</strong> {{ i.owner_location }}</p>
+                            <p class="card-text text-muted"><strong>Mobile No:</strong> {{ i.owner.userprofile.phone }}
+                            </p>
+
+
+                            <div class="delivery-timings">
+                                <h5>Delivery Timing Estimates:</h5>
+                                <ul>
+                                    {% if i.delivery_time_0_10 %}
+                                    <li>0–10 km: {{ i.delivery_time_0_10 }}</li>
+                                    {% endif %}
+                                    {% if i.delivery_time_10_20 %}
+                                    <li>10–20 km: {{ i.delivery_time_10_20 }}</li>
+                                    {% endif %}
+
+                                </ul>
+                            </div>
+ 
+                            <div class="rating-stars" data-vehicle-id="{{ i.id }}">
+                                {% for star in "12345"|slice:":5" %}
+                                <i class="bi bi-star-fill star text-secondary" data-value="{{ forloop.counter }}"
+                                    data-vehicle-id="{{ i.id }}" style="cursor: pointer;"></i>
+                                {% endfor %}
+
+                                    <span id="avg-rating-{{ i.id }}">
+                                        {% if i.avg_rating %}
+                                            ({{ i.avg_rating|floatformat:1 }})
+                                        {% else %}
+                                            No ratings yet
+                                        {% endif %}
+                                    </span>
+                            </div>
+
+                            <!-- <div class="rating-stars" data-vehicle-id="{{ i.Vehicle_id }}">
+                                {% for star in "12345"|slice:":5" %}
+                                    <i class="bi bi-star-fill star text-secondary"
+                                       data-value="{{ forloop.counter }}"
+                                       data-vehicle-id="{{ i.Vehicle_id }}"
+                                       style="cursor: pointer;"></i>
+                                {% endfor %}
+                            
+                                <span id="avg-rating-{{ i.Vehicle_id }}">
+                                    {% if i.avg_rating %}
+                                        ({{ i.avg_rating|floatformat:1 }})
+                                    {% else %}
+                                        No ratings yet
+                                    {% endif %}
+                                </span>
+                            </div>  -->
+                             
+
+                            <div class="review-section" id="review-section-{{ i.id }}"
+                                style="display: none; margin-top: 10px;">
+                                <textarea class="w-100 " id="review-text-{{ i.id }}"
+                                    placeholder="Write your review..."></textarea><br>
+                                <button class="submit-review btn btn-outline-warning"
+                                    data-vehicle-id="{{ i.id }}">Submit</button>
+                            </div>
+                            <a class="text-info text-decoration-none cursor-pointer  mt-2 toggle-reviews"
+                                data-vehicle-id="{{ i.id }}" data-bs-toggle="modal" data-bs-target="#reviewModal">
+                                Reviews
+                            </a>
+
+
+                            <div class="mt-auto d-flex justify-content-center">
+                                <!-- <a class="btn btn-dark btn-sm" href="\bill">RENT</a> -->
+                                <a href="{% url 'bill' i.id %}" class="btn btn-primary">Rent</a>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="text-center text-danger fs-4 mt-5">🚫 No vehicles available for your search.</p>
+            {% endif %}
+        </div>
+    </div>
+</main>
+
+<!-- 
+<script>
+
+    $(document).ready(function () {
+        $('.rating-stars .star').on('click', function () {
+            const stars = $(this).data('value');
+            const parent = $(this).closest('.rating-stars');
+            const vehicleId = parent.data('vehicle-id');
+
+            $.ajax({
+                url: "{% url 'submit_rating' %}",
+                type: "POST",
+                data: {
+                    stars: stars,
+                    vehicle_id: vehicleId,
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                success: function (response) {
+                    if (response.success) {
+                        // Update stars
+                        parent.find('.star').removeClass('text-warning').addClass('text-secondary');
+                        parent.find('.star').each(function () {
+                            if ($(this).data('value') <= stars) {
+                                $(this).removeClass('text-secondary').addClass('text-warning');
+                            }
+                        });
+                        // Update average rating
+                       // parent.find('.avg-rating').text('(' + response.new_avg.toFixed(1) + ')');
+                       $('#avg-rating-' + vehicleId).text('(' + response.new_avg.toFixed(1) + ')');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.log('Rating error:', error);
+                    alert("Error submitting rating.");
+                }
+            });
+        });
+    });
+
+
+
+
+
+    document.getElementById('resetButton').addEventListener('click', function () {
+        // Clear both input fields
+        document.querySelector('[name="name"]').value = '';
+        document.querySelector('[name="location"]').value = '';
+
+        // Submit the form after clearing inputs
+        this.closest('form').submit();
+    });
+
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const ratings = {};
+
+        document.querySelectorAll('.star').forEach(function (star) {
+            star.addEventListener('click', function () {
+                const vehicleId = this.getAttribute('data-vehicle-id');
+                const rating = this.getAttribute('data-value');
+
+                ratings[vehicleId] = rating;
+
+                const reviewSection = document.getElementById(`review-section-${vehicleId}`);
+                if (reviewSection) {
+                    reviewSection.style.display = 'block';
+                }
+            });
+        });
+
+        document.querySelectorAll('.submit-review').forEach(function (button) {
+            button.addEventListener('click', function () {
+                const vehicleId = this.getAttribute('data-vehicle-id');
+                const rating = ratings[vehicleId];
+                const reviewTextArea = document.getElementById(`review-text-${vehicleId}`);
+                const review = reviewTextArea ? reviewTextArea.value.trim() : '';
+
+                if (!rating || !review) {
+                    alert("Please select a rating and write a review.");
+                    return;
+                }
+
+                fetch('/submit-review/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCookie('csrftoken'),
+                    },
+                    body: JSON.stringify({
+                        vehicle_id: vehicleId,
+                        rating: rating,
+                        review: review
+                    })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        alert('Review submitted!');
+                        reviewTextArea.value = '';
+                        document.getElementById(`review-section-${vehicleId}`).style.display = 'none';
+                    });
+            });
+        });
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let cookie of cookies) {
+                    const trimmed = cookie.trim();
+                    if (trimmed.startsWith(name + '=')) {
+                        cookieValue = decodeURIComponent(trimmed.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+    });
+
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.toggle-reviews').forEach(function (button) {
+            button.addEventListener('click', function () {
+                const vehicleId = this.getAttribute('data-vehicle-id');
+                const modalBody = document.getElementById('modalReviewBody');
+                modalBody.innerHTML = '<p>Loading reviews...</p>';  // Show loading text while fetching reviews
+
+                // Fetch reviews from the server
+                fetch(`/get-reviews/${vehicleId}/`)  // Adjust to match your URL pattern
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.reviews.length > 0) {
+                            modalBody.innerHTML = '';  // Clear loading text
+
+
+
+                            data.reviews.forEach(review => {
+                                const reviewElement = document.createElement('div');
+                                reviewElement.classList.add('review', 'p-2', 'border', 'rounded', 'mb-1');
+                                reviewElement.innerHTML = `
+        <strong> <i class="bi bi-star-fill" style="color: yellow;"></i>${review.rating}</strong><br>
+        ${review.review}
+        <small class="text-muted d-block"> By ${review['user__username']} on ${new Date(review.created_at).toLocaleString()}</small>
+    `;
+                                modalBody.appendChild(reviewElement);
+                            });
+                        } else {
+                            modalBody.innerHTML = '<p>No reviews available for this vehicle.</p>';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching reviews:', error);
+                        modalBody.innerHTML = '<p>Error loading reviews. Please try again later.</p>';
+                    });
+            });
+        });
+    });
+
+
+
+
+</script> -->
+<!-- 
+ <script> 
+
+    $(document).ready(function () {
+
+        // === STAR RATING ===
+        $('.rating-stars .star').on('click', function () {
+            const stars = $(this).data('value');
+            const vehicleId = $(this).data('vehicle-id');
+            const parent = $(this).closest('.rating-stars');
+
+            $.ajax({
+                url: "{% url 'submit_rating' %}",
+                type: "POST",
+                data: {
+                    stars: stars,
+                    vehicle_id: vehicleId,
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                success: function (response) {
+                    if (response.success) {
+                        // Highlight stars
+                        parent.find('.star').each(function () {
+                            const value = $(this).data('value');
+                            $(this).toggleClass('text-warning', value <= stars);
+                            $(this).toggleClass('text-secondary', value > stars);
+                        });
+
+                        // Update average rating text
+                        $('#avg-rating-' + vehicleId).text('(' + response.new_avg.toFixed(1) + ')');
+
+                        // Show review textarea
+                        $('#review-section-' + vehicleId).show();
+                    }
+                },
+                error: function () {
+                    alert("Error submitting rating.");
+                }
+            });
+        });
+
+        // === SUBMIT REVIEW ===
+        $('.submit-review').on('click', function () {
+            const vehicleId = $(this).data('vehicle-id');
+            const reviewText = $('#review-text-' + vehicleId).val().trim();
+            const star = $('.rating-stars[data-vehicle-id="' + vehicleId + '"] .star.text-warning').length;
+
+            if (!star || !reviewText) {
+                alert("Please give a rating and write a review.");
+                return;
+            }
+
+            fetch('/submit-review/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken'),
+                },
+                body: JSON.stringify({
+                    vehicle_id: vehicleId,
+                    rating: star,
+                    review: reviewText
+                })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    alert('Review submitted!');
+                    $('#review-text-' + vehicleId).val('');
+                    $('#review-section-' + vehicleId).hide();
+                })
+                .catch(err => {
+                    console.error('Review error:', err);
+                });
+        });
+
+        // === RESET FILTER FORM ===
+        $('#resetButton').on('click', function () {
+            $('input[name="name"]').val('');
+            $('input[name="location"]').val('');
+            $(this).closest('form').submit();
+        });
+
+        // === FETCH REVIEWS (MODAL) ===
+        $('.toggle-reviews').on('click', function () {
+            const vehicleId = $(this).data('vehicle-id');
+            const modalBody = $('#modalReviewBody');
+            modalBody.html('<p>Loading reviews...</p>');
+
+            fetch(`/get-reviews/${vehicleId}/`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.reviews.length > 0) {
+                        modalBody.html('');
+                        data.reviews.forEach(review => {
+                            modalBody.append(`
+                                <div class="review p-2 border rounded mb-1">
+                                    <strong><i class="bi bi-star-fill" style="color: yellow;"></i> ${review.rating}</strong><br>
+                                    ${review.review}
+                                    <small class="text-muted d-block">By ${review.user__username} on ${new Date(review.created_at).toLocaleString()}</small>
+                                </div>
+                            `);
+                        });
+                    } else {
+                        modalBody.html('<p>No reviews available for this vehicle.</p>');
+                    }
+                })
+                .catch(() => {
+                    modalBody.html('<p>Error loading reviews. Please try again later.</p>');
+                });
+        });
+
+        // === HELPER: Get CSRF token ===
+        function getCookie(name) {
+            const value = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
+            return value ? value.pop() : '';
+        }
+    });
+</script>  -->
+
+ <script>
+    $(document).ready(function () {
+
+        // === STAR RATING ===
+        $('.rating-stars .star').on('click', function () {
+            const stars = $(this).data('value');
+            const vehicleId = $(this).data('vehicle-id');  // Changed to use vehicle_id
+            const parent = $(this).closest('.rating-stars');
+
+
+            console.log('Vehicle ID:', vehicleId);
+            $.ajax({
+                url: "{% url 'submit_rating' %}",
+                type: "POST",
+                data: {
+                    stars: stars,
+                    vehicle_id: vehicleId,  // Changed to use vehicle_id
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                success: function (response) {
+                    if (response.success) {
+                        // Highlight stars
+                        parent.find('.star').each(function () {
+                            const value = $(this).data('value');
+                            $(this).toggleClass('text-warning', value <= stars);
+                            $(this).toggleClass('text-secondary', value > stars);
+                        });
+
+                        // Update average rating text
+                        $('#avg-rating-' + vehicleId).text('(' + response.new_avg.toFixed(1) + ')');  // Changed to use vehicle_id
+
+                        // Show review textarea
+                        $('#review-section-' + vehicleId).show();  // Changed to use vehicle_id
+                    }
+                },
+                error: function () {
+                    alert("Error submitting rating.");
+                }
+            });
+        });
+
+        // === SUBMIT REVIEW ===
+        $('.submit-review').on('click', function () {
+            const vehicleId = $(this).data('vehicle-id');  // Changed to use vehicle_id
+            const reviewText = $('#review-text-' + vehicleId).val().trim();
+            const star = $('.rating-stars[data-vehicle-id="' + vehicleId + '"] .star.text-warning').length;
+
+            if (!star || !reviewText) {
+                alert("Please give a rating and write a review.");
+                return;
+            }
+
+            fetch('/submit-review/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken'),
+                },
+                body: JSON.stringify({
+                    vehicle_id: vehicleId,  // Changed to use vehicle_id
+                    rating: star,
+                    review: reviewText
+                })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    alert('Review submitted!');
+                    $('#review-text-' + vehicleId).val('');
+                    $('#review-section-' + vehicleId).hide();
+                })
+                .catch(err => {
+                    console.error('Review error:', err);
+                });
+        });
+
+        // === RESET FILTER FORM ===
+        $('#resetButton').on('click', function () {
+            $('input[name="name"]').val('');
+            $('input[name="location"]').val('');
+            $(this).closest('form').submit();
+        });
+
+        // === FETCH REVIEWS (MODAL) ===
+        $('.toggle-reviews').on('click', function () {
+            const vehicleId = $(this).data('vehicle-id');  // Changed to use vehicle_id
+            const modalBody = $('#modalReviewBody');
+            modalBody.html('<p>Loading reviews...</p>');
+
+            fetch(`/get-reviews/${vehicleId}/`)  // Changed to use vehicle_id
+                .then(response => response.json())
+                .then(data => {
+                    if (data.reviews.length > 0) {
+                        modalBody.html('');
+                        data.reviews.forEach(review => {
+                            modalBody.append(`
+                                <div class="review p-2 border rounded mb-1">
+                                    <strong><i class="bi bi-star-fill" style="color: yellow;"></i> ${review.rating}</strong><br>
+                                    ${review.review}
+                                    <small class="text-muted d-block">By ${review.user__username} on ${new Date(review.created_at).toLocaleString()}</small>
+                                </div>
+                            `);
+                        });
+                    } else {
+                        modalBody.html('<p>No reviews available for this vehicle.</p>');
+                    }
+                })
+                .catch(() => {
+                    modalBody.html('<p>Error loading reviews. Please try again later.</p>');
+                });
+        });
+
+        // === HELPER: Get CSRF token ===
+        function getCookie(name) {
+            const value = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
+            return value ? value.pop() : '';
+        }
+    });
+</script>  
+
+<!-- Modal Structure (hidden by default) -->
+<div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="reviewModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="reviewModalLabel">Vehicle Reviews</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-bs-label="Close"></button>
+            </div>
+            <div class="modal-body" id="modalReviewBody">
+                <!-- Reviews will be dynamically loaded here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock body %}

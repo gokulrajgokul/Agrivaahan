@@ -1,0 +1,190 @@
+
+{% extends 'base.html' %}
+{% block style %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/bill.css' %}">
+{% endblock style %}
+{% block title %}Book Vehicle{% endblock title %}
+
+{% block body %}
+<form method="post" action="{% url 'order' %}">
+  {% csrf_token %}
+  <div class="container" id="yo">
+    <div class="my-4">
+      <h2 class="text-center my-4">Booking Details</h2>
+      {% include 'messages.html' %}
+      <!-- Hidden vehicle ID -->
+      <input type="hidden" name="vehicle_id" value="{{ vehicle.id }}">
+
+      <div class="mb-3">
+        <label for="billname" class="form-label">Full Name :</label>
+        <input type="text" class="form-control" id="billname" name="billname" value="{{ user.username }}" readonly>
+      </div>
+
+      <div class="row">
+        <div class="mb-3 col-md-6">
+          <label for="billemail" class="form-label">Email :</label>
+          <input type="email" class="form-control" id="billemail" name="billemail" value="{{ user.email }}" readonly>
+        </div>
+        <div class="mb-3 col-md-6">
+          <label for="billphone" class="form-label">Phone Number :</label>
+          <input type="number" class="form-control" id="billphone" name="billphone" value="{{ user.userprofile.phone }}" readonly>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="billaddress" class="form-label">Address</label>
+        <input type="text" class="form-control" id="billaddress" name="billaddress" placeholder="Address">
+      </div>
+
+      <div class="row">
+        <div class="mb-3 col-md-6">
+          <label for="billcity" class="form-label">City</label>
+          <input type="text" class="form-control" id="billcity" name="billcity">
+        </div>
+        
+      </div>
+
+      <h2 class="text-center my-4">Vehicle Details</h2>
+
+      <div class="row">
+        <div class="mb-3 col-md-6">
+          <label for="dayss" class="form-label">No. of hours:</label>
+          <input type="number" class="form-control" id="dayss" name="dayss" min="1" max="30">
+        </div>
+        <div class="mb-3 col-md-6">
+          <label for="date" class="form-label"> Date:</label>
+          <input type="date" class="form-control" id="date" name="date">
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="location" class="form-label">Farm Location:</label>
+        <input type="text" class="form-control" id="location" name="location" placeholder="Enter your location">
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Vehicle Selected:</label>
+        <!-- <input type="text" class="form-control" value="{{ vehicle.Vehicle_name }}" readonly> -->
+        <input type="text"  class="form-control" id="vehicleName" value="{{ vehicle.Vehicle_name }}" readonly>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Rent per hour:</label>
+        <input type="text" class="form-control" id="vehRent" value="{{ vehicle.price }}" readonly>
+      </div>
+
+      <div class="my-4">
+        <h2 class="text-center">Total Bill</h2>
+        <ul class="list-group">
+          <li class="list-group-item d-flex justify-content-between align-items-center my-3" id="rentsec">
+            <p>Total Rent is : Rs <span id="totalRent"></span></p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="text-center mb-4">
+    <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#exampleModalLong" onclick="calculate()">Display Bill</button>
+    <button class="btn btn-primary" type="submit">Confirm Booking</button>
+  </div>
+
+  <!-- Modal Receipt -->
+  <!-- <div class="modal fade" id="exampleModalLong" tabindex="-1" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" style="height:750px">
+      <div class="modal-content" style="background-color:rgb(226, 239, 251);">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalCenterTitle">Receipt :</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="printThis">
+          <h1 class="text-center"  >Customer Details</h1><br>
+          <p id="n1" class="p2 text-center" style="font-size: 25px; font-weight:bold; color:rgb(35, 12, 109)">Customer Name: <span></span></p>
+          <p class="text-center">
+            <span id="l1" class="p3" style="font-size: 25px; font-weight:bold; color:rgb(35, 12, 109)">Location: <span></span></span>
+          </p>
+          <p id="d2" class="p8 text-center" style="font-size: 25px; font-weight:bold; color:rgb(35, 12, 109)">No. of days for rent: <span></span></p>
+          <p id="d1" class="p2 text-center" style="font-size: 25px; font-weight:bold; color:rgb(35, 12, 109)">Pickup date: <span></span></p>
+          <p   class="text-center" style="font-size: 23px;">
+            <span style="font-size:30px;font-weight:bold">Vehicle Details :- </span><br>
+            <span style="font-weight:bold" id="crs1">Vehicle: <span></span></span><br>
+          </p>
+          
+          <p id="total" class="p1 text-center" style="font-size: 25px; font-weight:bold">Total Bill: Rs <span>N/A</span></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" id="btnPrint">Download Receipt</button>
+        </div>
+      </div>
+    </div>
+  </div> -->
+  <div class="modal fade" id="exampleModalLong" tabindex="-1" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered" style="max-height: 90vh;">
+    <div class="modal-content" style="background-color: #e2effb;">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle">Booking Receipt</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="printThis">
+        <h2 class="text-center mb-4">Thanks for your booking with Agrivaahan!!</h2>
+        <div class="d-flex justify-content-end mb-2" style="font-size: 16px; font-weight: bold; color: #333;">
+          Booking Date: <span id="bookingDate" class="ms-2"></span>
+        </div>
+        <h2 class="text-center mb-4" style="color: #1e3a8a;">Customer Details</h2>
+
+        <!-- Customer Details Table -->
+         <div class="table-responsive">
+        <table class="table table-bordered  table-hover w-75 mx-auto ">
+          <tbody>
+            <tr>
+              <th scope="row" style="width: 40%;">Customer Name</th>
+              <td id="n1"><span></span></td>
+            </tr>
+            <tr>
+              <th scope="row">Pickup Location</th>
+              <td id="l1"><span></span></td>
+            </tr>
+            <tr>
+              <th scope="row">Pickup Date</th>
+              <td id="d1"><span></span></td>
+            </tr>
+            <tr>
+              <th scope="row">No. of Days</th>
+              <td id="d2"><span></span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+        <h2 class="text-center my-4" style="color: #1e3a8a;">Vehicle Details</h2>
+
+        <!-- Vehicle Details Table -->
+        <div class="table-responsive">
+        <table class="table table-bordered table-hover  w-75 mx-auto">
+          <tbody>
+            <tr>
+              <th scope="row" style="width: 40%;">Vehicle Name</th>
+              <td id="crs1"><span></span></td>
+            </tr>
+            <tr>
+              <th scope="row">Total Rent</th>
+              <td id="total"><span>Rs N/A</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="btnPrint">Download Receipt</button>
+      </div>
+    </div>
+  </div>
+</div>
+ 
+
+</form>
+
+{% endblock %}

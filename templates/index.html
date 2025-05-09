@@ -1,0 +1,196 @@
+{% extends 'base.html' %}
+{% block style %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/index.css' %}">
+{% endblock style %}
+
+{% block title %}Home{% endblock title %}
+
+{% block body %}
+<div class="container-fluid px-0">
+  {% include 'messages.html' %}
+
+  <div class="homecontainer d-flex align-items-center"
+    style="min-height: 100vh; background-size: cover; background-position: center;">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-7 col-lg-6 col-xl-5">
+          <div class="homecontent w-100   ">
+            <h1 class="display-6  fw-bold">RENT ANY EQUIPMENTS</h1>
+            <!-- <p class="mt-5 fw-semibold">
+              Wide range of farm vehicles and machinery — from compact tractors to heavy-duty harvesters — are available
+              for rent. All at affordable prices!
+              <br>So what are you waiting for? Start your engine and let AgriVaahan power your journey to a more
+              efficient and productive farm life! 🚜🌾
+            </p> -->
+            <p class="mt-5 fw-semibold text-white">Whether you run a small farm or manage acres of land, AgriVaahan is here to make your work easier. Rent everything from tractors to sprayers and get the job done without the heavy investment.
+              Farming should feel fulfilling — not frustrating. Let AgriVaahan lighten the load. 🌾💚
+              
+              </p>
+            <p class="mt-5 fst-italic fw-semibold text-info">
+              “The farmer has to be an optimist or he wouldn’t still be a farmer.” <br>~ Will Rogers
+            </p>
+
+            {% if user.is_authenticated %}
+            {% if user.userprofile.role == "farmer" %}
+            <div class="text-center mt-5">
+              <a class="btn btn-info btn-lg" href="/vehicles" role="button">Explore Vehicles</a>
+            </div>
+            {% elif user.userprofile.role == "owner" %}
+            <div class="text-center mt-5">
+              <a class="btn btn-info btn-lg" href="/add-vehicle" role="button">Add Vehicles</a>
+            </div>
+            {% endif %}
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="slider">
+  <h1 class="slidertext text-center  ">Wide varieties of Machineries and Equipments</h1>
+  <div id="homeCarousel" class="carousel slide custom-carousel mx-auto" data-bs-ride="carousel" data-bs-interval="3000">
+
+    <!-- Carousel Indicators (Dynamic) -->
+    <div class="carousel-indicators">
+      {% for vehicle in carousel_images %}
+      <button type="button" data-bs-target="#homeCarousel" data-bs-slide-to="{{ forloop.counter0 }}"
+        class="{% if forloop.first %}active{% endif %}" aria-current="{% if forloop.first %}true{% endif %}"
+        aria-label="Slide {{ forloop.counter }}"></button>
+      {% endfor %}
+    </div>
+
+    <!-- Carousel Items -->
+    <div class="carousel-inner rounded shadow">
+      {% for vehicle in carousel_images %}
+      <div class="carousel-item {% if forloop.first %}active{% endif %}">
+        <img src="{{ vehicle.image.url }}" class="d-block w-100" alt="{{ vehicle.Vehicle_name }}">
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Navigation Buttons -->
+    <button class="carousel-control-prev" type="button" data-bs-target="#homeCarousel" data-bs-slide="prev">
+      <span><i class="bi bi-arrow-left-circle-fill" style="font-size: 2.6rem;"></i></span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#homeCarousel" data-bs-slide="next">
+      <span><i class="bi bi-arrow-right-circle-fill" style="font-size: 2.6rem;"></i></span>
+    </button>
+  </div>
+</div>
+<!-- 
+<div class="container my-5">
+  <div class="row g-4 text-center">
+
+     
+    <div class="col-md-4">
+      <div class="card shadow border-0 h-100">
+        <div class="card-body">
+          <i class="bi bi-gear-fill display-4 text-success"></i>
+          <h5 class="card-title mt-3">Rent Machinery</h5>
+          <p class="card-text">Choose from a wide range of tractors, harvesters, and tools.</p>
+        </div>
+      </div>
+    </div>
+ 
+    <div class="col-md-4">
+      <div class="card shadow border-0 h-100">
+        <div class="card-body">
+          <i class="bi bi-person-check-fill display-4 text-primary"></i>
+          <h5 class="card-title mt-3">Easy Booking</h5>
+          <p class="card-text">Book your vehicle in a few clicks, anytime, anywhere.</p>
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="col-md-4">
+      <div class="card shadow border-0 h-100">
+        <div class="card-body">
+          <i class="bi bi-truck display-4 text-success"></i>
+          <h5 class="card-title mt-3">Wide Range of Vehicles</h5>
+          <p class="card-text">From tractors to harvesters and other farming equipment...</p>
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="col-md-4">
+      <div class="card shadow border-0 h-100">
+        <div class="card-body">
+          <i class="bi bi-cash-stack display-4 text-warning"></i>
+          <h5 class="card-title mt-3">Affordable & Flexible Rentals</h5>
+          <p class="card-text">Cost-effective rental plans suited for every farmer...</p>
+        </div>
+      </div>
+    </div>
+ 
+    <div class="col-md-4">
+      <div class="card shadow border-0 h-100">
+        <div class="card-body">
+          <i class="bi bi-receipt-cutoff display-4 text-danger"></i>
+          <h5 class="card-title mt-3">Transparent Pricing</h5>
+          <p class="card-text">No hidden charges! What you see is what you pay...</p>
+        </div>
+      </div>
+    </div>
+
+
+ 
+    <div class="col-md-4 mx-auto">
+      <div class="card shadow border-0 h-100">
+        <div class="card-body">
+          <i class="bi bi-check-circle-fill display-4 text-success"></i>
+          <h5 class="card-title mt-3">Reliable Service</h5>
+          <p class="card-text">We ensure timely delivery and hassle-free rentals...</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+  -->
+
+
+
+<section id="services" class="services-section">
+  <div class="container">
+    <h2 class="section-title">Our Services</h2>
+    <div class="services-cards">
+      <div class="service-card">
+       
+        <h3>Rent a Vehicle</h3>
+        <p>Browse and book farm vehicles and machinery at your convenience. Quick, affordable, and farmer-friendly.</p>
+        
+        {% if user.is_authenticated %}
+        {% if user.userprofile.role == "farmer" %}
+        <a href="/vehicles" class="btn-service">Explore Vehicles</a>
+        {% else %}
+        <a href="/register" class="btn-service">Register</a>
+        {% endif %}
+        {% endif %}
+
+      </div>
+      <div class="service-card">
+    
+        <h3>Add Your Vehicle</h3>
+        <p>Own a farm vehicle? Don’t let your machine sit idle — share it and start earning!  Support local farmers and make money by renting out your vehicle</p>
+        
+        {% if user.is_authenticated %}
+        {% if user.userprofile.role == "owner" %}
+        <a href="/add-vehicle" class="btn-service">ADD Vehicle</a>
+        {% else %}
+        <a href="/register" class="btn-service">Register</a>
+        {% endif %}
+        {% endif %}
+      </div>
+    </div>
+    <div class="text-center m-4">
+      <p class="fw-semibold">If you have any queries or complaints??<a class="text-decoration-none"  href="/contact">contact us</a></p>
+    </div>
+  </div>
+</section>
+
+
+{% endblock body %}

@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+ 
+{% block style %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
+{% endblock style %}
+
+{% block body %}
+
+<section class="h-100 gradient-form" style="background-color: #eee;">
+  {% include 'messages.html' %}
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-xl-10 ">
+        <div class="card   rounded-3 text-black">
+          <div class="row g-0">
+            <div class="col-lg-6">
+              <div class="card-body p-md-5 mx-md-4">
+
+                <div class="text-center">
+                  <img src="{% static 'images/Agrilogo.png' %}" style="width: 150px;" alt="logo">
+                  <h4 class="mt-1 mb-5 pb-1">AGRIVAAHAN</h4>
+                </div>
+
+                <form method="post" action="/signin">
+                  {% csrf_token %}
+                  <p>Please login to your account</p>
+
+                  <div class="mb-4">
+                    <label class="form-label" for="loginusername">Username</label>
+                    <input type="text" id="loginusername" name="loginusername" class="form-control" placeholder="Username" >
+                  </div>
+
+                  <div class="mb-4">
+                    <label class="form-label" for="loginpassword">Password</label>
+                    <div class="input-group">
+                      <input type="password" id="loginpassword" name="loginpassword" class="form-control" >
+                      <span class="input-group-text" onclick="togglePassword()" style="cursor:pointer;">
+                        <i class="bi bi-eye" id="eyeIcon"></i>
+                      </span>
+                    </div>
+                  </div>
+
+                  <div id="ownerTermsSection" style="display: none;">
+                    <label>
+                      <input type="checkbox" id="termsCheckbox">
+                      I agree to the <a href="#" id="openTerms">Terms and Conditions</a>
+                    </label>
+                  </div><br>
+                
+
+                  <div class="text-center pt-1 mb-5 pb-1">
+                    <button type="submit" class="btn btn-primary btn-lg w-100"  id="loginButton" disabled>Log in</button>
+                  </div>
+                </form>
+
+                <div class="d-flex align-items-center justify-content-center pb-4">
+                  <p class="mb-0 me-2">Don't have an account?</p>
+                  <a class="btn btn-outline-danger" href="/register" role="button">Create new</a>
+                </div>
+
+              </div>
+            </div>
+            <!-- <div class="col-lg-6 d-flex align-items-center">
+              <div class="text-black px-3 py-4 p-md-5 mx-md-4">
+              </div>
+            </div> -->
+            <div class="col-lg-6">
+            <img class="img-fluid" style="height:90%; max-width:100%;" src="{% static 'images/loginbg1.png' %}"alt="img">
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="termsModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2 class="text-black fw-bold mx-5 my-3">Terms and Conditions for Owners</h2>
+      <ol class="fw-semibold  mx-5  my-2  ">
+        <li class="fs-5">You must provide accurate vehicle information.</li>
+        <li class="fs-5">You are responsible for coordinating with farmers.</li>
+        <li class="fs-5">Keep your vehicle availability updated.</li>
+        <li class="fs-5">You should deliver the vehicles and equipments around 20kms</li>
+        <li class="fs-5">AgriVaahan is not liable for misuse.</li>
+        <li class="fs-5">Enter the Amount which includes delivery charges and all...</li>
+        <li class="fs-5">Don't get more amount than which would you mention here...</li>
+        <li class="fs-5">Your account may be suspended for violations.</li>
+        
+        
+      </ol>
+    </div>
+  </div>
+</section>
+
+ 
+
+
+<script>
+  const usernameInput = document.getElementById("loginusername");  // Corrected this line
+const termsSection = document.getElementById("ownerTermsSection");
+const checkbox = document.getElementById("termsCheckbox");
+const loginBtn = document.getElementById("loginButton");
+const openTerms = document.getElementById("openTerms");
+const modal = document.getElementById("termsModal");
+const closeModal = document.querySelector(".close");
+
+usernameInput.addEventListener("blur", function () {
+  const username = this.value;
+  if (username) {
+    fetch(`/get-user-role/?username=${username}`)
+      .then(response => response.json())
+      .then(data => {
+        if (data.role === "owner") {
+          termsSection.style.display = "block";
+          loginBtn.disabled = !checkbox.checked;
+        } else {
+          termsSection.style.display = "none";
+          loginBtn.disabled = false;
+        }
+      });
+  }
+});
+
+checkbox.addEventListener("change", function () {
+  loginBtn.disabled = !this.checked;
+});
+
+openTerms.addEventListener("click", function (e) {
+  e.preventDefault();
+  modal.style.display = "block";
+});
+
+closeModal.addEventListener("click", function () {
+  modal.style.display = "none";
+});
+
+window.addEventListener("click", function (event) {
+  if (event.target === modal) {
+    modal.style.display = "none";
+  }
+});
+
+</script>
+
+
+{% endblock %}

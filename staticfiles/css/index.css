@@ -1,0 +1,152 @@
+
+body {
+    font-family: 'Open Sans', sans-serif;
+  }
+  
+  h1, h2, h3, h4 , p {
+    font-family: 'Merriweather', serif;
+  }
+
+.btn {
+    padding: 10px 20px; 
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: 'Open Sans', sans-serif; /* Optional */
+    font-size: 16px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+.btn:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+.homecontainer{
+    background-image: url('../images/tractorbg.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    height:700px;
+    margin-top: -15px;
+  }
+/* .homecontent{
+  height:700px;
+  width:600px;
+  margin:0px 50px;
+  padding: 150px 50px;
+   
+} */
+
+.card:hover {
+  transform: translateY(-10px) scale(1.02);
+  background-color: #f8f9fa; /* Light gray background */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease-in-out;
+  border: 2px solid green;
+}
+
+.card {
+  transition: all 0.3s ease-in-out;
+}
+.custom-carousel {
+ 
+  max-width: 700px;   
+  height: 700px;      
+}
+.carousel-inner {
+  
+  position: relative;
+  height: 600px;  /* Fixed height */
+}
+
+.custom-carousel img {
+  
+  object-fit: cover;
+  height: 100%;
+}
+.slider{
+  margin-top: -20px;
+ background-color: rgb(200, 200, 200);
+
+}
+.slidertext{
+  margin:20px 0px;
+  padding:40px 0px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.services-section {
+  background-color: #f9f9f9;
+  padding: 60px 0;
+  text-align: center;
+}
+
+.section-title {
+  font-size: 32px;
+  margin-bottom: 40px;
+  color: #2d572c;
+}
+
+.services-cards {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.service-card {
+  background: white;
+  padding: 30px 20px;
+  border-radius: 12px;
+  width: 350px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+}
+
+.service-card:hover {
+  transform: translateY(-8px);
+}
+
+.service-card i {
+  font-size: 40px;
+  color: #4CAF50;
+  margin-bottom: 15px;
+}
+
+.service-card h3 {
+  font-size: 22px;
+  margin-bottom: 10px;
+  color: greenyellow;
+  /* color: #333; */
+}
+
+.service-card p {
+  font-size: 15px;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.btn-service {
+  text-decoration: none;
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: 600;
+  transition: background 0.3s;
+}
+
+.btn-service:hover {
+  background-color: #388e3c;
+}

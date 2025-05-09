@@ -1,0 +1,99 @@
+body {
+    font-family: 'Open Sans', sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4 {
+    font-family: 'Merriweather', serif;
+}
+
+.navbar {
+    /* background: linear-gradient(160deg, #28a745, #85e085);  */
+    /* background: rgba(255, 255, 255, 0.2);  
+      backdrop-filter: blur(10px); */
+    background: linear-gradient(to right, #E0F7FA, #81D4FA, #0277BD);
+    color: white;
+
+}
+
+.nav-item .nav-link:hover {
+    color: black;
+    transform: scaleX(1);
+
+}
+
+h4 h2 {
+    color: rgb(0, 255, 68);
+}
+
+label {
+    font-size: larger;
+}
+.vechileadd {
+    margin: 0% 4%;
+
+}
+
+button {
+    padding: 10px 20px;
+
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: 'Open Sans', sans-serif;
+    /* Optional */
+    font-size: 16px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+button:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.homecontainer {
+    background-image: url('../images/tractorbg.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    height: 700px;
+    margin-top: -15px;
+
+
+
+}
+
+/* .vehicleInfo{
+      background-image: url('../images/Agribg.png');
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
+      height:300px;
+     
+   
+  } 
+    */
+
+
+.marquee {
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.marquee span {
+    display: inline-block;
+    animation: scroll 20s linear infinite;
+}
+
+@keyframes scroll {
+    0% {
+        transform: translateX(100%);
+    }
+
+    100% {
+        transform: translateX(-100%);
+    }
+}

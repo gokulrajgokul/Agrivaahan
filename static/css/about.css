@@ -1,0 +1,65 @@
+body {
+    font-family: 'Open Sans', sans-serif;
+  }
+  
+h1, h2, h3, h4 {
+    font-family: 'Merriweather', serif;
+  }
+button {
+    padding: 10px 20px;
+    
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: 'Open Sans', sans-serif; /* Optional */
+    font-size: 16px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+button:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  } 
+.about-section{
+  /* background-color: burlywood; */
+  background-image: url('../images/greenharvester.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  height: 650px;
+}
+
+
+.card {
+  transition: all 0.3s ease-in-out;
+}
+.card:hover {
+  transform: translateY(-10px) scale(1.02);
+  background-color: #f8f9fa; /* Light gray background */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease-in-out;
+  border: 2px solid green;
+}
+
+
+@keyframes slideInFromLeft {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.slide-in-left {
+  animation: slideInFromLeft 1s ease-out forwards;
+  animation-delay: 0.3s;
+  background-color: transparent;  /* Light background with opacity */
+  backdrop-filter: blur(3px);                 /* Blur effect */
+  -webkit-backdrop-filter: blur(6px);         /* Safari support */
+                        /* Optional rounded corners */
+  padding: 20px;  
+}

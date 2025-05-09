@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% block style %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/bookings.css' %}">
+{% endblock style %}
+{% block body %}
+ 
+
+<div class="container mt-4">
+  <h2 class="mb-4 text-center"> Your Vehicle Bookings</h2>
+  {% include 'messages.html' %}
+  
+  {% if bookings %}
+    <div class=" table table-responsive">
+    <table class="table  table-bordered border-success table-hover  mx-auto  ">
+      <thead >
+        <tr>
+          <th>S.No</th>
+          <th >Vehicle</th>
+          <th>Booked By (Farmer)</th>
+          <th>Phone Number</th>  
+          <th>Booking Date</th>
+          <th>Duration (Hours)</th>
+          <th>Total Amount</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for booking in bookings %}
+        <tr>
+          <td>{{ forloop.counter }}</td>
+          <td>{{ booking.vehicle.Vehicle_name }}</td>
+          <td>{{ booking.farmer.username }}</td>
+          <td>{{ booking.farmer.userprofile.phone }}</td> <!-- 📞 Show farmer phone -->
+          <td>{{ booking.booking_date }}</td>
+          <td>{{ booking.duration }}</td>
+          <td>₹{{ booking.total_amount }}</td>
+          <td>
+            <form action="{% url 'delete_booking' booking.id %}" method="POST">
+                {% csrf_token %}
+                <button type="submit"  class="btn btn-outline-danger" onclick="return confirm('Are you sure you want to delete this booking?');">Delete</button>
+            </form>
+        </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+   
+
+
+
+  {% else %}
+    <p>No bookings found for your vehicles.</p>
+  {% endif %}
+</div> 
+{% endblock %}
+
+
+
+<!-- 
+{% for booking in bookings %}
+  <div class="booking-card">
+    <h3>Vehicle: {{ booking.vehicle.Vehicle_name }}</h3>
+    <p>Farmer: {{ booking.farmer.username }}</p>
+    {% with profile=booking.farmer.userprofile %}
+      <p>📞 Phone: {{ profile.phone }}</p>
+      <p>📧 Email: {{ profile.email }}</p>
+    {% endwith %}
+    <p>Booking Date: {{ booking.booking_date }}</p>
+    <p>Duration: {{ booking.duration }} days</p>
+    <p>Total Amount: ₹{{ booking.total_amount }}</p>
+    <hr>
+  </div>
+{% endfor %} -->

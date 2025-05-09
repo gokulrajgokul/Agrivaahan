@@ -1,0 +1,44 @@
+
+body {
+    font-family: 'Open Sans', sans-serif;
+  }
+  
+h1, h2, h3, h4 {
+    font-family: 'Merriweather', serif;
+  }
+  
+.navbar{
+    /* background: linear-gradient(160deg, #28a745, #85e085);  */
+    /* background: rgba(255, 255, 255, 0.2);  
+    backdrop-filter: blur(10px); */
+    background: linear-gradient(160deg, #85e085, #28a745);
+    /* background: linear-gradient(to right, #E0F7FA, #81D4FA, #0277BD); */
+    color: white;
+    
+ }
+ 
+.nav-item .nav-link:hover{
+    color:black;
+    transform: scaleX(1);
+   
+ }
+
+
+
+ .card:hover {
+  transform: translateY(-10px) scale(1.02);
+  background-color: #f8f9fa; /* Light gray background */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease-in-out;
+  border: 2px solid green;
+}
+
+.card {
+  transition: all 0.3s ease-in-out;
+}
+
+
+
+
+
+ 

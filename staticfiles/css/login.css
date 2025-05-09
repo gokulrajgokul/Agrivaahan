@@ -1,0 +1,66 @@
+
+body {
+    font-family: 'Open Sans', sans-serif;
+  }
+  
+  h1, h2, h3, h4 {
+    font-family: 'Merriweather', serif;
+  }
+  
+label{
+    font-size: larger;
+ }
+button {
+    padding: 10px 20px;
+    
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: 'Open Sans', sans-serif; /* Optional */
+    font-size: 16px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+button:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+/* .loginsection{
+  background-image: url('../images/balerbg.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  height:700px;
+} */
+
+ 
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.6);
+}
+
+.modal-content {
+  background-color: #fff;
+  margin: 10% auto;
+  padding: 50px;
+  width: 80%;
+  max-width: 800px;
+  border-radius: 10px;
+  position: relative;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 22px;
+  cursor: pointer;
+}
+ 
