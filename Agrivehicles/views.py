@@ -70,10 +70,6 @@ def register(request):
         return redirect('signin')   
     return render(request, 'register.html')
 
- 
-
-
-
 def signin(request):
     if request.method == "POST":
         loginusername = request.POST['loginusername']
@@ -105,21 +101,10 @@ def signin(request):
 
     return render(request, 'login.html')
 
-
-
 def signout(request):
         logout(request)
        
         return redirect('signin')
-    
-     
- 
- 
-
-
-
- 
-
 
 @login_required
 def add_vehicle(request):
@@ -178,8 +163,6 @@ def add_vehicle(request):
         'vehicle_to_edit': vehicle_to_edit
     })
 
-
-
 @login_required
 def delete_vehicle(request, pk):
     vehicle = get_object_or_404(Vehicle, pk=pk, owner=request.user)
@@ -209,24 +192,6 @@ def delete_booking(request, booking_id):
         return redirect('owner_bookings')
  
 
-
-
-
-
-
-
-
-
-
-
-
- 
-
-
-
-
-
-
 def vehicles(request):
     name_query = request.GET.get('name', '')
     location_query = request.GET.get('location', '')
@@ -249,11 +214,6 @@ def vehicles(request):
         'all_locations': all_locations,
     })
 
-
-
-
-
-
 @login_required
 def farmer_bookings(request):
     farmer = request.user
@@ -269,26 +229,9 @@ def delete_farmer_booking(request, booking_id):
     messages.success(request, "Booking deleted successfully.")
     return redirect('farmer_bookings')
 
-
-# def bill(request):
-#     Vehicles= Vehicle.objects.all()
-#     params = {'vehicles':Vehicles}
-#     return render(request,'bill.html',params)
- 
 def bill(request, vehicle_id):
     vehicle = get_object_or_404(Vehicle, id=vehicle_id)
     return render(request, 'bill.html', {'vehicle': vehicle})
-
-
-
- 
-
-
- 
-
-
-  
- 
 
 @login_required
 def order(request):

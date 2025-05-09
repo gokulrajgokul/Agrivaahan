@@ -18,18 +18,13 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 
-
- 
 from decouple import config
 SECRET_KEY = config('SECRET_KEY')
-
 
 DEBUG = False
 # ALLOWED_HOSTS = ["*"]
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
-
- 
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -73,9 +68,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'Agriproject.wsgi.application'
 
-
- 
-
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.sqlite3',
@@ -85,14 +77,15 @@ WSGI_APPLICATION = 'Agriproject.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'Agrivaahan',
-        'USER': 'root',
-        'PASSWORD': 'gokulhema@26',
-        'HOST': 'localhost',
-        'PORT': '3306',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'agrivaahandb',
+        'USER': 'agrivaahandb_user',
+        'PASSWORD': 'ZBHXHmusvZLvUUR59Y39b9MZ6EfVROIF',
+        'HOST': 'dpg-d08c13s9c44c73bpr7ig-a.oregon-postgres.render.com',
+        'PORT': '5432',
     }
 }
+
 
 # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
@@ -101,12 +94,6 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
-
-
-
-
-
- 
 
 AUTH_PASSWORD_VALIDATORS = [
     {
