@@ -31,9 +31,9 @@ def register(request):
         role = request.POST.get('role')  # 🔹 Get selected role from form
 
         # Validation
-        if not username or not email or not password or not password2 or not number or not role:
-            messages.error(request, "All fields are required")
-            return redirect('register')
+        # if not username or not email or not password or not password2 or not number or not role:
+        #     messages.error(request, "All fields are required")
+        #     return redirect('register')
 
         if User.objects.filter(username=username).exists():
             messages.error(request, "Username already taken")
