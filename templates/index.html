@@ -48,37 +48,7 @@
     </div>
   </div>
 </div>
-<div class="slider">
-  <h1 class="slidertext text-center  ">Wide varieties of Machineries and Equipments</h1>
-  <div id="homeCarousel" class="carousel slide custom-carousel mx-auto" data-bs-ride="carousel" data-bs-interval="3000">
 
-    <!-- Carousel Indicators (Dynamic) -->
-    <div class="carousel-indicators">
-      {% for vehicle in carousel_images %}
-      <button type="button" data-bs-target="#homeCarousel" data-bs-slide-to="{{ forloop.counter0 }}"
-        class="{% if forloop.first %}active{% endif %}" aria-current="{% if forloop.first %}true{% endif %}"
-        aria-label="Slide {{ forloop.counter }}"></button>
-      {% endfor %}
-    </div>
-
-    <!-- Carousel Items -->
-    <div class="carousel-inner rounded shadow">
-      {% for vehicle in carousel_images %}
-      <div class="carousel-item {% if forloop.first %}active{% endif %}">
-        <img src="{{ vehicle.image.url }}" class="d-block w-100" alt="{{ vehicle.Vehicle_name }}">
-      </div>
-      {% endfor %}
-    </div>
-
-    <!-- Navigation Buttons -->
-    <button class="carousel-control-prev" type="button" data-bs-target="#homeCarousel" data-bs-slide="prev">
-      <span><i class="bi bi-arrow-left-circle-fill" style="font-size: 2.6rem;"></i></span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#homeCarousel" data-bs-slide="next">
-      <span><i class="bi bi-arrow-right-circle-fill" style="font-size: 2.6rem;"></i></span>
-    </button>
-  </div>
-</div>
 <!-- 
 <div class="container my-5">
   <div class="row g-4 text-center">

@@ -144,7 +144,7 @@ MEDIA_URL = '/media/'
 
 SECRET_KEY = config('SECRET_KEY')
 
-DEBUG = config('DEBUG', default=False, cast=bool)
+DEBUG = True
 
 ALLOWED_HOSTS = [
     'agrivaahan-agricultural-equipments.onrender.com',
@@ -237,3 +237,10 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+import os
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+STATIC_URL = '/static/'
