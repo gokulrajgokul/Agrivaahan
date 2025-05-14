@@ -22,7 +22,7 @@
   "pk": 2,
   "fields": {
     "password": "pbkdf2_sha256$870000$pSalsYyZqn5HpFdnqxpyfY$h75MF95Tag5PKN+07id0zK3UlKj+LjpA0ymvAhZa3nM=",
-    "last_login": "2025-05-08T09:00:39.744Z",
+    "last_login": "2025-05-13T09:11:01.116Z",
     "is_superuser": false,
     "username": "gokulraj",
     "first_name": "",
@@ -40,7 +40,7 @@
   "pk": 3,
   "fields": {
     "password": "pbkdf2_sha256$870000$WeugW3MaSEgTf6LwcmcEqJ$rC3ffzOkF2hfn3h3bkNkwGFjIvI2jC19T2guK9Znq4s=",
-    "last_login": "2025-05-08T08:17:56.407Z",
+    "last_login": "2025-05-14T05:09:11.511Z",
     "is_superuser": false,
     "username": "kumar",
     "first_name": "gokul",
@@ -93,7 +93,6 @@
   "model": "Agrivehicles.vehicle",
   "pk": 1,
   "fields": {
-    "Vehicle_id": 1,
     "Vehicle_name": "harvester",
     "Vehicle_desc": "Used for harvesting crops like wheat, paddy, and maize efficiently. It cuts, threshes, and cleans the grains.",
     "price": 3000,
@@ -111,7 +110,6 @@
   "model": "Agrivehicles.vehicle",
   "pk": 2,
   "fields": {
-    "Vehicle_id": 2,
     "Vehicle_name": "Tractor",
     "Vehicle_desc": "Tractors are versatile vehicles used for plowing, tilling, planting, and hauling heavy loads in farming. They can be fitted with various implements like plows, harrows, and seed drills.",
     "price": 2000,
@@ -129,7 +127,6 @@
   "model": "Agrivehicles.vehicle",
   "pk": 31,
   "fields": {
-    "Vehicle_id": 3,
     "Vehicle_name": "Baler",
     "Vehicle_desc": " Compresses harvested crops like hay and straw into compact bales for storage and transport.",
     "price": 500,
@@ -147,7 +144,6 @@
   "model": "Agrivehicles.vehicle",
   "pk": 32,
   "fields": {
-    "Vehicle_id": 4,
     "Vehicle_name": "Rotavator",
     "Vehicle_desc": "A rotary tiller that breaks and mixes soil to prepare it for sowing. It is more efficient than a traditional plow.",
     "price": 300,
@@ -165,7 +161,6 @@
   "model": "Agrivehicles.vehicle",
   "pk": 34,
   "fields": {
-    "Vehicle_id": 5,
     "Vehicle_name": "Power Tiller",
     "Vehicle_desc": "power",
     "price": 500,
@@ -215,7 +210,7 @@
   "fields": {
     "vehicle": 1,
     "user": 2,
-    "stars": 4,
+    "stars": 5,
     "created_at": "2025-05-08T07:51:33.814Z"
   }
 },
@@ -225,7 +220,7 @@
   "fields": {
     "vehicle": 2,
     "user": 2,
-    "stars": 2,
+    "stars": 4,
     "created_at": "2025-05-08T07:51:41.176Z"
   }
 },
@@ -235,7 +230,7 @@
   "fields": {
     "vehicle": 31,
     "user": 2,
-    "stars": 3,
+    "stars": 4,
     "created_at": "2025-05-08T07:51:45.446Z"
   }
 },
@@ -245,7 +240,7 @@
   "fields": {
     "vehicle": 32,
     "user": 2,
-    "stars": 4,
+    "stars": 3,
     "created_at": "2025-05-08T07:51:57.505Z"
   }
 },
@@ -255,7 +250,7 @@
   "fields": {
     "vehicle": 34,
     "user": 2,
-    "stars": 1,
+    "stars": 3,
     "created_at": "2025-05-08T09:01:31.340Z"
   }
 },
