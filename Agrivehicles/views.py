@@ -101,96 +101,96 @@ def signout(request):
 
 
 
-@login_required
-def add_vehicle(request):
-    vehicle_to_edit = None
-    if request.method == 'POST':
-        # Debug: Print incoming POST data
-        print(request.POST)
-        try:
-            name = request.POST.get('Vehicle_name')
-            desc = request.POST.get('Vehicle_desc')
-            price = request.POST.get('price')
-            image = request.FILES.get('image')
-            owner_location = request.POST.get('owner_location')
-            is_available = request.POST.get('is_available') == 'on'
-            delivery_time_0_10 = request.POST.get('delivery_time_0_10')
-            delivery_time_10_20 = request.POST.get('delivery_time_10_20')
-
-            # Add the vehicle
-            Vehicle.objects.create(
-                Vehicle_name=name,
-                Vehicle_desc=desc,
-                price=price,
-                image=image,
-                owner=request.user,
-                owner_location=owner_location,
-                is_available=is_available,
-                delivery_time_0_10=delivery_time_0_10,
-                delivery_time_10_20=delivery_time_10_20,
-            )
-            messages.success(request, "Vehicle added successfully!")
-            return redirect('add_vehicle')  # After success, redirect
-
-        except Exception as e:
-            print("Error: ", e)  # Print error to console
-            messages.error(request, f"An error occurred: {e}")
-
-    vehicles = Vehicle.objects.filter(owner=request.user)  # List vehicles
-    return render(request, 'add_vehicle.html', {'vehicles': vehicles, 'vehicle_to_edit': vehicle_to_edit})
-
-
-
 # @login_required
 # def add_vehicle(request):
 #     vehicle_to_edit = None
-#     vehicle_id = request.GET.get('update_id')  # Fetch from URL to edit
-
-#     if vehicle_id:
-#         vehicle_to_edit = get_object_or_404(Vehicle, pk=vehicle_id, owner=request.user)
-
 #     if request.method == 'POST':
-#         vehicle_id = request.POST.get('id')  # ID is now the correct field name in the form
-#         name = request.POST.get('Vehicle_name')
-#         desc = request.POST.get('Vehicle_desc')
-#         price = request.POST.get('price')
-#         image = request.FILES.get('image')  # Handling file uploads properly
-#         owner_location = request.POST.get('owner_location')
-#         is_available = request.POST.get('is_available') == 'on'  # Checkbox logic
-#         delivery_time_0_10 = request.POST.get('delivery_time_0_10')
-#         delivery_time_10_20 = request.POST.get('delivery_time_10_20')
+#         # Debug: Print incoming POST data
+#         print(request.POST)
+#         try:
+#             name = request.POST.get('Vehicle_name')
+#             desc = request.POST.get('Vehicle_desc')
+#             price = request.POST.get('price')
+#             image = request.FILES.get('image')
+#             owner_location = request.POST.get('owner_location')
+#             is_available = request.POST.get('is_available') == 'on'
+#             delivery_time_0_10 = request.POST.get('delivery_time_0_10')
+#             delivery_time_10_20 = request.POST.get('delivery_time_10_20')
 
-#         if vehicle_id:  # Edit existing vehicle
-#             vehicle = get_object_or_404(Vehicle, pk=vehicle_id, owner=request.user)
-#             vehicle.Vehicle_name = name
-#             vehicle.Vehicle_desc = desc
-#             vehicle.price = price
-#             vehicle.owner_location = owner_location
-#             vehicle.is_available = is_available
-#             vehicle.delivery_time_0_10 = delivery_time_0_10
-#             vehicle.delivery_time_10_20 = delivery_time_10_20
-#             if image:
-#                 vehicle.image = image
-#             vehicle.save()
-#             messages.success(request, "Vehicle updated successfully!")
-#         else:  # Add new vehicle
+#             # Add the vehicle
 #             Vehicle.objects.create(
 #                 Vehicle_name=name,
 #                 Vehicle_desc=desc,
 #                 price=price,
 #                 image=image,
-#                 owner=request.user,  # Ensure the logged-in user is the owner
+#                 owner=request.user,
 #                 owner_location=owner_location,
 #                 is_available=is_available,
 #                 delivery_time_0_10=delivery_time_0_10,
 #                 delivery_time_10_20=delivery_time_10_20,
 #             )
 #             messages.success(request, "Vehicle added successfully!")
+#             return redirect('add_vehicle')  # After success, redirect
 
-#         return redirect('add_vehicle')  # Redirect after saving
+#         except Exception as e:
+#             print("Error: ", e)  # Print error to console
+#             messages.error(request, f"An error occurred: {e}")
 
-#     vehicles = Vehicle.objects.filter(owner=request.user)  # Fetch vehicles for the current user
+#     vehicles = Vehicle.objects.filter(owner=request.user)  # List vehicles
 #     return render(request, 'add_vehicle.html', {'vehicles': vehicles, 'vehicle_to_edit': vehicle_to_edit})
+
+
+
+@login_required
+def add_vehicle(request):
+    vehicle_to_edit = None
+    vehicle_id = request.GET.get('update_id')  # Fetch from URL to edit
+
+    if vehicle_id:
+        vehicle_to_edit = get_object_or_404(Vehicle, pk=vehicle_id, owner=request.user)
+
+    if request.method == 'POST':
+        vehicle_id = request.POST.get('id')  # ID is now the correct field name in the form
+        name = request.POST.get('Vehicle_name')
+        desc = request.POST.get('Vehicle_desc')
+        price = request.POST.get('price')
+        image = request.FILES.get('image')  # Handling file uploads properly
+        owner_location = request.POST.get('owner_location')
+        is_available = request.POST.get('is_available') == 'on'  # Checkbox logic
+        delivery_time_0_10 = request.POST.get('delivery_time_0_10')
+        delivery_time_10_20 = request.POST.get('delivery_time_10_20')
+
+        if vehicle_id:  # Edit existing vehicle
+            vehicle = get_object_or_404(Vehicle, pk=vehicle_id, owner=request.user)
+            vehicle.Vehicle_name = name
+            vehicle.Vehicle_desc = desc
+            vehicle.price = price
+            vehicle.owner_location = owner_location
+            vehicle.is_available = is_available
+            vehicle.delivery_time_0_10 = delivery_time_0_10
+            vehicle.delivery_time_10_20 = delivery_time_10_20
+            if image:
+                vehicle.image = image
+            vehicle.save()
+            messages.success(request, "Vehicle updated successfully!")
+        else:  # Add new vehicle
+            Vehicle.objects.create(
+                Vehicle_name=name,
+                Vehicle_desc=desc,
+                price=price,
+                image=image,
+                owner=request.user,  # Ensure the logged-in user is the owner
+                owner_location=owner_location,
+                is_available=is_available,
+                delivery_time_0_10=delivery_time_0_10,
+                delivery_time_10_20=delivery_time_10_20,
+            )
+            messages.success(request, "Vehicle added successfully!")
+
+        return redirect('add_vehicle')  # Redirect after saving
+
+    vehicles = Vehicle.objects.filter(owner=request.user)  # Fetch vehicles for the current user
+    return render(request, 'add_vehicle.html', {'vehicles': vehicles, 'vehicle_to_edit': vehicle_to_edit})
 
  
 
@@ -249,9 +249,23 @@ def add_vehicle(request):
 #         'vehicle_to_edit': vehicle_to_edit
 #     })
 
+
+# @login_required
+# def delete_vehicle(request, pk):
+#     try:
+#         print(f"Deleting vehicle with ID: {pk}")
+#         vehicle = get_object_or_404(Vehicle, pk=pk, owner=request.user)
+#         vehicle.delete()
+#         messages.success(request, "Vehicle deleted successfully!")
+#         return redirect('add_vehicle')
+#     except Exception as e:
+#         print("Error while deleting vehicle:", e)
+#         return HttpResponse(f"Something went wrong: {e}")
+    
+
 @login_required
-def delete_vehicle(request, pk):
-    vehicle = get_object_or_404(Vehicle, pk=pk, owner=request.user)
+def delete_vehicle(request, id):
+    vehicle = get_object_or_404(Vehicle, id=id, owner=request.user)
     vehicle.delete()
     messages.success(request, "Vehicle deleted successfully!")
     return redirect('add_vehicle')
