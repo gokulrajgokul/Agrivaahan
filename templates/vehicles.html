@@ -89,90 +89,79 @@
                     <div class="card shadow-sm h-100">
                         <img src="{{ i.image.url }}" alt="Vehicle" class="card-img-top" height="350"
                             style="object-fit: cover;">
-                        <div class="card-body d-flex flex-column">
-                            <h3 class="card-text text-center">
+                  <div class="card-body d-flex flex-column">
+    <h3 class="card-text text-center">
+        {% if i.is_available %}
+            <span class="text-success">Available</span>
+        {% else %}
+            <span class="text-danger">Currently Unavailable</span>
+        {% endif %}
+    </h3>
+    
+    <h4 class="text-center vehicle-name">{{ i.Vehicle_name }}</h4>
+    <p class="card-text">{{ i.Vehicle_desc }}</p>
+    <p>Price per hour: {{ i.price }}</p>
 
-                                {% if i.is_available %}
-                                <span class="text-success">Available</span>
-                                {% else %}
-                                <span class="text-danger">Currently Unavailable</span>
-                                {% endif %}
-                            </h3>
-                            <h4 class="text-center vehicle-name">{{ i.Vehicle_name }}</h4>
+    <p class="card-text text-muted"><strong>Owner:</strong>
+        {% if i.owner %}{{ i.owner.username }}{% else %}Not Assigned{% endif %}
+    </p>
 
-                            <p class="card-text">{{ i.Vehicle_desc }}</p>
-                            <p>Price per hour: {{ i.price }}</p>
-                            <p class="card-text text-muted"><strong>Owner:</strong> {{ i.owner.username }}</p>
-                            <p class="card-text text-muted"><strong>Owner Location:</strong> {{ i.owner_location }}</p>
-                            <p class="card-text text-muted"><strong>Mobile No:</strong> {{ i.owner.userprofile.phone }}
-                            </p>
+    <p class="card-text text-muted"><strong>Owner Location:</strong>
+        {% if i.owner_location %}{{ i.owner_location }}{% else %}Not Available{% endif %}
+    </p>
 
+    <p class="card-text text-muted"><strong>Mobile No:</strong>
+        {% if i.owner and i.owner.userprofile and i.owner.userprofile.phone %}
+            {{ i.owner.userprofile.phone }}
+        {% else %}
+            Not Available
+        {% endif %}
+    </p>
 
-                            <div class="delivery-timings">
-                                <h5>Delivery Timing Estimates:</h5>
-                                <ul>
-                                    {% if i.delivery_time_0_10 %}
-                                    <li>0–10 km: {{ i.delivery_time_0_10 }}</li>
-                                    {% endif %}
-                                    {% if i.delivery_time_10_20 %}
-                                    <li>10–20 km: {{ i.delivery_time_10_20 }}</li>
-                                    {% endif %}
+    <div class="delivery-timings">
+        <h5>Delivery Timing Estimates:</h5>
+        <ul>
+            {% if i.delivery_time_0_10 %}
+                <li>0–10 km: {{ i.delivery_time_0_10 }}</li>
+            {% endif %}
+            {% if i.delivery_time_10_20 %}
+                <li>10–20 km: {{ i.delivery_time_10_20 }}</li>
+            {% endif %}
+        </ul>
+    </div>
 
-                                </ul>
-                            </div>
- 
-                            <div class="rating-stars" data-vehicle-id="{{ i.id }}">
-                                {% for star in "12345"|slice:":5" %}
-                                <i class="bi bi-star-fill star text-secondary" data-value="{{ forloop.counter }}"
-                                    data-vehicle-id="{{ i.id }}" style="cursor: pointer;"></i>
-                                {% endfor %}
+    <div class="rating-stars" data-vehicle-id="{{ i.id }}">
+        {% for star in "12345"|slice:":5" %}
+            <i class="bi bi-star-fill star text-secondary"
+               data-value="{{ forloop.counter }}"
+               data-vehicle-id="{{ i.id }}"
+               style="cursor: pointer;"></i>
+        {% endfor %}
+        <span id="avg-rating-{{ i.id }}">
+            {% if i.avg_rating %}
+                ({{ i.avg_rating|floatformat:1 }})
+            {% else %}
+                No ratings yet
+            {% endif %}
+        </span>
+    </div>
 
-                                    <span id="avg-rating-{{ i.id }}">
-                                        {% if i.avg_rating %}
-                                            ({{ i.avg_rating|floatformat:1 }})
-                                        {% else %}
-                                            No ratings yet
-                                        {% endif %}
-                                    </span>
-                            </div>
+    <div class="review-section" id="review-section-{{ i.id }}" style="display: none; margin-top: 10px;">
+        <textarea class="w-100" id="review-text-{{ i.id }}" placeholder="Write your review..."></textarea><br>
+        <button class="submit-review btn btn-outline-warning" data-vehicle-id="{{ i.id }}">Submit</button>
+    </div>
 
-                            <!-- <div class="rating-stars" data-vehicle-id="{{ i.Vehicle_id }}">
-                                {% for star in "12345"|slice:":5" %}
-                                    <i class="bi bi-star-fill star text-secondary"
-                                       data-value="{{ forloop.counter }}"
-                                       data-vehicle-id="{{ i.Vehicle_id }}"
-                                       style="cursor: pointer;"></i>
-                                {% endfor %}
-                            
-                                <span id="avg-rating-{{ i.Vehicle_id }}">
-                                    {% if i.avg_rating %}
-                                        ({{ i.avg_rating|floatformat:1 }})
-                                    {% else %}
-                                        No ratings yet
-                                    {% endif %}
-                                </span>
-                            </div>  -->
-                             
+    <a class="text-info text-decoration-none cursor-pointer mt-2 toggle-reviews"
+       data-vehicle-id="{{ i.id }}"
+       data-bs-toggle="modal" data-bs-target="#reviewModal">
+        Reviews
+    </a>
 
-                            <div class="review-section" id="review-section-{{ i.id }}"
-                                style="display: none; margin-top: 10px;">
-                                <textarea class="w-100 " id="review-text-{{ i.id }}"
-                                    placeholder="Write your review..."></textarea><br>
-                                <button class="submit-review btn btn-outline-warning"
-                                    data-vehicle-id="{{ i.id }}">Submit</button>
-                            </div>
-                            <a class="text-info text-decoration-none cursor-pointer  mt-2 toggle-reviews"
-                                data-vehicle-id="{{ i.id }}" data-bs-toggle="modal" data-bs-target="#reviewModal">
-                                Reviews
-                            </a>
+    <div class="mt-auto d-flex justify-content-center">
+        <a href="{% url 'bill' i.id %}" class="btn btn-primary">Rent</a>
+    </div>
+</div>
 
-
-                            <div class="mt-auto d-flex justify-content-center">
-                                <!-- <a class="btn btn-dark btn-sm" href="\bill">RENT</a> -->
-                                <a href="{% url 'bill' i.id %}" class="btn btn-primary">Rent</a>
-
-                            </div>
-                        </div>
                     </div>
                 </div>
                 {% endfor %}

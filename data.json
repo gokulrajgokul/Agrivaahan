@@ -1,0 +1,530 @@
+[
+{
+  "model": "auth.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$870000$iC7yrDdsOK7gQek57JAbVj$+y3FoFAV4Vp3l5iFO+ASUpvXAfEQAhlxJ2MVDLs/a38=",
+    "last_login": "2025-05-08T08:19:04.399Z",
+    "is_superuser": true,
+    "username": "gokul",
+    "first_name": "",
+    "last_name": "",
+    "email": "gokul26.cbcs@gmail.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2025-04-05T17:19:15.386Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 2,
+  "fields": {
+    "password": "pbkdf2_sha256$870000$pSalsYyZqn5HpFdnqxpyfY$h75MF95Tag5PKN+07id0zK3UlKj+LjpA0ymvAhZa3nM=",
+    "last_login": "2025-05-08T09:00:39.744Z",
+    "is_superuser": false,
+    "username": "gokulraj",
+    "first_name": "",
+    "last_name": "",
+    "email": "gokulraj@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-04-09T04:44:01.584Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 3,
+  "fields": {
+    "password": "pbkdf2_sha256$870000$WeugW3MaSEgTf6LwcmcEqJ$rC3ffzOkF2hfn3h3bkNkwGFjIvI2jC19T2guK9Znq4s=",
+    "last_login": "2025-05-08T08:17:56.407Z",
+    "is_superuser": false,
+    "username": "kumar",
+    "first_name": "gokul",
+    "last_name": "",
+    "email": "kumar@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-04-09T05:43:47.595Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 4,
+  "fields": {
+    "password": "pbkdf2_sha256$870000$9ifD4GyKZ96hsHHT5Ekt9k$Dhk/JdzB7pHCFDM3dkD1j1qHH30MjyBjk/2Mncyge24=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "a",
+    "first_name": "",
+    "last_name": "",
+    "email": "a@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-04-11T04:45:27.087Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 5,
+  "fields": {
+    "password": "pbkdf2_sha256$870000$s5vtmg6yBanNzxE3sey05a$y0tENS/HE6m4w+2CwoxPaTSAWs5mL6VpNEkpP2CxBgY=",
+    "last_login": "2025-05-08T08:20:04.457Z",
+    "is_superuser": false,
+    "username": "gokul26",
+    "first_name": "",
+    "last_name": "",
+    "email": "gokul26@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-04-11T13:53:55.392Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "Agrivehicles.vehicle",
+  "pk": 1,
+  "fields": {
+    "Vehicle_id": 1,
+    "Vehicle_name": "harvester",
+    "Vehicle_desc": "Used for harvesting crops like wheat, paddy, and maize efficiently. It cuts, threshes, and cleans the grains.",
+    "price": 3000,
+    "image": "Vehicle/images/Harvester.jpeg",
+    "owner": 3,
+    "owner_location": "karunguzhi",
+    "is_available": true,
+    "rating": 3.0,
+    "num_ratings": 2,
+    "delivery_time_0_10": null,
+    "delivery_time_10_20": null
+  }
+},
+{
+  "model": "Agrivehicles.vehicle",
+  "pk": 2,
+  "fields": {
+    "Vehicle_id": 2,
+    "Vehicle_name": "Tractor",
+    "Vehicle_desc": "Tractors are versatile vehicles used for plowing, tilling, planting, and hauling heavy loads in farming. They can be fitted with various implements like plows, harrows, and seed drills.",
+    "price": 2000,
+    "image": "Vehicle/images/Tractor.jpeg",
+    "owner": 3,
+    "owner_location": "karunguzhi",
+    "is_available": false,
+    "rating": 5.0,
+    "num_ratings": 1,
+    "delivery_time_0_10": null,
+    "delivery_time_10_20": null
+  }
+},
+{
+  "model": "Agrivehicles.vehicle",
+  "pk": 31,
+  "fields": {
+    "Vehicle_id": 3,
+    "Vehicle_name": "Baler",
+    "Vehicle_desc": " Compresses harvested crops like hay and straw into compact bales for storage and transport.",
+    "price": 500,
+    "image": "Vehicle/images/baler_1_sbHoxU2.jpg",
+    "owner": 3,
+    "owner_location": "vedavakam",
+    "is_available": true,
+    "rating": 0.0,
+    "num_ratings": 0,
+    "delivery_time_0_10": "30 minutes",
+    "delivery_time_10_20": "1 hour"
+  }
+},
+{
+  "model": "Agrivehicles.vehicle",
+  "pk": 32,
+  "fields": {
+    "Vehicle_id": 4,
+    "Vehicle_name": "Rotavator",
+    "Vehicle_desc": "A rotary tiller that breaks and mixes soil to prepare it for sowing. It is more efficient than a traditional plow.",
+    "price": 300,
+    "image": "Vehicle/images/ratavator_1_9qORrlf.jpg",
+    "owner": 3,
+    "owner_location": "melavalam",
+    "is_available": true,
+    "rating": 0.0,
+    "num_ratings": 0,
+    "delivery_time_0_10": "30 minutes",
+    "delivery_time_10_20": "1 hour"
+  }
+},
+{
+  "model": "Agrivehicles.vehicle",
+  "pk": 34,
+  "fields": {
+    "Vehicle_id": 5,
+    "Vehicle_name": "Power Tiller",
+    "Vehicle_desc": "power",
+    "price": 500,
+    "image": "Vehicle/images/Power_tiller_pink_0afe6z1.jpg",
+    "owner": 3,
+    "owner_location": "chengalpattu",
+    "is_available": true,
+    "rating": 0.0,
+    "num_ratings": 0,
+    "delivery_time_0_10": "30 minutes",
+    "delivery_time_10_20": "1 hour"
+  }
+},
+{
+  "model": "Agrivehicles.rating",
+  "pk": 49,
+  "fields": {
+    "vehicle": 31,
+    "user": 1,
+    "stars": 1,
+    "created_at": "2025-05-08T07:48:48.949Z"
+  }
+},
+{
+  "model": "Agrivehicles.rating",
+  "pk": 50,
+  "fields": {
+    "vehicle": 2,
+    "user": 1,
+    "stars": 1,
+    "created_at": "2025-05-08T07:48:56.245Z"
+  }
+},
+{
+  "model": "Agrivehicles.rating",
+  "pk": 51,
+  "fields": {
+    "vehicle": 1,
+    "user": 1,
+    "stars": 1,
+    "created_at": "2025-05-08T07:49:01.912Z"
+  }
+},
+{
+  "model": "Agrivehicles.rating",
+  "pk": 52,
+  "fields": {
+    "vehicle": 1,
+    "user": 2,
+    "stars": 4,
+    "created_at": "2025-05-08T07:51:33.814Z"
+  }
+},
+{
+  "model": "Agrivehicles.rating",
+  "pk": 53,
+  "fields": {
+    "vehicle": 2,
+    "user": 2,
+    "stars": 2,
+    "created_at": "2025-05-08T07:51:41.176Z"
+  }
+},
+{
+  "model": "Agrivehicles.rating",
+  "pk": 54,
+  "fields": {
+    "vehicle": 31,
+    "user": 2,
+    "stars": 3,
+    "created_at": "2025-05-08T07:51:45.446Z"
+  }
+},
+{
+  "model": "Agrivehicles.rating",
+  "pk": 55,
+  "fields": {
+    "vehicle": 32,
+    "user": 2,
+    "stars": 4,
+    "created_at": "2025-05-08T07:51:57.505Z"
+  }
+},
+{
+  "model": "Agrivehicles.rating",
+  "pk": 57,
+  "fields": {
+    "vehicle": 34,
+    "user": 2,
+    "stars": 1,
+    "created_at": "2025-05-08T09:01:31.340Z"
+  }
+},
+{
+  "model": "Agrivehicles.order",
+  "pk": 1,
+  "fields": {
+    "name": "gokulraj",
+    "email": "gokul@gmail.com",
+    "phone": "9677710811",
+    "address": "palla",
+    "city": "chennai",
+    "vehicle_name": "harvester",
+    "days_for_rent": 3,
+    "date": "2025-04-10",
+    "location": "chennai"
+  }
+},
+{
+  "model": "Agrivehicles.order",
+  "pk": 2,
+  "fields": {
+    "name": "gokul",
+    "email": "gokul@gmail.com",
+    "phone": "9677710811",
+    "address": "palla",
+    "city": "chennai",
+    "vehicle_name": "harvester",
+    "days_for_rent": 3,
+    "date": "2025-04-10",
+    "location": "chennai"
+  }
+},
+{
+  "model": "Agrivehicles.order",
+  "pk": 3,
+  "fields": {
+    "name": "hii",
+    "email": "hii@gmail.com",
+    "phone": "1225446357",
+    "address": "etsrhdgjfh",
+    "city": "chennai",
+    "vehicle_name": "harvester",
+    "days_for_rent": 3,
+    "date": "2025-04-10",
+    "location": "chennai"
+  }
+},
+{
+  "model": "Agrivehicles.order",
+  "pk": 4,
+  "fields": {
+    "name": "sdfg",
+    "email": "hii@gmail.com",
+    "phone": "1225446357",
+    "address": "qwer",
+    "city": "chennai",
+    "vehicle_name": "Tractor",
+    "days_for_rent": 4,
+    "date": "2025-04-16",
+    "location": "chennai"
+  }
+},
+{
+  "model": "Agrivehicles.order",
+  "pk": 5,
+  "fields": {
+    "name": "helo",
+    "email": "helo@gmail.com",
+    "phone": "2345678901",
+    "address": "qwer",
+    "city": "4qehdt",
+    "vehicle_name": "truck",
+    "days_for_rent": 6,
+    "date": "2025-04-10",
+    "location": "chennai"
+  }
+},
+{
+  "model": "Agrivehicles.order",
+  "pk": 6,
+  "fields": {
+    "name": "gokulraj",
+    "email": "gokul@gmail.com",
+    "phone": "2345678901",
+    "address": "palla",
+    "city": "chennai",
+    "vehicle_name": "hole driller",
+    "days_for_rent": 1,
+    "date": "2025-04-22",
+    "location": "chennai"
+  }
+},
+{
+  "model": "Agrivehicles.contact",
+  "pk": 1,
+  "fields": {
+    "name": "gokul",
+    "email": "gok@123",
+    "phone_number": "12345678",
+    "message": "wertghjkl;/"
+  }
+},
+{
+  "model": "Agrivehicles.contact",
+  "pk": 2,
+  "fields": {
+    "name": "gokul",
+    "email": "gok@123",
+    "phone_number": "12345678",
+    "message": "wertghjkl;/"
+  }
+},
+{
+  "model": "Agrivehicles.contact",
+  "pk": 3,
+  "fields": {
+    "name": "gokul",
+    "email": "gg@gm",
+    "phone_number": "1234567889",
+    "message": "wertghjkl;/"
+  }
+},
+{
+  "model": "Agrivehicles.contact",
+  "pk": 4,
+  "fields": {
+    "name": "gokul",
+    "email": "gok@123",
+    "phone_number": "1234567889",
+    "message": "vbdng"
+  }
+},
+{
+  "model": "Agrivehicles.userprofile",
+  "pk": 1,
+  "fields": {
+    "user": 2,
+    "phone": "1234567800",
+    "email": "gokulraj@gmail.com",
+    "role": "farmer"
+  }
+},
+{
+  "model": "Agrivehicles.userprofile",
+  "pk": 2,
+  "fields": {
+    "user": 3,
+    "phone": "1234567890",
+    "email": "kumar@gmail.com",
+    "role": "owner"
+  }
+},
+{
+  "model": "Agrivehicles.userprofile",
+  "pk": 3,
+  "fields": {
+    "user": 4,
+    "phone": "1234567",
+    "email": "a@gmail.com",
+    "role": "farmer"
+  }
+},
+{
+  "model": "Agrivehicles.userprofile",
+  "pk": 4,
+  "fields": {
+    "user": 5,
+    "phone": "9677710833",
+    "email": "gokul26@gmail.com",
+    "role": "owner"
+  }
+},
+{
+  "model": "Agrivehicles.booking",
+  "pk": 17,
+  "fields": {
+    "vehicle": 2,
+    "farmer": 2,
+    "booking_date": "2025-04-14",
+    "duration": 4,
+    "total_amount": 1200.0,
+    "visible_to_farmer": false,
+    "visible_to_owner": true,
+    "created_at": "2025-04-14T10:29:24.566Z"
+  }
+},
+{
+  "model": "Agrivehicles.booking",
+  "pk": 21,
+  "fields": {
+    "vehicle": 1,
+    "farmer": 2,
+    "booking_date": "2025-04-26",
+    "duration": 4,
+    "total_amount": 2000.0,
+    "visible_to_farmer": true,
+    "visible_to_owner": false,
+    "created_at": "2025-04-14T11:24:57.037Z"
+  }
+},
+{
+  "model": "Agrivehicles.booking",
+  "pk": 27,
+  "fields": {
+    "vehicle": 2,
+    "farmer": 2,
+    "booking_date": "2025-04-26",
+    "duration": 8,
+    "total_amount": 16000.0,
+    "visible_to_farmer": true,
+    "visible_to_owner": true,
+    "created_at": "2025-04-23T17:29:34.752Z"
+  }
+},
+{
+  "model": "Agrivehicles.booking",
+  "pk": 29,
+  "fields": {
+    "vehicle": 1,
+    "farmer": 2,
+    "booking_date": "2025-04-26",
+    "duration": 5,
+    "total_amount": 15000.0,
+    "visible_to_farmer": true,
+    "visible_to_owner": true,
+    "created_at": "2025-04-24T05:08:25.822Z"
+  }
+},
+{
+  "model": "Agrivehicles.booking",
+  "pk": 30,
+  "fields": {
+    "vehicle": 1,
+    "farmer": 2,
+    "booking_date": "2025-04-26",
+    "duration": 5,
+    "total_amount": 15000.0,
+    "visible_to_farmer": false,
+    "visible_to_owner": true,
+    "created_at": "2025-04-24T05:09:34.637Z"
+  }
+},
+{
+  "model": "Agrivehicles.booking",
+  "pk": 31,
+  "fields": {
+    "vehicle": 1,
+    "farmer": 2,
+    "booking_date": "2025-04-26",
+    "duration": 5,
+    "total_amount": 15000.0,
+    "visible_to_farmer": true,
+    "visible_to_owner": true,
+    "created_at": "2025-04-24T05:10:10.152Z"
+  }
+},
+{
+  "model": "Agrivehicles.booking",
+  "pk": 34,
+  "fields": {
+    "vehicle": 2,
+    "farmer": 2,
+    "booking_date": "2025-05-08",
+    "duration": 2,
+    "total_amount": 4000.0,
+    "visible_to_farmer": true,
+    "visible_to_owner": true,
+    "created_at": "2025-05-08T09:30:00.317Z"
+  }
+}
+]

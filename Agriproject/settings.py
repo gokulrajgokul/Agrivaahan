@@ -73,14 +73,25 @@
 # #     }
 # # }
 
+# # DATABASES = {
+# #     'default': {
+# #         'ENGINE': 'django.db.backends.postgresql',
+# #         'NAME': 'agrivaahandb',
+# #         'USER': 'agrivaahandb_user',
+# #         'PASSWORD': 'ZBHXHmusvZLvUUR59Y39b9MZ6EfVROIF',
+# #         'HOST': 'dpg-d08c13s9c44c73bpr7ig-a.oregon-postgres.render.com',
+# #         'PORT': '5432',
+# #     }
+# # }
+
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'agrivaahandb',
-#         'USER': 'agrivaahandb_user',
-#         'PASSWORD': 'ZBHXHmusvZLvUUR59Y39b9MZ6EfVROIF',
-#         'HOST': 'dpg-d08c13s9c44c73bpr7ig-a.oregon-postgres.render.com',
-#         'PORT': '5432',
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'Agrivaahan',
+#         'USER': 'root',
+#         'PASSWORD': 'gokulhema@26',
+#         'HOST': 'localhost',
+#         'PORT': '3306',
 #     }
 # }
 
@@ -144,7 +155,7 @@ MEDIA_URL = '/media/'
 
 SECRET_KEY = config('SECRET_KEY')
 
-DEBUG = config('DEBUG', default=False, cast=bool)
+DEBUG = config('DEBUG', default=True, cast=bool)
 
 ALLOWED_HOSTS = [
     'agrivaahan-agricultural-equipments.onrender.com',
@@ -235,6 +246,8 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
