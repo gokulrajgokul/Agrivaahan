@@ -497,7 +497,7 @@ def submit_review(request):
         data = json.loads(request.body)
         rating = data.get('rating')
         review = data.get('review')
-        vehicle_id = data.get('vehicle_id')
+        vehicle_id = data.get('id')
 
         vehicle = get_object_or_404(Vehicle, id=vehicle_id)
 
@@ -510,6 +510,6 @@ def submit_review(request):
         return JsonResponse({'message': 'Review submitted successfully'})
     return JsonResponse({'error': 'Invalid request'}, status=400)
 
-def get_reviews(request, vehicle_id):
-    reviews = VehicleReview.objects.filter(vehicle_id=vehicle_id).values('rating', 'review', 'user__username', 'created_at')
+def get_reviews(request, id):
+    reviews = VehicleReview.objects.filter(id=id).values('rating', 'review', 'user__username', 'created_at')
     return JsonResponse(list(reviews), safe=False)
