@@ -289,7 +289,8 @@ def delete_booking(request, booking_id):
 def vehicles(request):
     name_query = request.GET.get('name', '')
     location_query = request.GET.get('location', '')
-    vehicles = Vehicle.objects.filter(is_available=True).annotate(avg_rating=Avg('ratings__stars'))
+    # vehicles = Vehicle.objects.filter(is_available=True).annotate(avg_rating=Avg('ratings__stars'))
+    vehicles = Vehicle.objects.filter().annotate(avg_rating=Avg('ratings__stars'))
 
     if name_query:
         vehicles = vehicles.filter(Vehicle_name__icontains=name_query)
@@ -387,18 +388,46 @@ def contact(request):
         messages.success(request, "Your message has been sent.")
     return render(request, 'contact.html')
 
+# @csrf_exempt
+# @login_required
+# def submit_rating(request):
+#     if request.method == "POST":
+#         try:
+#             id = request.POST.get('id')  # changed vehicle_id to id
+#             stars = int(request.POST.get('stars'))
+
+#             if not (1 <= stars <= 5):
+#                 return JsonResponse({'success': False, 'error': 'Stars must be between 1 and 5'})
+
+#             vehicle = Vehicle.objects.get(id=id)  # changed vehicle_id to id
+
+#             rating, created = Rating.objects.update_or_create(
+#                 user=request.user,
+#                 vehicle=vehicle,
+#                 defaults={'stars': stars}
+#             )
+
+#             avg_rating = Rating.objects.filter(vehicle=vehicle).aggregate(avg=Avg('stars'))['avg']
+#             return JsonResponse({'success': True, 'new_avg': avg_rating})
+#         except Exception as e:
+#             return JsonResponse({'success': False, 'error': str(e)})
+#     return JsonResponse({'success': False, 'error': 'Invalid request method'})
+
+ 
 @csrf_exempt
 @login_required
 def submit_rating(request):
     if request.method == "POST":
         try:
-            id = request.POST.get('id')  # changed vehicle_id to id
+            vehicle_id = request.POST.get('id')
             stars = int(request.POST.get('stars'))
 
             if not (1 <= stars <= 5):
                 return JsonResponse({'success': False, 'error': 'Stars must be between 1 and 5'})
 
-            vehicle = Vehicle.objects.get(id=id)  # changed vehicle_id to id
+            vehicle = Vehicle.objects.get(id=vehicle_id)
+
+      
 
             rating, created = Rating.objects.update_or_create(
                 user=request.user,
@@ -406,11 +435,20 @@ def submit_rating(request):
                 defaults={'stars': stars}
             )
 
+            # Recalculate average
             avg_rating = Rating.objects.filter(vehicle=vehicle).aggregate(avg=Avg('stars'))['avg']
+           
+            # return JsonResponse({'success': True, 'new_avg': round(avg_rating, 1)})
             return JsonResponse({'success': True, 'new_avg': avg_rating})
+
+        except Vehicle.DoesNotExist:
+            return JsonResponse({'success': False, 'error': 'Vehicle not found'})
         except Exception as e:
             return JsonResponse({'success': False, 'error': str(e)})
+
     return JsonResponse({'success': False, 'error': 'Invalid request method'})
+
+
 
 def confirmbooking(request):
     return render(request, 'confirmbooking.html')
