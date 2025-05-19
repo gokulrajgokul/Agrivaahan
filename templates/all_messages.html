@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block style %}
+{% load static %}
+ 
+{% endblock style %}
+
+{% block body %}
+
+<div class="container mt-4">
+  <h2 class="mb-4 text-center">Contact Messages</h2>
+ 
+
+  {% if messages %}
+    <div class="table table-responsive">
+      <table class="table table-bordered border-success table-hover mx-auto">
+        <thead >
+          <tr>
+            <th class="bg-secondary">S.No</th>
+            <th class="bg-secondary">Name</th>
+            <th class="bg-secondary">Email</th>
+            <th class="bg-secondary">Phone Number</th>
+            <th class="bg-secondary">Message</th>
+            <th class="bg-secondary">Date Submitted</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for msg in messages %}
+          <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ msg.name }}</td>
+            <td>{{ msg.email }}</td>
+            <td>{{ msg.phone_number }}</td>
+            <td>{{ msg.message }}</td>
+            <td>{{ msg.created_at|date:"Y-m-d H:i" }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <p>No contact messages found.</p>
+  {% endif %}
+</div>
+
+{% endblock %}

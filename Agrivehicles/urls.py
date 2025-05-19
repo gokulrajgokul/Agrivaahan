@@ -20,7 +20,7 @@ urlpatterns = [
 
     # Farmer Bookings
     path("my-bookings/", views.farmer_bookings, name='farmer_bookings'),
-    path('farmer/bookings/delete/<int:booking_id>/', views.delete_farmer_booking, name='delete_farmer_booking'),
+    path('farmer/bookings/delete/<int:id>/', views.delete_farmer_booking, name='delete_farmer_booking'),
 
 
     # Authentication
@@ -35,6 +35,7 @@ urlpatterns = [
 
     # Contact
     path("contact", views.contact, name='contact'),
+    path('all-messages/', views.all_messages, name='all_messages'),
 
     # Ratings & Reviews
     path("submit-rating/", views.submit_rating, name='submit_rating'),

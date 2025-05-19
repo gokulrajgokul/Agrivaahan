@@ -10,6 +10,7 @@ from django.conf import settings
 from django.db.models import Avg
 import json
 from .models import Vehicle, Order, Contact, UserProfile, Rating, Booking, VehicleReview
+from django.contrib.admin.views.decorators import staff_member_required
 
 def index(request):
     vehicles = Vehicle.objects.all()
@@ -276,8 +277,8 @@ def owner_bookings(request):
     return render(request, 'bookings.html', {'bookings': bookings})
 
 @login_required
-def delete_booking(request, booking_id):
-    booking = get_object_or_404(Booking, id=booking_id)
+def delete_booking(request, id):
+    booking = get_object_or_404(Booking, id=id)
     if booking.vehicle.owner != request.user:
         return HttpResponseForbidden("You are not allowed to delete this booking.")
     if request.method == "POST":
@@ -311,8 +312,8 @@ def farmer_bookings(request):
     bookings = Booking.objects.filter(farmer=request.user, visible_to_farmer=True).order_by('created_at')
     return render(request, 'farmer_bookings.html', {'bookings': bookings})
 
-def delete_farmer_booking(request, booking_id):
-    booking = get_object_or_404(Booking, id=booking_id, user=request.user)
+def delete_farmer_booking(request, id):
+    booking = get_object_or_404(Booking, id=id,  farmer=request.user)
     if request.method == 'POST':
         booking.delete()
         messages.success(request, 'Booking deleted successfully.')
@@ -386,6 +387,8 @@ def contact(request):
 
         Contact.objects.create(name=contactname, email=contactemail, phone_number=contactnumber, message=contactmsg)
         messages.success(request, "Your message has been sent.")
+
+         
     return render(request, 'contact.html')
 
 # @csrf_exempt
@@ -514,3 +517,10 @@ def get_reviews(request, id):
     reviews = VehicleReview.objects.filter(vehicle__id=id).values('rating', 'review', 'user__username', 'created_at')
     # return JsonResponse(list(reviews), safe=False)
     return JsonResponse({'reviews': list(reviews)})
+
+
+
+@staff_member_required
+def all_messages(request):
+    messages = Contact.objects.all().order_by('-created_at')
+    return render(request, 'all_messages.html', {'messages': messages})
