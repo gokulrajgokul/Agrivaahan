@@ -58,18 +58,4 @@
 
 
 
-<!-- 
-{% for booking in bookings %}
-  <div class="booking-card">
-    <h3>Vehicle: {{ booking.vehicle.Vehicle_name }}</h3>
-    <p>Farmer: {{ booking.farmer.username }}</p>
-    {% with profile=booking.farmer.userprofile %}
-      <p>📞 Phone: {{ profile.phone }}</p>
-      <p>📧 Email: {{ profile.email }}</p>
-    {% endwith %}
-    <p>Booking Date: {{ booking.booking_date }}</p>
-    <p>Duration: {{ booking.duration }} days</p>
-    <p>Total Amount: ₹{{ booking.total_amount }}</p>
-    <hr>
-  </div>
-{% endfor %} -->
+ 

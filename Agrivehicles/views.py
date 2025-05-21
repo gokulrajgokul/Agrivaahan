@@ -100,48 +100,6 @@ def signout(request):
     logout(request)
     return redirect('signin')
 
-
-
-# @login_required
-# def add_vehicle(request):
-#     vehicle_to_edit = None
-#     if request.method == 'POST':
-#         # Debug: Print incoming POST data
-#         print(request.POST)
-#         try:
-#             name = request.POST.get('Vehicle_name')
-#             desc = request.POST.get('Vehicle_desc')
-#             price = request.POST.get('price')
-#             image = request.FILES.get('image')
-#             owner_location = request.POST.get('owner_location')
-#             is_available = request.POST.get('is_available') == 'on'
-#             delivery_time_0_10 = request.POST.get('delivery_time_0_10')
-#             delivery_time_10_20 = request.POST.get('delivery_time_10_20')
-
-#             # Add the vehicle
-#             Vehicle.objects.create(
-#                 Vehicle_name=name,
-#                 Vehicle_desc=desc,
-#                 price=price,
-#                 image=image,
-#                 owner=request.user,
-#                 owner_location=owner_location,
-#                 is_available=is_available,
-#                 delivery_time_0_10=delivery_time_0_10,
-#                 delivery_time_10_20=delivery_time_10_20,
-#             )
-#             messages.success(request, "Vehicle added successfully!")
-#             return redirect('add_vehicle')  # After success, redirect
-
-#         except Exception as e:
-#             print("Error: ", e)  # Print error to console
-#             messages.error(request, f"An error occurred: {e}")
-
-#     vehicles = Vehicle.objects.filter(owner=request.user)  # List vehicles
-#     return render(request, 'add_vehicle.html', {'vehicles': vehicles, 'vehicle_to_edit': vehicle_to_edit})
-
-
-
 @login_required
 def add_vehicle(request):
     vehicle_to_edit = None
@@ -193,77 +151,6 @@ def add_vehicle(request):
     vehicles = Vehicle.objects.filter(owner=request.user)  # Fetch vehicles for the current user
     return render(request, 'add_vehicle.html', {'vehicles': vehicles, 'vehicle_to_edit': vehicle_to_edit})
 
- 
-
-# @login_required
-# def add_vehicle(request):
-#     vehicle_to_edit = None
-#     vehicle_id = request.GET.get('id')
-#     user_profile = get_object_or_404(UserProfile, user=request.user)
-
-#     if vehicle_id:
-#         vehicle_to_edit = get_object_or_404(Vehicle, pk=vehicle_id, owner=user_profile)
-
-#     if request.method == 'POST':
-#         vehicle_id = request.POST.get('id')
-#         name = request.POST.get('Vehicle_name')
-#         desc = request.POST.get('Vehicle_desc')
-#         price = request.POST.get('price')
-#         image = request.FILES.get('image')
-#         owner_location = request.POST.get('owner_location')
-#         is_available = request.POST.get('is_available') == 'on'
-#         delivery_time_0_10 = request.POST.get('delivery_time_0_10')
-#         delivery_time_10_20 = request.POST.get('delivery_time_10_20')
-
-#         if vehicle_id:
-#             vehicle = get_object_or_404(Vehicle, pk=vehicle_id, owner=user_profile)
-#             vehicle.Vehicle_name = name
-#             vehicle.Vehicle_desc = desc
-#             vehicle.price = price
-#             vehicle.owner_location = owner_location
-#             vehicle.is_available = is_available
-#             vehicle.delivery_time_0_10 = delivery_time_0_10
-#             vehicle.delivery_time_10_20 = delivery_time_10_20
-#             if image:
-#                 vehicle.image = image
-#             vehicle.save()
-#             messages.success(request, "Vehicle updated successfully!")
-#         else:
-#             Vehicle.objects.create(
-#                 Vehicle_name=name,
-#                 Vehicle_desc=desc,
-#                 price=price,
-#                 image=image,
-#                 owner=user_profile,
-#                 owner_location=owner_location,
-#                 is_available=is_available,
-#                 delivery_time_0_10=delivery_time_0_10,
-#                 delivery_time_10_20=delivery_time_10_20,
-#             )
-#             messages.success(request, "Vehicle added successfully!")
-
-#         return redirect('add_vehicle')
-
-#     vehicles = Vehicle.objects.filter(owner=user_profile)
-#     return render(request, 'add_vehicle.html', {
-#         'vehicles': vehicles,
-#         'vehicle_to_edit': vehicle_to_edit
-#     })
-
-
-# @login_required
-# def delete_vehicle(request, pk):
-#     try:
-#         print(f"Deleting vehicle with ID: {pk}")
-#         vehicle = get_object_or_404(Vehicle, pk=pk, owner=request.user)
-#         vehicle.delete()
-#         messages.success(request, "Vehicle deleted successfully!")
-#         return redirect('add_vehicle')
-#     except Exception as e:
-#         print("Error while deleting vehicle:", e)
-#         return HttpResponse(f"Something went wrong: {e}")
-    
-
 @login_required
 def delete_vehicle(request, id):
     vehicle = get_object_or_404(Vehicle, id=id, owner=request.user)
@@ -290,8 +177,7 @@ def delete_booking(request, id):
 def vehicles(request):
     name_query = request.GET.get('name', '')
     location_query = request.GET.get('location', '')
-    # vehicles = Vehicle.objects.filter(is_available=True).annotate(avg_rating=Avg('ratings__stars'))
-    vehicles = Vehicle.objects.filter().annotate(avg_rating=Avg('ratings__stars'))
+    vehicles = Vehicle.objects.filter(is_available=True).annotate(avg_rating=Avg('ratings__stars'))
 
     if name_query:
         vehicles = vehicles.filter(Vehicle_name__icontains=name_query)
@@ -358,6 +244,8 @@ def order(request):
             duration=duration,
             total_amount=total_amount
         )
+        vehicle.is_available = False
+        vehicle.save()
 
         send_mail(
             'New Booking Notification',
@@ -390,32 +278,7 @@ def contact(request):
 
          
     return render(request, 'contact.html')
-
-# @csrf_exempt
-# @login_required
-# def submit_rating(request):
-#     if request.method == "POST":
-#         try:
-#             id = request.POST.get('id')  # changed vehicle_id to id
-#             stars = int(request.POST.get('stars'))
-
-#             if not (1 <= stars <= 5):
-#                 return JsonResponse({'success': False, 'error': 'Stars must be between 1 and 5'})
-
-#             vehicle = Vehicle.objects.get(id=id)  # changed vehicle_id to id
-
-#             rating, created = Rating.objects.update_or_create(
-#                 user=request.user,
-#                 vehicle=vehicle,
-#                 defaults={'stars': stars}
-#             )
-
-#             avg_rating = Rating.objects.filter(vehicle=vehicle).aggregate(avg=Avg('stars'))['avg']
-#             return JsonResponse({'success': True, 'new_avg': avg_rating})
-#         except Exception as e:
-#             return JsonResponse({'success': False, 'error': str(e)})
-#     return JsonResponse({'success': False, 'error': 'Invalid request method'})
-
+ 
  
 @csrf_exempt
 @login_required

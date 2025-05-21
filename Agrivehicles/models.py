@@ -44,10 +44,10 @@ class Order(models.Model):
     phone = models.CharField(max_length=20, default="")
     address = models.CharField(max_length=500, default="")
     city = models.CharField(max_length=50, default="")
-    vehicle_name = models.CharField(max_length=50, default="")  # Rename to vehicle_name if you want
+    vehicle_name = models.CharField(max_length=50, default="")   
     days_for_rent = models.IntegerField(default=0)
     date = models.CharField(max_length=50, default="")
-    location = models.CharField(max_length=50, default="")  # 🔁 NEW field replacing loc_from + loc_to
+    location = models.CharField(max_length=50, default="")  
 
     def __str__(self):
         return self.name
@@ -66,14 +66,6 @@ class Contact(models.Model):
  
 
     
-# class UserProfile(models.Model):
-#     user = models.OneToOneField(User, on_delete=models.CASCADE)  
-#     phone = models.CharField(max_length=15)  
-#     email = models.EmailField(unique=True)  # Store email separately  
-     
-
-#     def __str__(self):
-#         return self.user.username
  
 
 class UserProfile(models.Model):
