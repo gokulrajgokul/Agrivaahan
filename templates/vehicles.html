@@ -87,7 +87,7 @@
     
     <h4 class="text-center vehicle-name">{{ i.Vehicle_name }}</h4>
     <p class="card-text">{{ i.Vehicle_desc }}</p>
-    <p>Price per hour: {{ i.price }}</p>
+    <p> <strong>Price per hour:</strong> {{ i.price }}</p>
 
     <p class="card-text text-muted"><strong>Owner:</strong>
         {% if i.owner %}{{ i.owner.username }}{% else %}Not Assigned{% endif %}
