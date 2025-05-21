@@ -7,7 +7,7 @@ urlpatterns = [
     path("",views.index, name = 'home'),
     path("home/",views.index, name = 'home'),
     path("about",views.about,name = 'about'),
-    path('add-vehicle', views.add_vehicle, name='add_vehicle'),
+    path('add-vehicle/', views.add_vehicle, name='add_vehicle'),
     # path('add-vehicle/', views.add_vehicle, name='add_vehicle'),
     path('delete-vehicle/<int:pk>/', views.delete_vehicle, name='delete_vehicle'),
     path('bookings', views.owner_bookings, name='owner_bookings'),
@@ -28,7 +28,8 @@ urlpatterns = [
  
     path('get-user-role/', views.get_user_role, name='get_user_role'),
     path('submit-review/', views.submit_review, name='submit_review'),
-     path('get-reviews/<int:vehicle_id>/', views.get_reviews, name='get_reviews'),
+    path('get-reviews/<int:vehicle_id>/', views.get_reviews, name='get_reviews'),
+    
 
     
 

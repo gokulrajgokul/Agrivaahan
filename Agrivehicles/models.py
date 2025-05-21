@@ -6,7 +6,7 @@ from django.utils import timezone
 class Vehicle(models.Model):
     
 
-    Vehicle_id = models.IntegerField(default=0)
+    Vehicle_id = models.IntegerField(default=0, unique=True)
     Vehicle_name = models.CharField(max_length=30,default="")
     Vehicle_desc = models.CharField(max_length=300,default="")
     price = models.IntegerField(default=0)
@@ -33,7 +33,7 @@ class Vehicle(models.Model):
     def __str__(self):
         return self.Vehicle_name
 class Rating(models.Model):
-    vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE, related_name='ratings')  # 👈 Fix here
+    vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE, related_name='ratings',  to_field='Vehicle_id')  # 👈 Fix here
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     stars = models.IntegerField(choices=[(i, i) for i in range(1, 6)],null=False)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -85,6 +85,7 @@ class Contact(models.Model):
     email = models.EmailField(max_length=150,default="")   
     phone_number = models.CharField(max_length=15,default="")
     message = models.TextField(max_length=500,default="")
+ 
 
     def __str__(self) :
         return self.name

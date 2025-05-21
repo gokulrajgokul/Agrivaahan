@@ -11,7 +11,7 @@ from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 import json
 from django.db.models import Avg
-
+ 
 # Create your views here.
 
 def index(request):
@@ -423,7 +423,7 @@ def vehicles(request):
     name_query = request.GET.get('name', '')
     location_query = request.GET.get('location', '')
 
-    vehicles = Vehicle.objects.all().annotate(avg_rating=Avg('ratings__stars'))
+    vehicles = Vehicle.objects.filter(is_available=True).annotate(avg_rating=Avg('ratings__stars'))
 
     if name_query:
         vehicles = vehicles.filter(Vehicle_name__icontains=name_query)
@@ -573,6 +573,8 @@ def order(request):
             duration=duration,
             total_amount=total_amount
         )
+        vehicle.is_available = False
+        vehicle.save()
 
         # Send email to vehicle owner
         send_mail(
@@ -809,3 +811,7 @@ def get_reviews(request, vehicle_id):
     
     # Return the reviews as JSON
     return JsonResponse({'reviews': reviews_data})
+
+
+
+ 
