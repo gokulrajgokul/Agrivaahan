@@ -205,12 +205,24 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'Agriproject.wsgi.application'
 
+# DATABASES = {
+#     'default': dj_database_url.config(
+#         default=config('DATABASE_URL'),
+#         conn_max_age=600,
+#         ssl_require=True
+#     )
+# }
+
+
 DATABASES = {
-    'default': dj_database_url.config(
-        default=config('DATABASE_URL'),
-        conn_max_age=600,
-        ssl_require=True
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'Agrihost',
+        'USER': 'root',
+        'PASSWORD': 'gokulhema@26',
+        'HOST': 'localhost',
+        'PORT': '3306',
+    }
 }
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

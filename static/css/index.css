@@ -57,7 +57,7 @@ body {
 .carousel-inner {
   
   position: relative;
-  height: 600px;  /* Fixed height */
+  height: 500px;  /* Fixed height */
 }
 
 .custom-carousel img {
