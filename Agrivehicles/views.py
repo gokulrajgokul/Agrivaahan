@@ -210,6 +210,73 @@ def bill(request, id):
     vehicle = get_object_or_404(Vehicle, id=id)
     return render(request, 'bill.html', {'vehicle': vehicle})
 
+# @login_required
+# def order(request):
+#     if request.method == "POST":
+#         billname = request.POST.get('billname', '')
+#         billemail = request.POST.get('billemail', '')
+#         billphone = request.POST.get('billphone', '')
+#         billaddress = request.POST.get('billaddress', '')
+#         billcity = request.POST.get('billcity', '')
+#         vehicle_id = request.POST.get('vehicle_id')
+#         dayss = request.POST.get('dayss', '1')
+#         date = request.POST.get('date', '')
+#         location = request.POST.get('location', '')
+
+#         vehicle = get_object_or_404(Vehicle, id=vehicle_id)
+
+#         if not all([billname, billemail, billphone, billaddress, billcity, dayss, date, location]):
+#             messages.error(request, "All fields are required")
+#             return render(request, 'bill.html', {'vehicle': vehicle})
+
+#         try:
+#             duration = int(dayss)
+#         except ValueError:
+#             messages.error(request, "Invalid number of days.")
+#             return render(request, 'bill.html', {'vehicle': vehicle})
+
+#         total_amount = vehicle.price * duration
+
+#         booking = Booking.objects.create(
+#             vehicle=vehicle,
+#             farmer=request.user,
+#             booking_date=date,
+#             duration=duration,
+#             total_amount=total_amount
+#         )
+#         vehicle.is_available = False
+#         vehicle.save()
+
+#         send_mail(
+#             'New Booking Notification',
+#             f"Vehicle '{vehicle.Vehicle_name}' booked by {billname}.\nPhone: {billphone}\nLocation: {location}\nDuration: {duration} days\nDate: {date}\nTotal: ₹{total_amount}",
+#             settings.EMAIL_HOST_USER,
+#             [vehicle.owner.email],
+#         )
+    
+#         return render(request, 'confirmbooking.html', {'booking': booking})
+
+#     return redirect('home')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+from django.core.mail import send_mail, BadHeaderError
+from django.conf import settings
+from django.http import HttpResponse
+
 @login_required
 def order(request):
     if request.method == "POST":
@@ -247,12 +314,43 @@ def order(request):
         vehicle.is_available = False
         vehicle.save()
 
-        send_mail(
-            'New Booking Notification',
-            f"Vehicle '{vehicle.Vehicle_name}' booked by {billname}.\nPhone: {billphone}\nLocation: {location}\nDuration: {duration} days\nDate: {date}\nTotal: ₹{total_amount}",
-            settings.EMAIL_HOST_USER,
-            [vehicle.owner.email],
-        )
+        try:
+            # send_mail(
+            #     'New Booking Notification',
+            #     f"Vehicle '{vehicle.Vehicle_name}' booked by {billname}.\nPhone: {billphone}\nLocation: {location}\nDuration: {duration} days\nDate: {date}\nTotal: ₹{total_amount}",
+            #     settings.EMAIL_HOST_USER,
+            #     [vehicle.owner.email],
+            #     fail_silently=False,  # Ensures real errors are raised
+            # )
+            send_mail(
+    'New Booking Notification',
+    f"""
+Hello {vehicle.owner},
+
+A new booking has been made for your vehicle: **{vehicle.Vehicle_name}**.
+
+--- Farmer Details ---
+
+👤 Name: {billname}  
+📧 Email: {billemail}  
+📞 Phone: {billphone}  
+📍 Location: {location}  
+📅 Booking Date: {date}  
+⏱️ Duration: {duration} day(s)  
+💰 Total Amount: ₹{total_amount}
+
+Please login to your dashboard for more details.
+
+Thank you,  
+AgriVaahan Team
+""",
+    settings.EMAIL_HOST_USER,
+    [vehicle.owner.email],
+    fail_silently=False,
+)
+
+        except Exception as e:
+            return HttpResponse(f"Email sending failed: {e}", status=500)
 
         return render(request, 'confirmbooking.html', {'booking': booking})
 
