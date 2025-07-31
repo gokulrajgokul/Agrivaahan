@@ -6,7 +6,7 @@
 {% load static %}
 <link rel="stylesheet" href="{% static 'css/add_vehicle.css' %}">
 {% endblock style %}
-
+{% block title %}Manage Vehicles{% endblock title %}
 {% block body %}
 <div class="container mt-5">
     {% include 'messages.html' %}

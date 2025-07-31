@@ -4,7 +4,7 @@
 {% load static %}
 <link rel="stylesheet" href="{% static 'css/login.css' %}">
 {% endblock style %}
-
+{% block title %}Login{% endblock title %}
 {% block body %}
 
 <section class="h-100 gradient-form" style="background-color: #eee;">
@@ -142,5 +142,5 @@ window.addEventListener("click", function (event) {
 
 </script>
 
-
+<script src="script.js"></script>
 {% endblock %}
